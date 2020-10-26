@@ -8,6 +8,7 @@ class App extends Component {
 		this.state = {
 			planets: '',
 			vehicles: '',
+			token: ''
 		}
 		this.getResult = this.getResult.bind(this);
 	}
@@ -15,8 +16,15 @@ class App extends Component {
 	componentDidMount() {
 		const planetsURL = "https://findfalcone.herokuapp.com/planets",
 			  vehiclesURL = "https://findfalcone.herokuapp.com/vehicles",
+			  tokenURL = "https://findfalcone.herokuapp.com/token",
 			  planetsRes = fetch(planetsURL),
-			  vehiclesRes = fetch(vehiclesURL);
+			  vehiclesRes = fetch(vehiclesURL),
+		      tokenRes = fetch(tokenURL, {
+				  method: 'POST',
+				  headers: {
+					  'Accept': 'application/json'
+				  }
+			  });
 			  
 		planetsRes
 			.then(res => res.json())
@@ -33,23 +41,17 @@ class App extends Component {
 				return json;
 			})
 			.catch(err => console.log(err))
+			
+		tokenRes
+			.then(res => res.json())
+			.then(json => {
+				this.setState({token : json.token});
+				return json;
+			})
+			.catch(err => console.log(err))
 	}
 	
-	getToken() {
-		const tokenURL = "https://findfalcone.herokuapp.com/token",
-		      tokenRes = fetch(tokenURL, {
-				  method: 'POST',
-				  headers: {
-					  'Accept': 'application/json'
-				  }
-			  });
-			  
-		return tokenRes
-				.then(res => res.json())
-				.catch(err => console.log(err))
-	}
-	
-	getResult(ReqBody) {
+	getResult(reqBody) {
 		const URL = 'https://findfalcone.herokuapp.com/find',
 			  findRes = fetch(URL, {
 				  method: 'POST',
@@ -57,7 +59,7 @@ class App extends Component {
 					  'Content-Type': 'application/json',
 					  Accept: 'application/json'
 				  },
-				  body: JSON.stringify(ReqBody)
+				  body: JSON.stringify(reqBody)
 			  });
 		
 		return findRes
@@ -66,7 +68,7 @@ class App extends Component {
 	}
 	
 	render() {
-		const { planets, vehicles } = this.state;
+		const { planets, vehicles, token } = this.state;
 		
 		return (
 			<div className="App">
@@ -75,7 +77,7 @@ class App extends Component {
 				  && <Falcone 
 						planets={planets} 
 						vehicles={vehicles} 
-						getToken={this.getToken}
+						token={token}
 						getResult={this.getResult}
 					 />
 				}
