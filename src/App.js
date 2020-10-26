@@ -9,6 +9,7 @@ class App extends Component {
 			planets: '',
 			vehicles: '',
 		}
+		this.getResult = this.getResult.bind(this);
 	}
 	
 	componentDidMount() {
@@ -34,13 +35,49 @@ class App extends Component {
 			.catch(err => console.log(err))
 	}
 	
+	getToken() {
+		const tokenURL = "https://findfalcone.herokuapp.com/token",
+		      tokenRes = fetch(tokenURL, {
+				  method: 'POST',
+				  headers: {
+					  'Accept': 'application/json'
+				  }
+			  });
+			  
+		return tokenRes
+				.then(res => res.json())
+				.catch(err => console.log(err))
+	}
+	
+	getResult(ReqBody) {
+		const URL = 'https://findfalcone.herokuapp.com/find',
+			  findRes = fetch(URL, {
+				  method: 'POST',
+				  headers: {
+					  'Content-Type': 'application/json',
+					  Accept: 'application/json'
+				  },
+				  body: JSON.stringify(ReqBody)
+			  });
+		
+		return findRes
+				.then(res => res.json())
+				.catch(err => console.log(err))
+	}
+	
 	render() {
 		const { planets, vehicles } = this.state;
 		
 		return (
 			<div className="App">
-				{planets && vehicles
-				 && <Falcone planets={planets} vehicles={vehicles} />
+				{ planets 
+				  && vehicles
+				  && <Falcone 
+						planets={planets} 
+						vehicles={vehicles} 
+						getToken={this.getToken}
+						getResult={this.getResult}
+					 />
 				}
 			</div>
 		);

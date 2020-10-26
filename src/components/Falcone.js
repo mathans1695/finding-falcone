@@ -7,7 +7,9 @@ class Falcone extends Component {
 		
 		return (
 			<div className='Falcone'>
-				{ planets.map(planet => <p>{planet.name}</p>) }
+				{/* Header goes here */}
+				{/* body */}
+				{/* Footer goes here */}
 			</div>
 		)
 	}
