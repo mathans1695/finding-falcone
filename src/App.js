@@ -7,24 +7,17 @@ class App extends Component {
 		super(props);
 		this.state = {
 			planets: '',
-			vehicles: '',
-			token: ''
+			vehicles: ''
 		}
 		this.getResult = this.getResult.bind(this);
+		this.getToken = this.getToken.bind(this);
 	}
 	
 	componentDidMount() {
 		const planetsURL = "https://findfalcone.herokuapp.com/planets",
 			  vehiclesURL = "https://findfalcone.herokuapp.com/vehicles",
-			  tokenURL = "https://findfalcone.herokuapp.com/token",
 			  planetsRes = fetch(planetsURL),
-			  vehiclesRes = fetch(vehiclesURL),
-		      tokenRes = fetch(tokenURL, {
-				  method: 'POST',
-				  headers: {
-					  'Accept': 'application/json'
-				  }
-			  });
+			  vehiclesRes = fetch(vehiclesURL);
 			  
 		planetsRes
 			.then(res => res.json())
@@ -41,14 +34,20 @@ class App extends Component {
 				return json;
 			})
 			.catch(err => console.log(err))
-			
-		tokenRes
-			.then(res => res.json())
-			.then(json => {
-				this.setState({token : json.token});
-				return json;
-			})
-			.catch(err => console.log(err))
+	}
+	
+	getToken() {
+		const tokenURL = "https://findfalcone.herokuapp.com/token",
+		      tokenRes = fetch(tokenURL, {
+				  method: 'POST',
+				  headers: {
+					  'Accept': 'application/json'
+				  }
+			  });
+			  
+		return tokenRes
+				.then(res => res.json())
+				.catch(err => console.log(err))
 	}
 	
 	getResult(reqBody) {
@@ -68,7 +67,7 @@ class App extends Component {
 	}
 	
 	render() {
-		const { planets, vehicles, token } = this.state;
+		const { planets, vehicles } = this.state;
 		
 		return (
 			<div className="App">
@@ -77,7 +76,7 @@ class App extends Component {
 				  && <Falcone 
 						planets={planets} 
 						vehicles={vehicles} 
-						token={token}
+						getToken={this.getToken}
 						getResult={this.getResult}
 					 />
 				}
