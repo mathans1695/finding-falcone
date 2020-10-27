@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CheckBox from './CheckBox';
+import MissionPlan from './MissionPlan';
 
 class Falcone extends Component {
 	constructor(props) {
@@ -30,11 +30,17 @@ class Falcone extends Component {
 	}
 	
 	result(reqBody) {
-		console.log(reqBody);
-		
 		this.props.getResult(reqBody)
 			.then(json => this.setState({resultJSON: json}))
 			.catch(err => console.log(err))
+	}
+	
+	updatePlanetNames() {
+		
+	}
+	
+	updateVehicleNames() {
+		
 	}
 	
 	render() {
@@ -43,7 +49,7 @@ class Falcone extends Component {
 		return (
 			<div className='Falcone'>
 				{/* Header goes here */}
-				<CheckBox planets={planets} />
+				<MissionPlan planets={planets} vehicles={vehicles} />
 				<button onClick={() => this.handleClick(this.state.reqBody)}>Find Falcone</button>
 				{/* Footer goes here */}
 			</div>
