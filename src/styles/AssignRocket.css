@@ -1,0 +1,17 @@
+.AssignRocket {
+	width: 100%;
+}
+
+.AssignRocket__option {
+	margin: 0 auto;
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+
+.AssignRocket__option > label{
+	padding-left: 10px;
+}
+
+.AssignRocket__option--disable {
+	opacity: 0.3;
+}
