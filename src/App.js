@@ -22,7 +22,12 @@ class App extends Component {
 		planetsRes
 			.then(res => res.json())
 			.then(json => {
-				this.setState({planets : json});
+				const planets = json.map(planet => {
+					planet['id'] = Math.random() * 1000;
+					return planet;
+				})
+				
+				this.setState({planets : planets});
 				return json;
 			})
 			.catch(err => console.log(err))
@@ -30,7 +35,12 @@ class App extends Component {
 		vehiclesRes
 			.then(res => res.json())
 			.then(json => {
-				this.setState({vehicles : json});
+				const vehicles = json.map(vehicle => {
+					vehicle['id'] = Math.random() * 1000;
+					return vehicle;
+				})
+				
+				this.setState({vehicles : vehicles});
 				return json;
 			})
 			.catch(err => console.log(err))
