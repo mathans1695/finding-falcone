@@ -36,6 +36,7 @@ class Falcone extends Component {
 			listOfVehicles[i]['vehicles'] = vehicles.map((vehicle) => {
 				const temp = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
 				temp['showAlways'] = false;
+				temp['isChecked'] = false;
 				return temp;
 			});
 			listOfVehicles[i]['id'] = id;
@@ -225,16 +226,36 @@ class Falcone extends Component {
 							}
 						})
 					}
-				} 
+				} else {
+					if(vehicles.vehicles.every(vehicle => !vehicle['isChecked'])) {
+						if(previousSelected.length > 0) {
+							vehicles.vehicles.forEach(vehicle => {
+								if(previousSelected[0].name === vehicle.name) {
+									vehicle.total_no += 1;
+								} else if(rocket === vehicle.name) {
+									vehicle.total_no -= 1;
+								}
+							});
+						} else {
+							vehicles.vehicles.forEach(vehicle => {
+								if(rocket === vehicle.name) {
+									vehicle.total_no -= 1;
+								}
+							})
+						}
+					}
+				}
 			} else {
 				if(previousSelected.length > 0) {
 					vehicles.vehicles.forEach(vehicle => {
 						if(previousSelected[0].name === vehicle.name) {
 							vehicle.total_no += 1;
 							vehicle['showAlways'] = false;
+							vehicle['isChecked'] = false;
 						} else if(rocket === vehicle.name) {
 							vehicle.total_no -= 1;
 							vehicle['showAlways'] = true;
+							vehicle['isChecked'] = true;
 						}
 					});
 				} else {
@@ -242,6 +263,7 @@ class Falcone extends Component {
 						if(rocket === vehicle.name) {
 							vehicle.total_no -= 1;
 							vehicle['showAlways'] = true;
+							vehicle['isChecked'] = true;
 						}
 					})
 				}
@@ -252,7 +274,7 @@ class Falcone extends Component {
 	render() {
 		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles } = this.state;
 		
-		console.log(listOfVehicles);
+		console.log(this.state.resultJSON);
 		
 		return (
 			<div className='Falcone'>
@@ -270,8 +292,8 @@ class Falcone extends Component {
 				{
 					planet_names.length === 4 
 					&& vehicle_names.length === 4 
-					? <button onClick={() => this.handleClick(this.state.reqBody)}>Find Falcone</button>
-					: <button onClick={() => this.handleClick(this.state.reqBody)} disabled={true}>Find Falcone</button>
+					? <button onClick={() => this.handleClick()}>Find Falcone</button>
+					: <button disabled={true}>Find Falcone</button>
 				}
 				{/* Footer goes here */}
 			</div>
