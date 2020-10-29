@@ -117,7 +117,7 @@ class Falcone extends Component {
 	}
 	
 	render() {
-		const listOfPlanets = this.state.listOfPlanets;
+		const { listOfPlanets, planet_names, vehicle_names } = this.state;
 		const { vehicles } = this.props;
 		
 		console.log(this.state.planet_names);
@@ -132,7 +132,12 @@ class Falcone extends Component {
 						updateListOfPlanets={this.updateListOfPlanets}
 					/>
 				}
-				<button onClick={() => this.handleClick(this.state.reqBody)}>Find Falcone</button>
+				{
+					planet_names.length === 4 
+					&& vehicle_names.length === 4 
+					? <button onClick={() => this.handleClick(this.state.reqBody)}>Find Falcone</button>
+					: <button onClick={() => this.handleClick(this.state.reqBody)} disabled={true}>Find Falcone</button>
+				}
 				{/* Footer goes here */}
 			</div>
 		)
