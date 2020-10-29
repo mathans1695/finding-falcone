@@ -34,7 +34,9 @@ class Falcone extends Component {
 			
 			listOfVehicles[i] = {};
 			listOfVehicles[i]['vehicles'] = vehicles.map((vehicle) => {
-				return Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
+				const temp = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
+				temp['showAlways'] = false;
+				return temp;
 			});
 			listOfVehicles[i]['id'] = id;
 			listOfVehicles[i]['isRendered'] = false;
@@ -229,14 +231,17 @@ class Falcone extends Component {
 					vehicles.vehicles.forEach(vehicle => {
 						if(previousSelected[0].name === vehicle.name) {
 							vehicle.total_no += 1;
+							vehicle['showAlways'] = false;
 						} else if(rocket === vehicle.name) {
 							vehicle.total_no -= 1;
+							vehicle['showAlways'] = true;
 						}
 					});
 				} else {
 					vehicles.vehicles.forEach(vehicle => {
 						if(rocket === vehicle.name) {
 							vehicle.total_no -= 1;
+							vehicle['showAlways'] = true;
 						}
 					})
 				}

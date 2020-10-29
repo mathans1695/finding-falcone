@@ -31,7 +31,23 @@ class AssignRocket extends Component {
 			const { name, total_no, speed } = vehicle;
 			let display = '';
 			let key = uuid();
-			if (!vehicle.total_no > 0 || !vehicle.isPossible) {
+			if(vehicle.showAlways) {
+				display = (
+					<div className='AssignRocket__option' key={key} >
+						<input 
+							type='radio' 
+							value={name} 
+							id={key} 
+							checked={this.state.selectedOption === name}
+							onChange={this.handleOnValueChange}
+							data-total_no={total_no}
+							data-speed={speed}
+							data-id={vehicles.id}
+						/>
+						<label htmlFor={key}>{name} ({total_no})</label>
+					</div>
+				)
+			} else if (!vehicle.total_no > 0 || !vehicle.isPossible) {
 				display = (
 					<div  
 						className='AssignRocket__option AssignRocket__option--disable'
