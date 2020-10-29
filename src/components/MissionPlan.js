@@ -15,8 +15,8 @@ class MissionPlan extends Component {
 		this.props.updateListOfVehicles(id, planetDistance);
 	}
 	
-	handleVehicleUpdation(id, rocket, speed, total_no) {
-		this.props.updateVehicle(id, rocket, speed, total_no);
+	handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance) {
+		this.props.updateVehicle(id, rocket, speed, totalNumber, planetDistance);
 	}
 	
 	render() {
@@ -53,7 +53,7 @@ class MissionPlan extends Component {
 				<div className='MissionPlan-destination'>
 					<ChoosePlanet 
 						planets={listOfPlanets[2]} 
-						handleVehicleUpdation={this.handleVehicleUpdation}
+						updatePlanet={this.updatePlanet}
 					/>
 					{
 						listOfVehicles[2].isRendered &&

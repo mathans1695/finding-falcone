@@ -15,23 +15,23 @@ class AssignRocket extends Component {
 		const target = e.target,
 			  rocket = target.value,
 			  speed = target.getAttribute('data-speed'),
-			  total_no = target.getAttribute('data-total_no'),
+			  totalNumber = target.getAttribute('data-total_no'),
+			  planetDistance = this.props.vehicles.planetDistance,
 			  id = target.getAttribute('data-id');
 		
-		this.props.handleVehicleUpdation(id, rocket, speed, total_no);
+		this.props.handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance);
 		
 		this.setState({selectedOption: e.target.value});
 	}
 	
 	render() {
 		const vehicles = this.props.vehicles;
-		console.log(vehicles);
 		
 		const options = vehicles.vehicles.map((vehicle) => {
 			const { name, total_no, speed } = vehicle;
 			let display = '';
 			let key = uuid();
-			if (!vehicle.total_no > 0 && !vehicle.isPossible) {
+			if (!vehicle.total_no > 0 || !vehicle.isPossible) {
 				display = (
 					<div  
 						className='AssignRocket__option AssignRocket__option--disable'

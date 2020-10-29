@@ -33,9 +33,12 @@ class Falcone extends Component {
 			listOfPlanets[i]['previousSelected'] = [];
 			
 			listOfVehicles[i] = {};
-			listOfVehicles[i]['vehicles'] = vehicles;
+			listOfVehicles[i]['vehicles'] = vehicles.map((vehicle) => {
+				return Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
+			});
 			listOfVehicles[i]['id'] = id;
 			listOfVehicles[i]['isRendered'] = false;
+			listOfVehicles[i]['previousSelected'] = [];
 		}
 		
 		this.setState({
@@ -134,6 +137,7 @@ class Falcone extends Component {
 		
 		listOfVehicles.forEach((vehiclesObj) => {
 			if(id === vehiclesObj.id) {
+				vehiclesObj['planetDistance'] = planetDistance;
 				if(!vehiclesObj.isRendered) {
 					vehiclesObj.isRendered = true;
 				}
@@ -151,12 +155,99 @@ class Falcone extends Component {
 		this.setState({listOfVehicles: listOfVehicles});
 	}
 	
-	updateVehicle(id, rocket, speed, total_no) {
-		console.log(id, rocket, speed, total_no);
+	updateVehicle(id, rocket, speed, totalNumber, planetDistance) {
+		const { listOfVehicles, vehicle_names } = this.state;
+		
+		let previousSelected = [];
+		
+		listOfVehicles.forEach(vehicles => {
+			if(id === vehicles.id) {
+				if(vehicles.previousSelected.length > 0) {
+					previousSelected.push(vehicles.previousSelected[0]);
+					
+					// Updating planet_names state
+					const removeIndex = vehicle_names.findIndex(name => {
+						return name === vehicles.previousSelected[0].name;
+					});
+					
+					const selectedVehicles = Array.from(vehicle_names);
+					selectedVehicles.splice(removeIndex, 1, rocket);
+					
+					this.setState({vehicle_names: selectedVehicles});
+					
+					
+					// Updating previousSelected property of vehicles having this id
+					vehicles.previousSelected = [];
+					
+					let temp;
+					vehicles.vehicles.forEach(vehicle => {
+						if(vehicle.name === rocket) {
+							temp = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
+						}
+					})
+					vehicles.previousSelected.push(temp);
+				} else {
+					
+					// Setting the previousSelected property of vehicles having this id
+					let temp;
+					vehicles.vehicles.forEach(vehicle => {
+						if(vehicle.name === rocket) {
+							temp = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
+						}
+					})
+					vehicles.previousSelected.push(temp);
+					
+					// updating vehicle_names state with rocket
+					const selectedVehicles = Array.from(vehicle_names);
+					selectedVehicles.push(rocket);
+					this.setState({vehicle_names: selectedVehicles});
+				}
+			}
+		});
+		
+		listOfVehicles.forEach(vehicles => {
+			if(id !== vehicles.id) {
+				if(!vehicles.isRendered) {
+					if(previousSelected.length > 0) {
+						vehicles.vehicles.forEach(vehicle => {
+							if(previousSelected[0].name === vehicle.name) {
+								vehicle.total_no += 1;
+							} else if(rocket === vehicle.name) {
+								vehicle.total_no -= 1;
+							}
+						});
+					} else {
+						vehicles.vehicles.forEach(vehicle => {
+							if(rocket === vehicle.name) {
+								vehicle.total_no -= 1;
+							}
+						})
+					}
+				} 
+			} else {
+				if(previousSelected.length > 0) {
+					vehicles.vehicles.forEach(vehicle => {
+						if(previousSelected[0].name === vehicle.name) {
+							vehicle.total_no += 1;
+						} else if(rocket === vehicle.name) {
+							vehicle.total_no -= 1;
+						}
+					});
+				} else {
+					vehicles.vehicles.forEach(vehicle => {
+						if(rocket === vehicle.name) {
+							vehicle.total_no -= 1;
+						}
+					})
+				}
+			}
+		});
 	}
 	
 	render() {
 		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles } = this.state;
+		
+		console.log(listOfVehicles);
 		
 		return (
 			<div className='Falcone'>
@@ -168,7 +259,7 @@ class Falcone extends Component {
 						listOfVehicles={listOfVehicles}
 						updateListOfPlanets={this.updateListOfPlanets}
 						updateListOfVehicles={this.updateListOfVehicles}
-						updateVehicle = {this.updateVehicle}
+						updateVehicle={this.updateVehicle}
 					/>
 				}
 				{
