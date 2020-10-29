@@ -1,29 +1,71 @@
 import React, { Component } from 'react';
+import { uuid } from '../helpers';
 import '../styles/AssignRocket.css';
 
 class AssignRocket extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedOption: ''
+		}
+		this.handleOnValueChange = this.handleOnValueChange.bind(this);
+	}
+	
+	handleOnValueChange(e) {
+		const target = e.target,
+			  rocket = target.value,
+			  speed = target.getAttribute('data-speed'),
+			  total_no = target.getAttribute('data-total_no'),
+			  id = target.getAttribute('data-id');
+		
+		this.props.handleVehicleUpdation(id, rocket, speed, total_no);
+		
+		this.setState({selectedOption: e.target.value});
+	}
+	
 	render() {
 		const vehicles = this.props.vehicles;
 		console.log(vehicles);
 		
-		const options = vehicles.map((vehicle) => {	
-			const { name, total_no } = vehicle;
+		const options = vehicles.vehicles.map((vehicle) => {
+			const { name, total_no, speed } = vehicle;
 			let display = '';
-			if (!vehicle.total_no) {
+			let key = uuid();
+			if (!vehicle.total_no > 0 && !vehicle.isPossible) {
 				display = (
 					<div  
 						className='AssignRocket__option AssignRocket__option--disable'
+						key={key}
 					>
-						<input type='radio' value={name} id={name} disabled={true} />
-						<label htmlFor={name}>{name} ({total_no})</label>
+						<input 
+							type='radio'
+							value={name} 
+							id={key} 
+							disabled={true}
+							checked={this.state.selectedOption === name}
+							onChange={this.handleOnValueChange}
+							data-total_no={total_no}
+							data-speed={speed}
+							data-id={vehicles.id}
+						/>
+						<label htmlFor={key}>{name} ({total_no})</label>
 					</div>
 				)
 			}
 			else
 				display = (
-					<div className='AssignRocket__option'>
-						<input type='radio' value={name} id={name} key={name} />
-						<label htmlFor={name}>{name} ({total_no})</label>
+					<div className='AssignRocket__option' key={key} >
+						<input 
+							type='radio' 
+							value={name} 
+							id={key} 
+							checked={this.state.selectedOption === name}
+							onChange={this.handleOnValueChange}
+							data-total_no={total_no}
+							data-speed={speed}
+							data-id={vehicles.id}
+						/>
+						<label htmlFor={key}>{name} ({total_no})</label>
 					</div>
 				)
 			return display;

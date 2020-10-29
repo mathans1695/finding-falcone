@@ -7,27 +7,41 @@ class Falcone extends Component {
 		super(props);
 		this.state = {
 			resultJSON: '',
+			vehicles: Array.from(this.props.vehicles),
 			listOfPlanets: [],
+			listOfVehicles: [],
 			planet_names: [],
 			vehicle_names: []
 		}
 		
 		this.handleClick = this.handleClick.bind(this);
 		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
+		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
+		this.updateVehicle = this.updateVehicle.bind(this);
 	}
 	
 	componentDidMount() {
-		const listOfPlanets = this.state.listOfPlanets;
+		const listOfPlanets = [];
+		const listOfVehicles = [];
 		const { planets, vehicles } = this.props;
 		
 		for(let i=0; i<4; i++) {
+			const id = uuid();
 			listOfPlanets[i] = {};
 			listOfPlanets[i]['planets'] = planets;
-			listOfPlanets[i]['id'] = uuid();
+			listOfPlanets[i]['id'] = id;
 			listOfPlanets[i]['previousSelected'] = [];
+			
+			listOfVehicles[i] = {};
+			listOfVehicles[i]['vehicles'] = vehicles;
+			listOfVehicles[i]['id'] = id;
+			listOfVehicles[i]['isRendered'] = false;
 		}
 		
-		this.setState({listOfPlanets: listOfPlanets});
+		this.setState({
+			listOfPlanets: listOfPlanets,
+			listOfVehicles: listOfVehicles
+		});
 	}
 	
 	handleClick() {
@@ -97,7 +111,7 @@ class Falcone extends Component {
 			}
 		});
 		
-		listOfPlanets.map(planets => {
+		listOfPlanets.forEach(planets => {
 			if(id !== planets.id) {
 				if(previousSelected.length > 0) {
 					planets.planets.push(previousSelected[0]);
@@ -110,26 +124,51 @@ class Falcone extends Component {
 				}
 				planets.planets = temp;
 			}
-			return planets;
 		});
 		
 		this.setState({listOfPlanets: listOfPlanets});
 	}
 	
-	render() {
-		const { listOfPlanets, planet_names, vehicle_names } = this.state;
-		const { vehicles } = this.props;
+	updateListOfVehicles(id, planetDistance) {
+		const { listOfVehicles } = this.state;
 		
-		console.log(this.state.planet_names);
+		listOfVehicles.forEach((vehiclesObj) => {
+			if(id === vehiclesObj.id) {
+				if(!vehiclesObj.isRendered) {
+					vehiclesObj.isRendered = true;
+				}
+				
+				vehiclesObj.vehicles.forEach((vehicle) => {
+					if(vehicle.max_distance >= planetDistance || vehicle.total_no === 0) {
+						vehicle['isPossible'] = true;
+					} else {
+						vehicle['isPossible'] = false;
+					}
+				});
+			}
+		});
+		
+		this.setState({listOfVehicles: listOfVehicles});
+	}
+	
+	updateVehicle(id, rocket, speed, total_no) {
+		console.log(id, rocket, speed, total_no);
+	}
+	
+	render() {
+		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles } = this.state;
 		
 		return (
 			<div className='Falcone'>
 				{/* Header goes here */}
 				{listOfPlanets.length &&
+				 listOfVehicles.length &&
 					<MissionPlan 
 						listOfPlanets={listOfPlanets} 
-						vehicles={vehicles} 
+						listOfVehicles={listOfVehicles}
 						updateListOfPlanets={this.updateListOfPlanets}
+						updateListOfVehicles={this.updateListOfVehicles}
+						updateVehicle = {this.updateVehicle}
 					/>
 				}
 				{

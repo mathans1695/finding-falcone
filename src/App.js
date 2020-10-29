@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { uuid } from './helpers';
 import Falcone from './components/Falcone';
 import './App.css';
 
