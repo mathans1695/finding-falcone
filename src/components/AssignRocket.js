@@ -11,8 +11,7 @@ class AssignRocket extends Component {
 			let display = '';
 			if (!vehicle.total_no) {
 				display = (
-					<div 
-						key={Math.random()*1000} 
+					<div  
 						className='AssignRocket__option AssignRocket__option--disable'
 					>
 						<input type='radio' value={name} id={name} disabled={true} />
@@ -22,8 +21,8 @@ class AssignRocket extends Component {
 			}
 			else
 				display = (
-					<div key={name} className='AssignRocket__option'>
-						<input type='radio' value={name} id={name} />
+					<div className='AssignRocket__option'>
+						<input type='radio' value={name} id={name} key={name} />
 						<label htmlFor={name}>{name} ({total_no})</label>
 					</div>
 				)
