@@ -7,7 +7,9 @@ class Falcone extends Component {
 		super(props);
 		this.state = {
 			resultJSON: '',
-			listOfPlanets: []
+			listOfPlanets: [],
+			planet_names: [],
+			vehicle_names: []
 		}
 		
 		this.handleClick = this.handleClick.bind(this);
@@ -30,7 +32,7 @@ class Falcone extends Component {
 	
 	handleClick() {
 		const { getToken } = this.props,
-			  { planet_names, vehicle_names } = this.props,
+			  { planet_names, vehicle_names } = this.state,
 			  reqBody = Object.create(null);	
 		
 		reqBody['planet_names'] = planet_names;
@@ -51,13 +53,28 @@ class Falcone extends Component {
 	}
 	
 	updateListOfPlanets(id, removePlanet, planetDistance) {
-		const listOfPlanets = this.state.listOfPlanets;
+		const { planet_names, listOfPlanets } = this.state;
+		
+		// updating other destination
 		let previousSelected = [];
 		
 		listOfPlanets.forEach(planets => {
 			if(id === planets.id) {
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
+					
+					// Updating planet_names state
+					const removeIndex = planet_names.findIndex(name => {
+						return name === planets.previousSelected[0].name;
+					});
+					
+					const selectedPlanets = Array.from(planet_names);
+					selectedPlanets.splice(removeIndex, 1, removePlanet);
+					
+					this.setState({planet_names: selectedPlanets});
+					
+					
+					// Updating previousSelected properyt of planets having this id
 					planets.previousSelected = [];
 					
 					const temp = {};
@@ -65,16 +82,21 @@ class Falcone extends Component {
 					temp['distance'] = planetDistance;
 					planets.previousSelected.push(temp);
 				} else {
+					
+					// Setting the previousSelected property of planets having this id
 					const temp = {};
 					temp['name'] = removePlanet;
 					temp['distance'] = planetDistance;
 					planets.previousSelected.push(temp);
+					
+					// updating planet_names state with removePlanet
+					const selectedPlanets = Array.from(planet_names);
+					selectedPlanets.push(removePlanet);
+					this.setState({planet_names: selectedPlanets});
 				}
 			}
 		});
 		
-		console.log(listOfPlanets[0].planets);
-		console.log(previousSelected);
 		listOfPlanets.map(planets => {
 			if(id !== planets.id) {
 				if(previousSelected.length > 0) {
@@ -90,22 +112,15 @@ class Falcone extends Component {
 			}
 			return planets;
 		});
-		console.log(listOfPlanets);
 		
 		this.setState({listOfPlanets: listOfPlanets});
-	}
-	
-	updatePlanetNames() {
-		
-	}
-	
-	updateVehicleNames() {
-		
 	}
 	
 	render() {
 		const listOfPlanets = this.state.listOfPlanets;
 		const { vehicles } = this.props;
+		
+		console.log(this.state.planet_names);
 		
 		return (
 			<div className='Falcone'>
