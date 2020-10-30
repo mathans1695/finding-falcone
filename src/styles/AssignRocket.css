@@ -1,9 +1,10 @@
 .AssignRocket {
 	width: 100%;
+	padding-left: 5px;
+	border-left: 5px solid black;
 }
 
 .AssignRocket__option {
-	margin: 0 auto;
 	font-size: 20px;
 	margin-bottom: 5px;
 }
