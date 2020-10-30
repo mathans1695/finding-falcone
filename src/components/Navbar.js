@@ -12,8 +12,8 @@ class Navbar extends Component {
 					<span className='Navbar__reset'>
 						Reset
 					</span>
-					<span className='Navbar__results'>
-						Results
+					<span className='Navbar__geekhome'>
+						Geek Trust Home
 					</span>
 				</div>
 			</div>

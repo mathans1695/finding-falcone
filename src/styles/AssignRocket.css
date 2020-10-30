@@ -6,13 +6,26 @@
 	border-radius: 10px;
 }
 
+.AssignRocket:hover {
+	background-image: linear-gradient(180deg, rgba(255,250,240), white);
+}
+
 .AssignRocket__option {
 	font-size: 20px;
 	margin-bottom: 5px;
 }
 
-.AssignRocket__option > label{
+.AssignRocket__option:hover {
+	color: green;
+	transition: color 0.5s;
+}
+
+.AssignRocket__option > label {
 	padding-left: 10px;
+}
+
+.AssignRocket__option > label:hover {
+	cursor: pointer;
 }
 
 .AssignRocket__option--disable {

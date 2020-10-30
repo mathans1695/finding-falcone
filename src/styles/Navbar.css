@@ -26,7 +26,7 @@
 }
 
 .Navbar__reset, 
-.Navbar__results {
+.Navbar__geekhome {
 	display: inline-block;
 	margin-left: 20px;
 	padding: 10px;
@@ -35,8 +35,11 @@
 	background-color: white;
 }
 
-.Navbar__results {
-	
+.Navbar__reset:hover,
+.Navbar__geekhome:hover {
+	cursor: pointer;
+	border-left: 0;
+	border-right: 5px solid grey;
 }
 
 @media screen and (min-width: 1650px) and (max-width: 1700px) { 

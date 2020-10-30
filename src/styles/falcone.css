@@ -12,7 +12,15 @@
 	font-size: 20px;
 	font-weight: bold;
 	border-radius: 10px;
-	transition: all 1s;
+	border: 0;
+	box-shadow: 5px 5px 5px black;
+	transition: box-shadow 0.5s;
+}
+
+.Falcone-button:hover {
+	cursor: pointer;
+	box-shadow: -5px -5px 5px black;
+	transition: box-shadow 0.5;
 }
 
 .Falcone__main {
