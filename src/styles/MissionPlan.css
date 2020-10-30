@@ -3,6 +3,7 @@
 	position: relative;
 	justify-content: center;
 	padding: 30px 55px 30px 0;
+	min-height: 300px;
 }
 
 .MissionPlan-destinations {
@@ -13,6 +14,7 @@
 
 .MissionPlan-destination {
 	margin-left: 50px;
+	margin-top: 20px;
 	border-radius: 5px;
 }
 
@@ -29,6 +31,5 @@
 	margin-bottom: 10px;
 	padding-left: 10px;
 	font-size: 20px;
-	text-shadow: 1px 1px 1.5px black, -1px -1px 1.5px black;
-	color: white;
+	color: black;
 }
