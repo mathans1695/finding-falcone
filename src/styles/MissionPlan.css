@@ -2,8 +2,11 @@
 	display: flex;
 	position: relative;
 	justify-content: center;
-	padding: 30px 55px 30px 0;
+	padding: 0 55px 30px 0;
 	min-height: 300px;
+	border-left: 10px solid grey;
+	border-radius: 20px;
+	background-color: white;
 }
 
 .MissionPlan-destinations {
@@ -23,7 +26,6 @@
 	bottom: 0;
 	left: 50%;
 	font-size: 20px;
-	font-weight: bold;
 	transform: translate(-50%, 0);
 }
 
@@ -32,4 +34,5 @@
 	padding-left: 10px;
 	font-size: 20px;
 	color: black;
+	font-weight: normal;
 }

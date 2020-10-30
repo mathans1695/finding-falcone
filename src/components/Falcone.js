@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
 import MissionPlan from './MissionPlan';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 class Falcone extends Component {
 	constructor(props) {
@@ -293,7 +295,7 @@ class Falcone extends Component {
 		
 		return (
 			<div className='Falcone'>
-				{/* Header goes here */}
+				<Navbar />
 				{listOfPlanets.length &&
 				 listOfVehicles.length &&
 					<MissionPlan 
@@ -321,7 +323,7 @@ class Falcone extends Component {
 						Find Falcone
 					  </button>
 				}
-				{/* Footer goes here */}
+				<Footer />
 			</div>
 		)
 	}

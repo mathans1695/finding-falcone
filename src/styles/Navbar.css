@@ -1,0 +1,99 @@
+.Navbar {
+	display: flex;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.Navbar__logo {
+	flex-basis: 80%;
+	min-height: 80px;
+	position: relative;
+}
+
+.Navbar__title {
+	position: absolute;
+	left: 50vw;
+	transform: translate(-50%, 0);
+	font-size: 4rem;
+}
+
+.Navbar__menu {
+	display: flex;
+	flex-basis: 20%;
+	justify-content: flex-end;
+	align-items: flex-start;
+	padding-right: 20px;
+}
+
+.Navbar__reset, 
+.Navbar__results {
+	display: inline-block;
+	padding: 10px;
+	border-radius: 10px;
+	border-left: 5px solid grey;
+	background-color: white;
+}
+
+.Navbar__results {
+	
+}
+
+@media screen and (min-width: 1650px) and (max-width: 1700px) { 
+  .Navbar__title { 
+    font-size: 4rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 70px;
+  }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1650px) { 
+  .Navbar__title { 
+    font-size: 3rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 60px;
+  }
+} 
+
+@media screen and (min-width: 1300px) and (max-width: 1400px) { 
+  .Navbar__title { 
+    font-size: 2.7rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 60px;
+  }
+} 
+
+@media screen and (min-width: 1100px) and (max-width: 1300px) { 
+  .Navbar__title { 
+    font-size: 2.3rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 50px;
+  }
+} 
+
+@media screen and (min-width: 900px) and (max-width: 1100px) { 
+  .Navbar__title { 
+    font-size: 2rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 40px;
+  }
+}
+
+@media screen and (max-width: 900px) { 
+  .Navbar__title { 
+    font-size: 1.5rem;
+  } 
+  
+  .Navbar__logo {
+	  min-height: 30px;
+  }
+}
