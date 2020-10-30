@@ -1,10 +1,31 @@
 .MissionPlan {
 	display: flex;
+	position: relative;
+	width: 100%;
+	justify-content: center;
+}
+
+.MissionPlan-destinations {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .MissionPlan-destination {
 	padding: 30px;
-	margin: 10px;
-	box-shadow: 0px 0px 4px -2px black;
+	margin-left: 10px;
+	margin-top: 10px;
 	border-radius: 5px;
+}
+
+.MissionPlan-time {
+	position: absolute;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.MissionPlan-title {
+	margin-bottom: 10px;
+	padding-left: 5px;
+	font-size: 20px;
 }

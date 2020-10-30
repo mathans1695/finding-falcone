@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { uuid } from '../helpers';
+import '../styles/falcone.css';
 import MissionPlan from './MissionPlan';
 
 class Falcone extends Component {
@@ -162,6 +163,8 @@ class Falcone extends Component {
 	updateVehicle(id, rocket, speed, totalNumber, planetDistance) {
 		const { listOfVehicles, vehicle_names, time } = this.state;
 		
+		console.log(speed, planetDistance);
+		
 		let previousSelected = [];
 		
 		listOfVehicles.forEach(vehicles => {
@@ -305,8 +308,18 @@ class Falcone extends Component {
 				{
 					planet_names.length === 4 
 					&& vehicle_names.length === 4 
-					? <button onClick={() => this.handleClick()}>Find Falcone</button>
-					: <button disabled={true}>Find Falcone</button>
+					? <button 
+						onClick={() => this.handleClick()} 
+						className='Falcone-button'
+					  >
+						Find Falcone
+					  </button>
+					: <button 
+						disabled={true} 
+						className='Falcone-button'
+					  >
+						Find Falcone
+					  </button>
 				}
 				{/* Footer goes here */}
 			</div>

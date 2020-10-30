@@ -18,4 +18,5 @@
 
 .ChoosePlanet__Select:hover {
 	cursor: pointer;
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), white);
 }
