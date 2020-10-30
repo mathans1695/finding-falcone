@@ -1,18 +1,19 @@
 .MissionPlan {
-	display: flex;
 	position: relative;
-	justify-content: center;
-	padding: 0 55px 30px 0;
-	min-height: 300px;
+	padding: 30px 55px 80px 0;
+	min-height: 430px;
+	min-width: 70%;
 	border-left: 10px solid grey;
 	border-radius: 20px;
 	background-color: white;
+	margin-bottom: 30px;
 }
 
 .MissionPlan-destinations {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+	margin-top: 10px;
 }
 
 .MissionPlan-destination {
@@ -25,7 +26,7 @@
 	position: absolute;
 	bottom: 0;
 	left: 50%;
-	font-size: 20px;
+	font-size: 2rem;
 	transform: translate(-50%, 0);
 }
 
@@ -35,4 +36,9 @@
 	font-size: 20px;
 	color: black;
 	font-weight: normal;
+}
+
+.MissionPlan__instructions {
+	margin-left: 30px;
+	font-size: 2rem;
 }

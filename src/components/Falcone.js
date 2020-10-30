@@ -296,33 +296,35 @@ class Falcone extends Component {
 		return (
 			<div className='Falcone'>
 				<Navbar />
-				{listOfPlanets.length &&
-				 listOfVehicles.length &&
-					<MissionPlan 
-						listOfPlanets={listOfPlanets} 
-						listOfVehicles={listOfVehicles}
-						updateListOfPlanets={this.updateListOfPlanets}
-						updateListOfVehicles={this.updateListOfVehicles}
-						updateVehicle={this.updateVehicle}
-						time={time}
-					/>
-				}
-				{
-					planet_names.length === 4 
-					&& vehicle_names.length === 4 
-					? <button 
-						onClick={() => this.handleClick()} 
-						className='Falcone-button'
-					  >
-						Find Falcone
-					  </button>
-					: <button 
-						disabled={true} 
-						className='Falcone-button'
-					  >
-						Find Falcone
-					  </button>
-				}
+				<main className='Falcone__main'>
+					{listOfPlanets.length &&
+					 listOfVehicles.length &&
+						<MissionPlan 
+							listOfPlanets={listOfPlanets} 
+							listOfVehicles={listOfVehicles}
+							updateListOfPlanets={this.updateListOfPlanets}
+							updateListOfVehicles={this.updateListOfVehicles}
+							updateVehicle={this.updateVehicle}
+							time={time}
+						/>
+					}
+					{
+						planet_names.length === 4 
+						&& vehicle_names.length === 4 
+						? <button 
+							onClick={() => this.handleClick()} 
+							className='Falcone-button'
+						>
+							Find Falcone
+						</button>
+						: <button 
+							disabled={true} 
+							className='Falcone-button'
+						>
+							Find Falcone
+						</button>
+					}
+				</main>
 				<Footer />
 			</div>
 		)

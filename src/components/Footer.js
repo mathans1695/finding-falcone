@@ -4,7 +4,8 @@ import '../styles/Footer.css';
 class Footer extends Component {
 	render() {
 		return (
-			<div className='Navbar'>
+			<div className='Footer'>
+				Coding problem -&nbsp;<a href='http://www.geektrust.in/finding-falcone' target='_blank'>www.geektrust.in/finding-falcone</a>
 			</div>
 		)
 	}

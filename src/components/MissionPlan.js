@@ -24,6 +24,7 @@ class MissionPlan extends Component {
 		
 		return (
 			<div className='MissionPlan'>
+				<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
 				<div className='MissionPlan-destinations'>
 					<div className='MissionPlan-destination'>
 						<h3 className='MissionPlan-title'>Destination-1</h3>

@@ -6,7 +6,7 @@
 
 .Navbar__logo {
 	flex-basis: 80%;
-	min-height: 80px;
+	min-height: 100px;
 	position: relative;
 }
 
