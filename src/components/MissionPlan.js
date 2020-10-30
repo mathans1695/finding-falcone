@@ -75,6 +75,18 @@ class MissionPlan extends Component {
 						/>
 					}
 				</div>
+				{
+					this.props.time.length 
+					? <div className='MissionPlan-time'>
+							Total Time: {
+								this.props.time.reduce((accumulator, curValue) => accumulator + curValue, 0)
+							}
+					  </div>
+					: <div className='MissionPlan-time'>
+							Total Time: 0
+					  </div>
+				}
+				
 			</div>
 		)
 	}

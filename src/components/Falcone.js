@@ -11,7 +11,8 @@ class Falcone extends Component {
 			listOfPlanets: [],
 			listOfVehicles: [],
 			planet_names: [],
-			vehicle_names: []
+			vehicle_names: [],
+			time: []
 		}
 		
 		this.handleClick = this.handleClick.bind(this);
@@ -159,7 +160,7 @@ class Falcone extends Component {
 	}
 	
 	updateVehicle(id, rocket, speed, totalNumber, planetDistance) {
-		const { listOfVehicles, vehicle_names } = this.state;
+		const { listOfVehicles, vehicle_names, time } = this.state;
 		
 		let previousSelected = [];
 		
@@ -176,7 +177,13 @@ class Falcone extends Component {
 					const selectedVehicles = Array.from(vehicle_names);
 					selectedVehicles.splice(removeIndex, 1, rocket);
 					
-					this.setState({vehicle_names: selectedVehicles});
+					const timeArr = Array.from(time);
+					timeArr.splice(removeIndex, 1, planetDistance/speed);
+					
+					this.setState({
+						vehicle_names: selectedVehicles,
+						time: timeArr
+					});
 					
 					
 					// Updating previousSelected property of vehicles having this id
@@ -203,7 +210,14 @@ class Falcone extends Component {
 					// updating vehicle_names state with rocket
 					const selectedVehicles = Array.from(vehicle_names);
 					selectedVehicles.push(rocket);
-					this.setState({vehicle_names: selectedVehicles});
+					
+					const timeArr = Array.from(time);
+					timeArr.push(planetDistance/speed);
+					
+					this.setState({
+						vehicle_names: selectedVehicles,
+						time: timeArr
+					});
 				}
 			}
 		});
@@ -272,9 +286,7 @@ class Falcone extends Component {
 	}
 	
 	render() {
-		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles } = this.state;
-		
-		console.log(this.state.resultJSON);
+		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles, time } = this.state;
 		
 		return (
 			<div className='Falcone'>
@@ -287,6 +299,7 @@ class Falcone extends Component {
 						updateListOfPlanets={this.updateListOfPlanets}
 						updateListOfVehicles={this.updateListOfVehicles}
 						updateVehicle={this.updateVehicle}
+						time={time}
 					/>
 				}
 				{
