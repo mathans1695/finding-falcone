@@ -22,9 +22,15 @@ class Falcone extends Component {
 		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
 		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
 		this.updateVehicle = this.updateVehicle.bind(this);
+		this.generateLists = this.generateLists.bind(this);
+		this.reset = this.reset.bind(this);
 	}
 	
 	componentDidMount() {
+		this.generateLists();
+	}
+	
+	generateLists() {
 		const listOfPlanets = [];
 		const listOfVehicles = [];
 		const { planets, vehicles } = this.props;
@@ -32,7 +38,10 @@ class Falcone extends Component {
 		for(let i=0; i<4; i++) {
 			const id = uuid();
 			listOfPlanets[i] = {};
-			listOfPlanets[i]['planets'] = planets;
+			listOfPlanets[i]['planets'] = planets.map((planet) => {
+				const temp = Object.create({}, Object.getOwnPropertyDescriptors(planet));
+				return temp;
+			});;
 			listOfPlanets[i]['id'] = id;
 			listOfPlanets[i]['previousSelected'] = [];
 			
@@ -290,12 +299,18 @@ class Falcone extends Component {
 		});
 	}
 	
+	reset() {
+		this.generateLists();
+	}
+	
 	render() {
 		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles, time } = this.state;
 		
+		console.log(listOfPlanets, listOfVehicles);
+		
 		return (
 			<div className='Falcone'>
-				<Navbar />
+				<Navbar reset={this.reset}/>
 				<main className='Falcone__main'>
 					{listOfPlanets.length &&
 					 listOfVehicles.length &&

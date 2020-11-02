@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import '../styles/Navbar.css';
 
 class Navbar extends Component {
+	constructor(props) {
+		super(props);
+		this.handleReset = this.handleReset.bind(this);
+	}
+	
+	handleReset(e) {
+		this.props.reset();
+	}
+	
 	render() {
 		return (
 			<div className='Navbar'>
@@ -9,7 +18,10 @@ class Navbar extends Component {
 					<h1 className='Navbar__title'>Finding Falcone!</h1>
 				</div>
 				<div className='Navbar__menu'>
-					<span className='Navbar__reset'>
+					<span 
+						className='Navbar__reset'
+						onClick={this.handleReset}
+					>
 						Reset
 					</span>
 					<span className='Navbar__geekhome'>
