@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import loading from '../Images/loading.gif';
 import { Link } from 'react-router-dom';
 import '../styles/Result.css';
 import Navbar from './Navbar';
@@ -11,9 +12,9 @@ class Result extends Component {
 		
 		return (
 			<div className='Result'>
-				{resultJSON !== '' &&
+				{resultJSON ?
 				  resultJSON.status === 'success' ?
-					<>
+					  <>
 						<p className='Result__msg'>Success! Congratulations on Finding Falcone. King Shan is mighty pleased.</p>
 						<p className='Result__time'>
 							Time taken: {time.reduce((a, b) => {
@@ -31,7 +32,7 @@ class Result extends Component {
 								Start Again
 							</button>
 						</Link>
-					</>
+					  </>
 					: <>
 						<p className='Result__msg'>Mission Failed!. King Shan is mad at you.</p>
 						<p className='Result__time'>
@@ -48,6 +49,7 @@ class Result extends Component {
 							</button>
 						</Link>
 					  </>
+				  : <img src={loading} alt='laoding' />
 				}
 			</div>
 		)

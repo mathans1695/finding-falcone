@@ -404,14 +404,11 @@ class Falcone extends Component {
 						}
 					</main>
 				</Route>
-				{
-					resultJSON &&
-					<Route 
-						exact 
-						path='/result' 
-						render={() => <Result resultJSON={resultJSON} time={time} reset={this.reset} />}
-					/>
-				}
+				<Route 
+					exact 
+					path='/result' 
+					render={() => <Result resultJSON={resultJSON} time={time} reset={this.reset} />}
+				/>
 				<Footer />
 			</div>
 		)
