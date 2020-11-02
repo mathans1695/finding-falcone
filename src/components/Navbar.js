@@ -24,9 +24,11 @@ class Navbar extends Component {
 					>
 						Reset
 					</span>
-					<span className='Navbar__geekhome'>
-						Geek Trust Home
-					</span>
+					<a href='http://www.geektrust.in/' target='_blank' rel='noreferrer'>
+						<span className='Navbar__geekhome'>
+							Geek Trust Home
+						</span>
+					</a>
 				</div>
 			</div>
 		)
