@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Switch, Route, Link } from 'react-router-dom';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
 import MissionPlan from './MissionPlan';
+import Result from './Result';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
@@ -358,42 +360,58 @@ class Falcone extends Component {
 	}
 	
 	render() {
-		const { listOfPlanets, planet_names, vehicle_names, listOfVehicles, time } = this.state;
-		
-		console.log(planet_names, vehicle_names);
+		const { listOfPlanets, 
+				planet_names, 
+				vehicle_names, 
+				listOfVehicles, 
+				time,
+				resultJSON
+			  } = this.state;
 		
 		return (
 			<div className='Falcone'>
 				<Navbar reset={this.reset}/>
-				<main className='Falcone__main'>
-					{listOfPlanets.length &&
-					 listOfVehicles.length &&
-						<MissionPlan 
-							listOfPlanets={listOfPlanets} 
-							listOfVehicles={listOfVehicles}
-							updateListOfPlanets={this.updateListOfPlanets}
-							updateListOfVehicles={this.updateListOfVehicles}
-							updateVehicle={this.updateVehicle}
-							time={time}
-						/>
-					}
-					{
-						planet_names.length === 4 
-						&& vehicle_names.length === 4 
-						? <button 
-							onClick={() => this.handleClick()} 
-							className='Falcone-button'
-						>
-							Find Falcone
-						</button>
-						: <button 
-							disabled={true} 
-							className='Falcone-button'
-						>
-							Find Falcone
-						</button>
-					}
-				</main>
+				<Route exact path='/'>
+					<main className='Falcone__main'>
+						{listOfPlanets.length &&
+						listOfVehicles.length &&
+							<MissionPlan 
+								listOfPlanets={listOfPlanets} 
+								listOfVehicles={listOfVehicles}
+								updateListOfPlanets={this.updateListOfPlanets}
+								updateListOfVehicles={this.updateListOfVehicles}
+								updateVehicle={this.updateVehicle}
+								time={time}
+							/>
+						}
+						{
+							planet_names.length === 4 
+							&& vehicle_names.length === 4 
+							? <Link to='/result'>
+								<button 
+									onClick={() => this.handleClick()} 
+									className='Falcone-button'
+								>
+									Find Falcone
+								</button>
+							  </Link>
+							: <button 
+								disabled={true} 
+								className='Falcone-button'
+							>
+								Find Falcone
+							</button>
+						}
+					</main>
+				</Route>
+				{
+					resultJSON &&
+					<Route 
+						exact 
+						path='/result' 
+						render={() => <Result resultJSON={resultJSON} time={time} reset={this.reset} />}
+					/>
+				}
 				<Footer />
 			</div>
 		)

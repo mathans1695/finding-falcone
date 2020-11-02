@@ -67,18 +67,18 @@ class App extends Component {
 	}
 	
 	render() {
-		const { planets, vehicles } = this.state;
+		const { planets, vehicles, result } = this.state;
 		
 		return (
 			<div className="App">
 				{ planets 
-				  && vehicles
-				  && <Falcone 
+					&& vehicles
+					&& <Falcone 
 						planets={planets} 
 						vehicles={vehicles} 
 						getToken={this.getToken}
 						getResult={this.getResult}
-					 />
+					/>
 				}
 			</div>
 		);

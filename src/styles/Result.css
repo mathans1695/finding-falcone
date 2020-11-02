@@ -1,0 +1,32 @@
+.Result {
+	height: 544px;
+	padding: 30px 55px 80px 30px;
+	font-size: 2.5rem;
+	margin-bottom: 53px;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.Result__time {
+	margin-top: 50px;
+}
+
+.Result__startAgain {
+	margin: 100px 0 0;
+	padding: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	border-radius: 10px;
+	border: 0;
+	box-shadow: 5px 5px 5px black;
+	transition: box-shadow 0.5s;
+}
+
+.Result__startAgain:hover {
+	cursor: pointer;
+	box-shadow: -5px -5px 5px black;
+	transition: box-shadow 0.5;
+}
