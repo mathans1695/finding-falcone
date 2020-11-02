@@ -38,7 +38,7 @@ class AssignRocket extends Component {
 							type='radio' 
 							value={name} 
 							id={key} 
-							checked={this.state.selectedOption === name}
+							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
 							data-total_no={total_no}
 							data-speed={speed}
@@ -58,7 +58,7 @@ class AssignRocket extends Component {
 							value={name} 
 							id={key} 
 							disabled={true}
-							checked={this.state.selectedOption === name}
+							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
 							data-total_no={total_no}
 							data-speed={speed}
@@ -75,7 +75,7 @@ class AssignRocket extends Component {
 							type='radio' 
 							value={name} 
 							id={key} 
-							checked={this.state.selectedOption === name}
+							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
 							data-total_no={total_no}
 							data-speed={speed}

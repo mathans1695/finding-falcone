@@ -4,9 +4,6 @@ import '../styles/ChoosePlanet.css';
 class ChoosePlanet extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			
-		}
 		this.handleChange = this.handleChange.bind(this);
 	}
 	
@@ -15,7 +12,7 @@ class ChoosePlanet extends Component {
 		let distance;
 		for (let i=0; i<e.target.options.length; i++) {
 			if(e.target.options[i].selected === true) {
-				distance = +e.target.options[i].getAttribute('data-distance');;
+				distance = +e.target.options[i].getAttribute('data-distance');
 			}
 		}
 		
@@ -40,13 +37,12 @@ class ChoosePlanet extends Component {
 			<div className='ChoosePlanet' id={id}>
 				<select
 					className='ChoosePlanet__Select'
-					defaultValue='Choose Planet'
+					value={this.props.planets.curPlanet}
 					onChange={this.handleChange}
 				>
 					<option 
 						value='Choose Planet' 
 						className='ChoosePlanet__Option'
-						disabled={true}
 						hidden={true}
 					>Choose Planet
 					</option>
