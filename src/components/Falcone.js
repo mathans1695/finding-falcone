@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
+import Error from './Error';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
 import MissionPlan from './MissionPlan';
@@ -22,7 +23,8 @@ class Falcone extends Component {
 			listOfVehicles: [],
 			planet_names: [],
 			vehicle_names: [],
-			time: []
+			time: [],
+			showError: false
 		}
 		
 		this.handleClick = this.handleClick.bind(this);
@@ -334,6 +336,12 @@ class Falcone extends Component {
 					}
 				}
 			});
+		} else {
+			this.setState({showError: true}, () => {
+				setTimeout(() => {
+					this.setState({showError: false})
+				}, 2000);
+			});
 		}
 		
 		this.setState({
@@ -365,7 +373,8 @@ class Falcone extends Component {
 				vehicle_names, 
 				listOfVehicles, 
 				time,
-				resultJSON
+				resultJSON,
+				showError
 			  } = this.state;
 		
 		return (
@@ -410,6 +419,10 @@ class Falcone extends Component {
 					render={() => <Result resultJSON={resultJSON} time={time} reset={this.reset} />}
 				/>
 				<Footer />
+				{
+					showError &&
+					<Error />
+				}
 			</div>
 		)
 	}
