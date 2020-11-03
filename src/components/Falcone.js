@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import Error from './Error';
+import Message from './Message';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
 import MissionPlan from './MissionPlan';
@@ -24,7 +24,7 @@ class Falcone extends Component {
 			planet_names: [],
 			vehicle_names: [],
 			time: [],
-			showError: false
+			showMessage: ''
 		}
 		
 		this.handleClick = this.handleClick.bind(this);
@@ -337,9 +337,9 @@ class Falcone extends Component {
 				}
 			});
 		} else {
-			this.setState({showError: true}, () => {
+			this.setState({showMessage: 'Selected rocket is not available'}, () => {
 				setTimeout(() => {
-					this.setState({showError: false})
+					this.setState({showMessage: ''})
 				}, 2000);
 			});
 		}
@@ -374,7 +374,7 @@ class Falcone extends Component {
 				listOfVehicles, 
 				time,
 				resultJSON,
-				showError
+				showMessage
 			  } = this.state;
 		
 		return (
@@ -420,8 +420,8 @@ class Falcone extends Component {
 				/>
 				<Footer />
 				{
-					showError &&
-					<Error />
+					showMessage &&
+					<Message msg={showMessage} />
 				}
 			</div>
 		)
