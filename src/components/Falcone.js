@@ -365,6 +365,12 @@ class Falcone extends Component {
 			time: [],
 			resultJSON: ''
 		})
+		
+		this.setState({showMessage: 'Reset successful'}, () => {
+				setTimeout(() => {
+					this.setState({showMessage: ''})
+				}, 2000);
+			});
 	}
 	
 	render() {
