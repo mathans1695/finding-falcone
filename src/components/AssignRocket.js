@@ -15,7 +15,7 @@ class AssignRocket extends Component {
 			  planetDistance = this.props.vehicles.planetDistance,
 			  id = target.getAttribute('data-id');
 		
-		// invokes vehicleupdation method in falcone component
+		// invokes handleVehicleUpdation method in MissionPlan component
 		this.props.handleVehicleUpdation(id, rocket, speed, planetDistance);
 	}
 	

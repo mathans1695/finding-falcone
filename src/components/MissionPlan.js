@@ -13,6 +13,7 @@ class MissionPlan extends Component {
 	updatePlanet(id, removePlanet, planetDistance) {
 		const props = this.props;
 		
+		// invokes updateListOfVehicle and updateListOfPlanets in falcone component
 		props.updateListOfPlanets(id, removePlanet, planetDistance);
 		props.updateListOfVehicles(id, planetDistance);
 	}
@@ -20,6 +21,7 @@ class MissionPlan extends Component {
 	handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance) {
 		const props = this.props;
 		
+		// invokes updateVehicle in falcone component
 		props.updateVehicle(id, rocket, speed, totalNumber, planetDistance);
 	}
 	

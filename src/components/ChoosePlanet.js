@@ -17,6 +17,8 @@ class ChoosePlanet extends Component {
 		}
 		
 		const value = e.target.value;
+		
+		// invokes updatePlanet in MissionPlan component
 		this.props.updatePlanet(id, value, distance);
 	}
 	
