@@ -198,6 +198,7 @@ class Falcone extends Component {
 		
 		// vehi will keep track of all changes
 		// vehi act as reference for changes in vehicles in each destinations
+		
 		// checks current stock
 		vehi.forEach(vehicle => {
 			if(vehicle.name === rocket) {
@@ -391,7 +392,7 @@ class Falcone extends Component {
 				<Route exact path='/'>
 					<main className='Falcone__main'>
 						{listOfPlanets.length &&
-						listOfVehicles.length &&
+						 listOfVehicles.length &&
 							<MissionPlan 
 								listOfPlanets={listOfPlanets} 
 								listOfVehicles={listOfVehicles}
