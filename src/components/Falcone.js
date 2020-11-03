@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
+import _ from 'lodash';
 import Message from './Message';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
@@ -13,12 +14,7 @@ class Falcone extends Component {
 		super(props);
 		this.state = {
 			resultJSON: '',
-			vehicles: this.props.vehicles.map(vehicle => {
-				const vehicleObj = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
-				
-				vehicleObj['selected'] = 0;
-				return vehicleObj;
-			}),
+			vehicles: [],
 			listOfPlanets: [],
 			listOfVehicles: [],
 			planet_names: [],
@@ -44,23 +40,22 @@ class Falcone extends Component {
 		const listOfVehicles = [];
 		const { planets, vehicles } = this.props;
 		
+		const vehiclesCopy = _.cloneDeep(vehicles);
+		vehiclesCopy.forEach(vehicle => {
+			vehicle['selected'] = 0;
+		})
+		
 		for(let i=0; i<4; i++) {
 			const id = uuid();
 			listOfPlanets[i] = {};
-			listOfPlanets[i]['planets'] = planets.map((planet) => {
-				const temp = Object.create({}, Object.getOwnPropertyDescriptors(planet));
-				return temp;
-			});;
+			listOfPlanets[i]['planets'] = _.cloneDeep(planets);
 			listOfPlanets[i]['id'] = id;
 			listOfPlanets[i]['previousSelected'] = [];
 			listOfPlanets[i]['curPlanet'] = 'Choose Planet';
 			
 			listOfVehicles[i] = {};
-			listOfVehicles[i]['vehicles'] = vehicles.map((vehicle) => {
-				const temp = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
-				temp['showAlways'] = false;
-				return temp;
-			});
+			listOfVehicles[i]['vehicles'] = _.cloneDeep(vehicles);
+			listOfVehicles[i]['vehicles']['showAlways'] = false;
 			listOfVehicles[i]['id'] = id;
 			listOfVehicles[i]['isRendered'] = false;
 			listOfVehicles[i]['previousSelected'] = [];
@@ -68,7 +63,8 @@ class Falcone extends Component {
 		
 		this.setState({
 			listOfPlanets: listOfPlanets,
-			listOfVehicles: listOfVehicles
+			listOfVehicles: listOfVehicles,
+			vehicles: vehiclesCopy
 		});
 	}
 	
@@ -96,18 +92,7 @@ class Falcone extends Component {
 	
 	updateListOfPlanets(id, removePlanet, planetDistance) {
 		const { planet_names } = this.state;
-		let listOfPlanets = [];
-		
-		this.state.listOfPlanets.forEach((planets, index) => {
-			listOfPlanets[index] = {};
-			listOfPlanets[index]['planets'] = planets.planets.map((planet) => {
-				const temp = Object.create({}, Object.getOwnPropertyDescriptors(planet));
-				return temp;
-			});;
-			listOfPlanets[index]['id'] = planets.id;
-			listOfPlanets[index]['previousSelected'] = Array.from(planets.previousSelected);
-			listOfPlanets[index]['curPlanet'] = planets.curPlanet;
-		})
+		let listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
 		
 		// updating other destination
 		let previousSelected = [];
@@ -128,7 +113,6 @@ class Falcone extends Component {
 					
 					this.setState({planet_names: selectedPlanets});
 					
-					
 					// Updating previousSelected properyt of planets having this id
 					planets.previousSelected = [];
 					
@@ -147,6 +131,7 @@ class Falcone extends Component {
 					// updating planet_names state with removePlanet
 					const selectedPlanets = Array.from(planet_names);
 					selectedPlanets.push(removePlanet);
+					
 					this.setState({planet_names: selectedPlanets});
 				}
 			}
@@ -171,7 +156,7 @@ class Falcone extends Component {
 	}
 	
 	updateListOfVehicles(id, planetDistance) {
-		const listOfVehicles = this.state.listOfVehicles;
+		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		
 		listOfVehicles.forEach((vehiclesObj) => {
 			if(id === vehiclesObj.id) {
@@ -190,14 +175,14 @@ class Falcone extends Component {
 			}
 		});
 		
+		this.setState({listOfVehicles: listOfVehicles});
 	}
 	
 	updateVehicle(id, rocket, speed, totalNumber, planetDistance) {
-		const { listOfVehicles, vehicle_names, time } = this.state;
+		const { vehicle_names, time } = this.state;
+		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		const previousSelected = [];
-		const vehi = this.state.vehicles.map(vehicle => {
-			return Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
-		});
+		const vehi = _.cloneDeep(this.state.vehicles);
 		const selectedVehicles = Array.from(vehicle_names);
 		const timeArr = Array.from(time);
 		let check = true;
@@ -347,19 +332,14 @@ class Falcone extends Component {
 		this.setState({
 			vehicles: vehi,
 			time: timeArr,
-			vehicle_names: selectedVehicles
+			vehicle_names: selectedVehicles,
+			listOfVehicles: listOfVehicles
 		});
 	}
 	
 	reset() {
 		this.generateLists();
 		this.setState({
-			vehicles: this.props.vehicles.map(vehicle => {
-				const vehicleObj = Object.create({}, Object.getOwnPropertyDescriptors(vehicle));
-				
-				vehicleObj['selected'] = 0;
-				return vehicleObj;
-			}),
 			planet_names: [],
 			vehicle_names: [],
 			time: [],
