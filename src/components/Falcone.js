@@ -178,7 +178,7 @@ class Falcone extends Component {
 		this.setState({listOfVehicles: listOfVehicles});
 	}
 	
-	updateVehicle(id, rocket, speed, totalNumber, planetDistance) {
+	updateVehicle(id, rocket, speed, planetDistance) {
 		const { vehicle_names, time } = this.state;
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		const previousSelected = [];

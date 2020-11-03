@@ -15,11 +15,10 @@ class AssignRocket extends Component {
 		const target = e.target,
 			  rocket = target.value,
 			  speed = target.getAttribute('data-speed'),
-			  totalNumber = target.getAttribute('data-total_no'),
 			  planetDistance = this.props.vehicles.planetDistance,
 			  id = target.getAttribute('data-id');
 		
-		this.props.handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance);
+		this.props.handleVehicleUpdation(id, rocket, speed, planetDistance);
 		
 		this.setState({selectedOption: e.target.value});
 	}
@@ -40,7 +39,6 @@ class AssignRocket extends Component {
 							id={key} 
 							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
-							data-total_no={total_no}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
@@ -60,7 +58,6 @@ class AssignRocket extends Component {
 							disabled={true}
 							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
-							data-total_no={total_no}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
@@ -77,7 +74,6 @@ class AssignRocket extends Component {
 							id={key} 
 							checked={vehicle.showAlways}
 							onChange={this.handleOnValueChange}
-							data-total_no={total_no}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
