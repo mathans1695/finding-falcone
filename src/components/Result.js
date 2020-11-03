@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import loading from '../Images/loading.gif';
 import { Link } from 'react-router-dom';
 import '../styles/Result.css';
-import Navbar from './Navbar';
-import Footer from './Footer';
 
 class Result extends Component {
 	render() {

@@ -67,7 +67,7 @@ class App extends Component {
 	}
 	
 	render() {
-		const { planets, vehicles, result } = this.state;
+		const { planets, vehicles } = this.state;
 		
 		return (
 			<div className="App">

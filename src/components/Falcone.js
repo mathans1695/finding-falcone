@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import _ from 'lodash';
 import Message from './Message';
 import { uuid } from '../helpers';
@@ -360,7 +360,9 @@ class Falcone extends Component {
 	}
 	
 	// reset everything back to initial condition
-	reset() {
+	reset(e) {
+		const target = e.target;
+		
 		this.generateLists();
 		this.setState({
 			planet_names: [],
@@ -369,11 +371,13 @@ class Falcone extends Component {
 			resultJSON: ''
 		})
 		
-		this.setState({showMessage: 'Reset successful'}, () => {
+		if(target.innerText === 'Reset') {
+			this.setState({showMessage: 'Reset successful'}, () => {
 				setTimeout(() => {
 					this.setState({showMessage: ''})
 				}, 2000);
 			});
+		}
 	}
 	
 	render() {
