@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import '../styles/Error.css';
+import '../styles/Message.css';
 
-class Error extends Component {
+class Message extends Component {
 	render() {
 		return (
-			<div className='Error'>
-				<span className='Error__msg'>
+			<div className='Message'>
+				<span className='Message__msg'>
 					Selected Rocket is not available
 				</span>
 			</div>
@@ -13,4 +13,4 @@ class Error extends Component {
 	}
 }
 
-export default Error;
+export default Message;
