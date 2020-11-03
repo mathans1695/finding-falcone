@@ -17,7 +17,7 @@
 	transition: box-shadow 0.5s;
 }
 
-.Falcone-button:hover {
+.Falcone__button:hover {
 	cursor: pointer;
 	box-shadow: -5px -5px 5px black;
 	transition: box-shadow 0.5;
