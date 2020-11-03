@@ -25,9 +25,9 @@ class MissionPlan extends Component {
 		return (
 			<div className='MissionPlan'>
 				<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
-				<div className='MissionPlan-destinations'>
-					<div className='MissionPlan-destination'>
-						<h3 className='MissionPlan-title'>Destination-1</h3>
+				<div className='MissionPlan__destinations'>
+					<div className='MissionPlan__destination'>
+						<h3 className='MissionPlan__title'>Destination-1</h3>
 						<ChoosePlanet 
 							planets={listOfPlanets[0]} 
 							updatePlanet={this.updatePlanet} 
@@ -40,8 +40,8 @@ class MissionPlan extends Component {
 							/>
 						}
 					</div>
-					<div className='MissionPlan-destination'>
-						<h3 className='MissionPlan-title'>Destination-2</h3>
+					<div className='MissionPlan__destination'>
+						<h3 className='MissionPlan__title'>Destination-2</h3>
 						<ChoosePlanet 
 							planets={listOfPlanets[1]} 
 							updatePlanet={this.updatePlanet}
@@ -54,8 +54,8 @@ class MissionPlan extends Component {
 							/>
 						}
 					</div>
-					<div className='MissionPlan-destination'>
-						<h3 className='MissionPlan-title'>Destination-3</h3>
+					<div className='MissionPlan__destination'>
+						<h3 className='MissionPlan__title'>Destination-3</h3>
 						<ChoosePlanet 
 							planets={listOfPlanets[2]} 
 							updatePlanet={this.updatePlanet}
@@ -68,8 +68,8 @@ class MissionPlan extends Component {
 							/>
 						}
 					</div>
-					<div className='MissionPlan-destination'>
-						<h3 className='MissionPlan-title'>Destination-4</h3>
+					<div className='MissionPlan__destination'>
+						<h3 className='MissionPlan__title'>Destination-4</h3>
 						<ChoosePlanet 
 							planets={listOfPlanets[3]} 
 							updatePlanet={this.updatePlanet}/>
@@ -84,12 +84,12 @@ class MissionPlan extends Component {
 				</div>
 				{
 					this.props.time.length 
-					? <div className='MissionPlan-time'>
+					? <div className='MissionPlan__time'>
 							Total Time: {
 								this.props.time.reduce((accumulator, curValue) => accumulator + curValue, 0)
 							}
 					  </div>
-					: <div className='MissionPlan-time'>
+					: <div className='MissionPlan__time'>
 							Total Time: 0
 					  </div>
 				}
