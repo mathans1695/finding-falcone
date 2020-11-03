@@ -5,9 +5,6 @@ import '../styles/AssignRocket.css';
 class AssignRocket extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			selectedOption: ''
-		}
 		this.handleOnValueChange = this.handleOnValueChange.bind(this);
 	}
 	
@@ -19,17 +16,20 @@ class AssignRocket extends Component {
 			  id = target.getAttribute('data-id');
 		
 		this.props.handleVehicleUpdation(id, rocket, speed, planetDistance);
-		
-		this.setState({selectedOption: e.target.value});
 	}
 	
 	render() {
 		const vehicles = this.props.vehicles;
 		
+		// showing vehicles based on the availability 
 		const options = vehicles.vehicles.map((vehicle) => {
 			const { name, total_no, speed } = vehicle;
 			let display = '';
 			let key = uuid();
+			
+			// vehicle having showAlways property set to true
+			// will be shown no matter what
+			// options will be checked based on showAlways property of vehicle
 			if(vehicle.showAlways) {
 				display = (
 					<div className='AssignRocket__option' key={key} >
@@ -45,7 +45,10 @@ class AssignRocket extends Component {
 						<label htmlFor={key}>{name} ({total_no})</label>
 					</div>
 				)
-			} else if (!vehicle.total_no > 0 || !vehicle.isPossible) {
+			} 
+			// disable the vehicle, if not possible to send the rocket
+			// disable vehicle not in stock
+			else if (!vehicle.total_no > 0 || !vehicle.isPossible) {
 				display = (
 					<div  
 						className='AssignRocket__option AssignRocket__option--disable'
