@@ -365,7 +365,7 @@ class Falcone extends Component {
 		const regExp = /result/i;
 		const match = regExp.test(window.location.href);
 		
-		if(match) {
+		if(match && target.innerText === 'Reset') {
 			window.location.replace('http://localhost:3000/');
 		}
 		
