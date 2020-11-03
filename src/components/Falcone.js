@@ -35,6 +35,8 @@ class Falcone extends Component {
 		this.generateLists();
 	}
 	
+	// Creates initial list of planets and vehicles and deep copy vehicles
+	// props to vehicles state
 	generateLists() {
 		const listOfPlanets = [];
 		const listOfVehicles = [];
@@ -68,6 +70,7 @@ class Falcone extends Component {
 		});
 	}
 	
+	// method will execute on click of find falcone button
 	handleClick() {
 		const { getToken } = this.props,
 			  { planet_names, vehicle_names } = this.state,
@@ -84,17 +87,17 @@ class Falcone extends Component {
 			.catch(err => console.log(err))
 	}
 	
+	// method runs after token received and set resultJSON state with result
 	result(reqBody) {
 		this.props.getResult(reqBody)
 			.then(json => this.setState({resultJSON: json}))
 			.catch(err => console.log(err))
 	}
 	
+	// update planets in other destionations on change
 	updateListOfPlanets(id, removePlanet, planetDistance) {
 		const { planet_names } = this.state;
 		let listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
-		
-		// updating other destination
 		let previousSelected = [];
 		
 		listOfPlanets.forEach(planets => {
@@ -103,7 +106,7 @@ class Falcone extends Component {
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
 					
-					// Updating planet_names state
+					// Updating planet_names state copy
 					const removeIndex = planet_names.findIndex(name => {
 						return name === planets.previousSelected[0].name;
 					});
@@ -113,7 +116,7 @@ class Falcone extends Component {
 					
 					this.setState({planet_names: selectedPlanets});
 					
-					// Updating previousSelected properyt of planets having this id
+					// Updating previousSelected property of planets having the id
 					planets.previousSelected = [];
 					
 					const temp = {};
@@ -137,6 +140,8 @@ class Falcone extends Component {
 			}
 		});
 		
+		
+		// Updating other destinations planets
 		listOfPlanets.forEach(planets => {
 			if(id !== planets.id) {
 				if(previousSelected.length > 0) {
@@ -155,6 +160,8 @@ class Falcone extends Component {
 		this.setState({listOfPlanets: listOfPlanets});
 	}
 	
+	// method executes, when there's change in planet selection on
+	// each destionations
 	updateListOfVehicles(id, planetDistance) {
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		
@@ -178,6 +185,8 @@ class Falcone extends Component {
 		this.setState({listOfVehicles: listOfVehicles});
 	}
 	
+	// Updates vehicles on other destinations on selecting the rocket in 
+	// each destinations
 	updateVehicle(id, rocket, speed, planetDistance) {
 		const { vehicle_names, time } = this.state;
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
@@ -187,6 +196,9 @@ class Falcone extends Component {
 		const timeArr = Array.from(time);
 		let check = true;
 		
+		// vehi will keep track of all changes
+		// vehi act as reference for changes in vehicles in each destinations
+		// checks current stock
 		vehi.forEach(vehicle => {
 			if(vehicle.name === rocket) {
 				if(vehicle.total_no === 0) {
@@ -195,19 +207,21 @@ class Falcone extends Component {
 			}
 		})
 		
+		// if rocket in stock, perform the below operations
+		// otherwise convey the message
 		if(check) {
 			listOfVehicles.forEach(vehicles => {
 				if(id === vehicles.id) {
 					if(vehicles.previousSelected.length > 0) {
 						previousSelected.push(vehicles.previousSelected[0]);
 					
-						// Updating planet_names state
+						// Updating vehicle_names state copy
 						const removeIndex = vehicle_names.findIndex(name => {
 							return name === vehicles.previousSelected[0].name;
 						});
-					
 						selectedVehicles.splice(removeIndex, 1, rocket);
-		
+						
+						// updating the vehi
 						vehi.forEach(vehicle => {
 							if(vehicles.previousSelected[0].name === vehicle.name) {
 								vehicle.total_no += 1;
@@ -218,11 +232,11 @@ class Falcone extends Component {
 							}
 						})
 					
+						// updating the timeArr with new time
 						timeArr.splice(removeIndex, 1, planetDistance/speed);
 					
 						// Updating previousSelected property of vehicles having this id
 						vehicles.previousSelected = [];
-					
 						let temp;
 						vehicles.vehicles.forEach(vehicle => {
 							if(vehicle.name === rocket) {
@@ -244,6 +258,7 @@ class Falcone extends Component {
 						// updating vehicle_names state with rocket
 						selectedVehicles.push(rocket);
 						
+						// updating vehi
 						vehi.forEach(vehicle => {
 							if(vehicle.name === rocket) {
 								if(vehicle.selected) {
@@ -258,12 +273,16 @@ class Falcone extends Component {
 							}
 						})
 					
+						// updating time array
 						timeArr.push(planetDistance/speed);
 					}
 				}		
 			});
 			
 			listOfVehicles.forEach(vehicles => {
+				
+				// updating vehicles in other destinations that don't have
+				// the id. Separate strategy for vehicle that are rendered // and not rendered
 				if(id !== vehicles.id) {
 					if(!vehicles.isRendered) {
 						if(previousSelected.length > 0) {
@@ -280,7 +299,7 @@ class Falcone extends Component {
 									vehicle.total_no -= 1;
 								}
 							})	
-						}	
+						}
 					} else {
 						if(vehicles.vehicles.every(vehicle => !vehicle['showAlways'])) {
 							if(previousSelected.length > 0) {
@@ -300,7 +319,9 @@ class Falcone extends Component {
 							}
 						}
 					}
-				} else {
+				} 
+				// updating vehicles with the id
+				else {
 					if(previousSelected.length > 0) {
 						vehicles.vehicles.forEach((vehicle, index) => {
 							if(previousSelected[0].name === vehicle.name) {
@@ -337,6 +358,7 @@ class Falcone extends Component {
 		});
 	}
 	
+	// reset everything back to initial condition
 	reset() {
 		this.generateLists();
 		this.setState({
