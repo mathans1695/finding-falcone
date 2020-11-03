@@ -49,7 +49,7 @@ class Result extends Component {
 							</button>
 						</Link>
 					  </>
-				  : <img src={loading} alt='laoding' />
+				  : <img src={loading} alt='loading' />
 				}
 			</div>
 		)
