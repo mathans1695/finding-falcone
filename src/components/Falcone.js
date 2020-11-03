@@ -399,14 +399,14 @@ class Falcone extends Component {
 							? <Link to='/result'>
 								<button 
 									onClick={() => this.handleClick()} 
-									className='Falcone-button'
+									className='Falcone__button'
 								>
 									Find Falcone
 								</button>
 							  </Link>
 							: <button 
 								disabled={true} 
-								className='Falcone-button'
+								className='Falcone__button'
 							>
 								Find Falcone
 							</button>
