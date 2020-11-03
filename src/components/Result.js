@@ -8,7 +8,6 @@ import Footer from './Footer';
 class Result extends Component {
 	render() {
 		const {resultJSON, time, reset} = this.props;
-		console.log(resultJSON);
 		
 		return (
 			<div className='Result'>
