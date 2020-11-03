@@ -9,20 +9,20 @@
 	margin-bottom: 30px;
 }
 
-.MissionPlan-destinations {
+.MissionPlan__destinations {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	margin-top: 10px;
 }
 
-.MissionPlan-destination {
+.MissionPlan__destination {
 	margin-left: 50px;
 	margin-top: 20px;
 	border-radius: 5px;
 }
 
-.MissionPlan-time {
+.MissionPlan__time {
 	position: absolute;
 	bottom: 0;
 	left: 50%;
@@ -30,7 +30,7 @@
 	transform: translate(-50%, 0);
 }
 
-.MissionPlan-title {
+.MissionPlan__title {
 	margin-bottom: 10px;
 	padding-left: 10px;
 	font-size: 20px;
