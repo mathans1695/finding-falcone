@@ -11,76 +11,47 @@ class MissionPlan extends Component {
 	}
 	
 	updatePlanet(id, removePlanet, planetDistance) {
-		this.props.updateListOfPlanets(id, removePlanet, planetDistance);
-		this.props.updateListOfVehicles(id, planetDistance);
+		const props = this.props;
+		
+		props.updateListOfPlanets(id, removePlanet, planetDistance);
+		props.updateListOfVehicles(id, planetDistance);
 	}
 	
 	handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance) {
-		this.props.updateVehicle(id, rocket, speed, totalNumber, planetDistance);
+		const props = this.props;
+		
+		props.updateVehicle(id, rocket, speed, totalNumber, planetDistance);
 	}
 	
 	render() {
 		const { listOfPlanets, listOfVehicles } = this.props;
 		
+		const chooseDestinations = (
+			listOfVehicles.map((vehiclesObj, index) => {
+				return (
+					<div className='MissionPlan__destination' key={index}>
+						<h3 className='MissionPlan__title'>Destination-{index+1}</h3>
+						<ChoosePlanet 
+							planets={listOfPlanets[index]} 
+							updatePlanet={this.updatePlanet} 
+						/>
+						{
+							listOfVehicles[index].isRendered &&
+							<AssignRocket 
+								vehicles={listOfVehicles[index]}
+								handleVehicleUpdation={this.handleVehicleUpdation}
+							/>
+						}
+					</div>
+				)
+			})
+		)
+		
 		return (
 			<div className='MissionPlan'>
 				<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
 				<div className='MissionPlan__destinations'>
-					<div className='MissionPlan__destination'>
-						<h3 className='MissionPlan__title'>Destination-1</h3>
-						<ChoosePlanet 
-							planets={listOfPlanets[0]} 
-							updatePlanet={this.updatePlanet} 
-						/>
-						{
-							listOfVehicles[0].isRendered &&
-							<AssignRocket 
-								vehicles={listOfVehicles[0]}
-								handleVehicleUpdation={this.handleVehicleUpdation}
-							/>
-						}
-					</div>
-					<div className='MissionPlan__destination'>
-						<h3 className='MissionPlan__title'>Destination-2</h3>
-						<ChoosePlanet 
-							planets={listOfPlanets[1]} 
-							updatePlanet={this.updatePlanet}
-						/>
-						{
-							listOfVehicles[1].isRendered &&
-							<AssignRocket 
-								vehicles={listOfVehicles[1]} 
-								handleVehicleUpdation={this.handleVehicleUpdation}
-							/>
-						}
-					</div>
-					<div className='MissionPlan__destination'>
-						<h3 className='MissionPlan__title'>Destination-3</h3>
-						<ChoosePlanet 
-							planets={listOfPlanets[2]} 
-							updatePlanet={this.updatePlanet}
-						/>
-						{
-							listOfVehicles[2].isRendered &&
-							<AssignRocket 
-								vehicles={listOfVehicles[2]} 
-								handleVehicleUpdation={this.handleVehicleUpdation}
-							/>
-						}
-					</div>
-					<div className='MissionPlan__destination'>
-						<h3 className='MissionPlan__title'>Destination-4</h3>
-						<ChoosePlanet 
-							planets={listOfPlanets[3]} 
-							updatePlanet={this.updatePlanet}/>
-						{
-							listOfVehicles[3].isRendered &&
-							<AssignRocket 
-								vehicles={listOfVehicles[3]} 
-								handleVehicleUpdation={this.handleVehicleUpdation}
-							/>
-						}
-					</div>
+					{chooseDestinations}
 				</div>
 				{
 					this.props.time.length 
