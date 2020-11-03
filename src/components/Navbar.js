@@ -2,16 +2,9 @@ import React, { Component } from 'react';
 import '../styles/Navbar.css';
 
 class Navbar extends Component {
-	constructor(props) {
-		super(props);
-		this.handleReset = this.handleReset.bind(this);
-	}
-	
-	handleReset(e) {
-		this.props.reset();
-	}
-	
 	render() {
+		const { reset } = this.props;
+		
 		return (
 			<div className='Navbar'>
 				<div className='Navbar__logo'>
@@ -20,7 +13,7 @@ class Navbar extends Component {
 				<div className='Navbar__menu'>
 					<span 
 						className='Navbar__reset'
-						onClick={this.handleReset}
+						onClick={reset}
 					>
 						Reset
 					</span>
