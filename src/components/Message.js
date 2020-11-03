@@ -6,7 +6,7 @@ class Message extends Component {
 		return (
 			<div className='Message'>
 				<span className='Message__msg'>
-					Selected Rocket is not available
+					{this.props.msg}
 				</span>
 			</div>
 		)
