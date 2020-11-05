@@ -9,7 +9,9 @@
     "loadash": "^1.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+	"react": "^16.14.0",
+    "react-dom": "^16.14.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -38,8 +40,6 @@
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
-    "enzyme-to-json": "^3.6.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "enzyme-to-json": "^3.6.1"
   }
 }
