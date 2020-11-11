@@ -2,14 +2,13 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Falcone from './Falcone';
-import { JSDOM } from 'jsdom';
 import { getPlanets, getVehicles } from './../helpers';
 
 const planets = getPlanets();
 const vehicles = getVehicles();
 
 // Creates synthetic event
-function createEvent(optionElements, value, id) {
+function planetChangeEvent(optionElements, value, id) {
 	const options = optionElements.map((optionElement, i) => {
 		const temp = {};
 		if(value === optionElement.props().value) {
@@ -18,7 +17,7 @@ function createEvent(optionElements, value, id) {
 			temp['selected'] = false;
 		}
 		
-		if(i != 0) {
+		if(i !== 0) {
 			temp['getAttribute'] = function(attr) {
 				return optionElement.prop('data-distance');
 			}
@@ -54,12 +53,12 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 			  choosePlanet = choosePlanets.at(destination-1),
 			  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
 			  optionElements = selectElement.find('.ChoosePlanet__Option'),
-			  event = createEvent(optionElements, planetName, choosePlanet.props().id);
+			  event = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
 		
 		beforeAll(() => {
 			selectElement.simulate('change', event);
 			falcone.update();
-		})
+		});
 		
 		it(`planet_names state should have ${planetName} in it`, () => {
 			const planetNames = falcone.find(Falcone).instance().state.planet_names;
@@ -76,16 +75,16 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 		it(`Other destinations should not have ${planetName} option`, () => {
 			const updatedPlanets = falcone.find('.ChoosePlanet');
 			updatedPlanets.forEach((choosePlanet, index) => {
+				let checks = true;
 				if(index !== destination-1) {
 					const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-					let checks = true;
 					optionElements.forEach((optionElem) => {
 						if(optionElem.prop('value') === planetName) {
 							checks = false;
 						}
 					});
-					expect(checks).toBeTruthy();
 				}
+				expect(checks).toBeTruthy();
 			});
 		});
 	});
