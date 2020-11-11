@@ -41,6 +41,56 @@ function createEvent(optionElements, value, id) {
 	}
 }
 
+function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRendered) {
+	let description;
+	if(changeOrSelect === 'change'){
+		description = `User change destination ${destination} to ${planetName}`;
+	} else {
+		description = `User select ${planetName} planet in destination ${destination}`;
+	}
+			
+	describe(`${description}`, () => {
+		const choosePlanets = falcone.find('.ChoosePlanet'),
+			  choosePlanet = choosePlanets.at(destination-1),
+			  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
+			  optionElements = selectElement.find('.ChoosePlanet__Option'),
+			  event = createEvent(optionElements, planetName, choosePlanet.props().id);
+		
+		beforeAll(() => {
+			selectElement.simulate('change', event);
+			falcone.update();
+		})
+		
+		it(`planet_names state should have ${planetName} in it`, () => {
+			const planetNames = falcone.find(Falcone).instance().state.planet_names;
+			
+			expect(planetNames.find(planet => planet === planetName)).toBe(planetName);
+		});
+		
+		it('Assign Rockets should render after planet selection', () => {
+			const assignRocket = falcone.find('.AssignRocket');
+			
+			expect(assignRocket.length).toBe(soFarRendered);
+		});
+			
+		it(`Other destinations should not have ${planetName} option`, () => {
+			const updatedPlanets = falcone.find('.ChoosePlanet');
+			updatedPlanets.forEach((choosePlanet, index) => {
+				if(index !== destination-1) {
+					const optionElements = choosePlanet.find('.ChoosePlanet__Option');
+					let checks = true;
+					optionElements.forEach((optionElem) => {
+						if(optionElem.prop('value') === planetName) {
+							checks = false;
+						}
+					});
+					expect(checks).toBeTruthy();
+				}
+			});
+		});
+	});
+}
+
 describe("Falcone Component", () => {
 	describe("User selects destination-1 planet", () => {
 		const falcone = mount(
@@ -53,128 +103,11 @@ describe("Falcone Component", () => {
 			falcone.unmount();
 		});
 		
-		describe('User select Donlon planet in destination 1', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet1 = choosePlanets.at(0),
-				  selectElement1 = choosePlanet1.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement1.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Donlon', choosePlanet1.props().id);
-			
-			it('planet_names state should have Donlon in it', () => {
-				selectElement1.simulate('change', event);
-				falcone.update();
-				
-				expect(falcone.find(Falcone).instance().state.planet_names[0]).toBe('Donlon');
-			});
-			
-			it('Other destinations should not have Donlon option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 0) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Donlon') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
-		
-		describe('User change destination 1 to Enchai', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet1 = choosePlanets.at(0),
-				  selectElement1 = choosePlanet1.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement1.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Enchai', choosePlanet1.props().id);
-			
-			it('planet_names state should have Enchai in it', () => {
-				selectElement1.simulate('change', event);
-				falcone.update();
-				expect(falcone.find(Falcone).instance().state.planet_names[0]).toBe('Enchai');
-			});
-			
-			it('Other destinations should not have Enchai option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 0) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Enchai') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
-		
-		describe('User select Donlon planet in destination 2', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet2 = choosePlanets.at(1),
-				  selectElement2 = choosePlanet2.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement2.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Donlon', choosePlanet2.props().id);
-			
-			it('planet_names state should have Donlon in it', () => {
-				selectElement2.simulate('change', event);
-				falcone.update();
-				
-				expect(falcone.find(Falcone).instance().state.planet_names[1]).toBe('Donlon');
-			});
-			
-			it('Other destinations should not have Donlon option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 1) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Donlon') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
-		
-		describe('User select Jebing planet in destination 3', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet3 = choosePlanets.at(2),
-				  selectElement3 = choosePlanet3.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement3.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Jebing', choosePlanet3.props().id);
-			
-			it('planet_names state should have Jebing in it', () => {
-				selectElement3.simulate('change', event);
-				falcone.update();
-				
-				expect(falcone.find(Falcone).instance().state.planet_names[2]).toBe('Jebing');
-			});
-			
-			it('Other destinations should not have Jebing option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 2) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Jebing') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
+		selectPlanet(falcone, 'Donlon', 1, 'select', 1);
+		selectPlanet(falcone, 'Enchai', 1, 'change', 1);
+		selectPlanet(falcone, 'Donlon', 2, 'select', 2);
+		selectPlanet(falcone, 'Jebing', 3, 'select', 3);
+		selectPlanet(falcone, 'Sapir', 4, 'select', 4);
 	});
 	
 	describe("User selects destination-2 planet", () => {
@@ -188,65 +121,10 @@ describe("Falcone Component", () => {
 			falcone.unmount();
 		});
 		
-		describe('User select Donlon planet in destination 2', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet2 = choosePlanets.at(1),
-				  selectElement2 = choosePlanet2.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement2.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Donlon', choosePlanet2.props().id);
-			
-			it('planet_names state should have Donlon in it', () => {
-				selectElement2.simulate('change', event);
-				falcone.update();
-				
-				expect(falcone.find(Falcone).instance().state.planet_names[0]).toBe('Donlon');
-			});
-			
-			it('Other destinations should not have Donlon option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 1) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Donlon') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
-		
-		describe('User change destination 2 to Enchai', () => {
-			const choosePlanets = falcone.find('.ChoosePlanet'),
-				  choosePlanet2 = choosePlanets.at(1),
-				  selectElement2 = choosePlanet2.find('.ChoosePlanet__Select'),
-				  optionElements = selectElement2.find('.ChoosePlanet__Option'),
-				  event = createEvent(optionElements, 'Enchai', choosePlanet2.props().id);
-			
-			it('planet_names state should have Enchai in it', () => {
-				selectElement2.simulate('change', event);
-				falcone.update();
-				expect(falcone.find(Falcone).instance().state.planet_names[0]).toBe('Enchai');
-			});
-			
-			it('Other destinations should not have Enchai option', () => {
-				const updatedPlanets = falcone.find('.ChoosePlanet');
-				updatedPlanets.forEach((choosePlanet, index) => {
-					if(index !== 1) {
-						const optionElements = choosePlanet.find('.ChoosePlanet__Option');
-						let checks = true;
-						optionElements.forEach((optionElem) => {
-							if(optionElem.prop('value') === 'Enchai') {
-								checks = false;
-							}
-						});
-						expect(checks).toBeTruthy();
-					}
-				});
-			});
-		});
+		selectPlanet(falcone, 'Donlon', 2, 'select', 1);
+		selectPlanet(falcone, 'Enchai', 2, 'change', 1);
+		selectPlanet(falcone, 'Pingasor', 1, 'select', 2);
+		selectPlanet(falcone, 'Donlon', 3, 'select', 3);
+		selectPlanet(falcone, 'Sapir', 4, 'select', 4);
 	});
 });
