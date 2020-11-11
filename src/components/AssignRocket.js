@@ -40,7 +40,7 @@ class AssignRocket extends Component {
 							value={name} 
 							id={key} 
 							checked={vehicle.showAlways}
-							onClick={this.handleOnValueChange}
+							onChange={this.handleOnValueChange}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
@@ -62,7 +62,7 @@ class AssignRocket extends Component {
 							id={key} 
 							disabled={true}
 							checked={vehicle.showAlways}
-							onClick={this.handleOnValueChange}
+							onChange={this.handleOnValueChange}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
@@ -78,7 +78,7 @@ class AssignRocket extends Component {
 							value={name} 
 							id={key} 
 							checked={vehicle.showAlways}
-							onClick={this.handleOnValueChange}
+							onChange={this.handleOnValueChange}
 							data-speed={speed}
 							data-id={vehicles.id}
 						/>
