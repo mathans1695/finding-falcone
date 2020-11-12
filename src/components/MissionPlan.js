@@ -21,7 +21,7 @@ class MissionPlan extends Component {
 	handleVehicleUpdation(id, rocket, speed, planetDistance) {
 		const props = this.props;
 		
-		// invokes updateVehicle in falcone component
+		// invoke updateVehicle in falcone component
 		props.updateVehicle(id, rocket, speed, planetDistance);
 	}
 	
