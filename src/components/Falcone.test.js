@@ -7,6 +7,22 @@ import { getPlanets, getVehicles } from './../helpers';
 const planets = getPlanets();
 const vehicles = getVehicles();
 
+function getStocks(initialObj, finalObj, vehicleName) {
+	let initialStock, finalStock;
+	
+	initialObj.vehicles.forEach((vehicle, index) => {
+		if(vehicle.name === vehicleName) {
+			initialStock = vehicle.total_no;
+			finalStock = finalObj.vehicles[index].total_no;
+		}
+	});
+	
+	return {
+		initialStock: initialStock,
+		finalStock: finalStock
+	}
+}
+
 // Creates synthetic event
 function planetChangeEvent(optionElements, value, id) {
 	const options = optionElements.map((optionElement, i) => {
@@ -49,6 +65,7 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 	}
 			
 	describe(`${description}`, () => {
+		let state;
 		beforeAll(() => {
 			const choosePlanets = falcone.find('.ChoosePlanet'),
 				  choosePlanet = choosePlanets.at(destination-1),
@@ -57,12 +74,11 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 				  event = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
 				  
 			selectElement.simulate('change', event);
-			falcone.update();
+			state = falcone.find(Falcone).instance().state;
 		});
 		
 		it(`planet_names state should have ${planetName} in it`, () => {
-			const planetNames = falcone.find(Falcone).instance().state.planet_names;
-			
+			const planetNames = state.planet_names;
 			expect(planetNames.find(planet => planet === planetName)).toBe(planetName);
 		});
 		
@@ -73,8 +89,8 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 			
 		it(`Other destinations should not have ${planetName} option`, () => {
 			const updatedPlanets = falcone.find('.ChoosePlanet');
+			let checks = true;
 			updatedPlanets.forEach((choosePlanet, index) => {
-				let checks = true;
 				if(index !== destination-1) {
 					const optionElements = choosePlanet.find('.ChoosePlanet__Option');
 					optionElements.forEach((optionElem) => {
@@ -83,8 +99,8 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 						}
 					});
 				}
-				expect(checks).toBeTruthy();
 			});
+			expect(checks).toBeTruthy();
 		});
 	});
 }
@@ -103,7 +119,7 @@ function vehicleChangeEvent(value, speed, id) {
 
 function selectRocket(falcone, planetName, destination, vehicleName) {
 	describe(`User select ${planetName} planet and ${vehicleName} rocket in destination-${destination}`, () => {
-		let initialState;
+		let initialState, finalState;
 		
 		beforeAll(() => {
 			const choosePlanets = falcone.find('.ChoosePlanet'),
@@ -131,45 +147,28 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 					input.simulate('change', vehicleEvent);
 				}
 			});
+			
+			finalState = falcone.find(Falcone).instance().state;
 		});
 		
 		it(`Vehicle_names state should have ${vehicleName} rocket`, () => {
-			const state = falcone.find(Falcone).instance().state;
-			
-			expect(state.vehicle_names.find(vehicle => vehicle === vehicleName)).toBe(vehicleName);
+			expect(finalState.vehicle_names.find(vehicle => vehicle === vehicleName)).toBe(vehicleName);
 		});
 		
 		it('Time state should have the estimated time', () => {
-			const state = falcone.find(Falcone).instance().state;
-			
-			expect(state.time.length).toBe(initialState.time.length+1);
+			expect(finalState.time.length).toBe(initialState.time.length+1);
 		});
 		
 		it('vehicles state should get updated', () => {
-			const state = falcone.find(Falcone).instance().state;
-			
-			const initialVehicle = initialState.vehicles.find(vehicle => vehicle.name === vehicleName);
-			
-			const initialStock = initialVehicle.total_no;
-			
-			const selectedVehicle = state.vehicles.find(vehicle => vehicle.name === vehicleName);
-			
-			const finalStock = selectedVehicle.total_no;
-			
+			const { initialStock, finalStock } = getStocks(initialState, finalState, vehicleName);
 			expect(finalStock).toBe(initialStock-1);
 		});
 		
 		it(`Current destination ${vehicleName} stock should reduce by 1`, () => {
-			const state = falcone.find(Falcone).instance().state;
-			
-			const initialVehicle = initialState.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === vehicleName);
-			
-			const initialStock = initialVehicle.total_no;
-			
-			const selectedVehicle = state.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === vehicleName);
-			
-			const finalStock = +selectedVehicle.total_no;
-			
+			const initialObj = initialState.listOfVehicles[destination-1],
+				  finalObj = finalState.listOfVehicles[destination-1],
+				  { initialStock, finalStock } = getStocks(initialObj, finalObj, vehicleName);
+				  
 			expect(finalStock).toBe(initialStock-1);
 		});
 		
@@ -200,7 +199,7 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 
 function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj) {
 	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}`, () => {
-		let initialState;
+		let initialState, finalState;
 		
 		beforeAll(() => {
 			destinations.forEach((destination, index) => {
@@ -246,6 +245,7 @@ function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRo
 					input.simulate('change', vehicleEvent);
 				}
 			});
+			finalState = falcone.find(Falcone).instance().state;
 		});
 		
 		afterAll(() => {
@@ -253,23 +253,20 @@ function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRo
 		});
 		
 		it(`Vehicle_names should have ${changeRocketObj.changeTo} at index ${changeRocketObj.destination-1}, instead of ${changeRocketObj.changeFrom}`, () => {
-			const state = falcone.find(Falcone).instance().state;
-			const changes = state.vehicle_names[changeRocketObj.destination-1];
-			
+			const changes = finalState.vehicle_names[changeRocketObj.destination-1];
 			expect(changes).toBe(changeRocketObj.changeTo);
 		});
 		
 		it('vehicles state should get updated', () => {
 			const { destination, changeFrom, changeTo } = changeRocketObj,
-				  state = falcone.find(Falcone).instance().state;
 			
-			const changeFromInitialStock = initialState.vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
-			
-			const changeToInitialStock = initialState.vehicles.find(vehicle => vehicle.name === changeTo).total_no;
-			
-			const changeFromFinalStock = state.vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
-			
-			const changeToFinalStock = state.vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+				  changeFromStocks = getStocks(initialState, finalState, changeFrom),
+				  changeFromInitialStock = changeFromStocks.initialStock,
+				  changeFromFinalStock = changeFromStocks.finalStock,
+				  
+				  changeToStocks = getStocks(initialState, finalState, changeTo),
+				  changeToInitialStock = changeToStocks.initialStock,
+				  changeToFinalStock = changeToStocks.finalStock;
 			
 			expect(changeFromFinalStock).toBe(changeFromInitialStock+1);
 			expect(changeToFinalStock).toBe(changeToInitialStock-1);
@@ -277,15 +274,16 @@ function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRo
 		
 		it(`Current destination ${changeRocketObj.changeTo} stock should reduce by 1, ${changeRocketObj.changeFrom} stock should increase by 1`, () => {
 			const { destination, changeFrom, changeTo } = changeRocketObj,
-				  state = falcone.find(Falcone).instance().state;
-			
-			const changeFromInitialStock = initialState.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
-			
-			const changeToInitialStock = initialState.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeTo).total_no;
-			
-			const changeFromFinalStock = state.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
-			
-			const changeToFinalStock = state.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+				  initialObj = initialState.listOfVehicles[destination-1],
+				  finalObj = finalState.listOfVehicles[destination-1],
+				  
+				  changeFromStocks = getStocks(initialObj, finalObj, changeFrom),
+				  changeFromInitialStock = changeFromStocks.initialStock,
+				  changeFromFinalStock = changeFromStocks.finalStock, 
+				  
+				  changeToStocks = getStocks(initialObj, finalObj, changeTo),
+				  changeToInitialStock = changeToStocks.initialStock,
+				  changeToFinalStock = changeToStocks.finalStock;
 			
 			expect(changeFromFinalStock).toBe(changeFromInitialStock+1);
 			expect(changeToFinalStock).toBe(changeToInitialStock-1);
@@ -328,7 +326,7 @@ function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRo
 	});
 }
 
-describe("Falcone Component", () => {
+describe("Mount Falcone Component", () => {
 	describe("User selects destination-1 planet", () => {
 		const falcone = mount(
 			<Router>
@@ -403,5 +401,9 @@ describe("Falcone Component", () => {
 			  }
 			  
 		changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj);
+	});
+	
+	describe('User selects rocket that is not available', () => {
+		
 	});
 });
