@@ -18,11 +18,11 @@ class MissionPlan extends Component {
 		props.updateListOfVehicles(id, planetDistance);
 	}
 	
-	handleVehicleUpdation(id, rocket, speed, totalNumber, planetDistance) {
+	handleVehicleUpdation(id, rocket, speed, planetDistance) {
 		const props = this.props;
 		
-		// invokes updateVehicle in falcone component
-		props.updateVehicle(id, rocket, speed, totalNumber, planetDistance);
+		// invoke updateVehicle in falcone component
+		props.updateVehicle(id, rocket, speed, planetDistance);
 	}
 	
 	render() {

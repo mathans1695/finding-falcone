@@ -30,7 +30,8 @@ class AssignRocket extends Component {
 			
 			// vehicle having showAlways property set to true
 			// will be shown no matter what
-			// options will be checked based on showAlways property of vehicle
+			// options will be checked based on showAlways property 
+			// of vehicle
 			if(vehicle.showAlways) {
 				display = (
 					<div className='AssignRocket__option' key={key} >

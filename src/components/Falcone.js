@@ -98,6 +98,7 @@ class Falcone extends Component {
 	updateListOfPlanets(id, removePlanet, planetDistance) {
 		const { planet_names } = this.state;
 		let listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
+		const selectedPlanets = Array.from(planet_names);
 		let previousSelected = [];
 		
 		listOfPlanets.forEach(planets => {
@@ -111,10 +112,7 @@ class Falcone extends Component {
 						return name === planets.previousSelected[0].name;
 					});
 					
-					const selectedPlanets = Array.from(planet_names);
 					selectedPlanets.splice(removeIndex, 1, removePlanet);
-					
-					this.setState({planet_names: selectedPlanets});
 					
 					// Updating previousSelected property of planets having the id
 					planets.previousSelected = [];
@@ -132,10 +130,7 @@ class Falcone extends Component {
 					planets.previousSelected.push(temp);
 					
 					// updating planet_names state with removePlanet
-					const selectedPlanets = Array.from(planet_names);
 					selectedPlanets.push(removePlanet);
-					
-					this.setState({planet_names: selectedPlanets});
 				}
 			}
 		});
@@ -157,7 +152,10 @@ class Falcone extends Component {
 			}
 		})
 		
-		this.setState({listOfPlanets: listOfPlanets});
+		this.setState({
+			listOfPlanets: listOfPlanets,
+			planet_names: selectedPlanets
+		});
 	}
 	
 	// method executes, when there's change in planet selection on
@@ -192,7 +190,7 @@ class Falcone extends Component {
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		const previousSelected = [];
 		const vehi = _.cloneDeep(this.state.vehicles);
-		const selectedVehicles = Array.from(vehicle_names);
+		const selectedVehicles = _.cloneDeep(vehicle_names);
 		const timeArr = Array.from(time);
 		let check = true;
 		
