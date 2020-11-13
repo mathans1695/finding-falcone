@@ -190,7 +190,7 @@ class Falcone extends Component {
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		const previousSelected = [];
 		const vehi = _.cloneDeep(this.state.vehicles);
-		const selectedVehicles = Array.from(vehicle_names);
+		const selectedVehicles = _.cloneDeep(vehicle_names);
 		const timeArr = Array.from(time);
 		let check = true;
 		
