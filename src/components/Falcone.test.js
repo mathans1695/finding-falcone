@@ -49,13 +49,13 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 	}
 			
 	describe(`${description}`, () => {
-		const choosePlanets = falcone.find('.ChoosePlanet'),
-			  choosePlanet = choosePlanets.at(destination-1),
-			  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
-			  optionElements = selectElement.find('.ChoosePlanet__Option'),
-			  event = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
-		
 		beforeAll(() => {
+			const choosePlanets = falcone.find('.ChoosePlanet'),
+				  choosePlanet = choosePlanets.at(destination-1),
+				  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
+				  optionElements = selectElement.find('.ChoosePlanet__Option'),
+				  event = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
+				  
 			selectElement.simulate('change', event);
 			falcone.update();
 		});
@@ -102,16 +102,16 @@ function vehicleChangeEvent(value, speed, id) {
 }
 
 function selectRocket(falcone, planetName, destination, vehicleName) {
-	describe(`User select ${planetName} planet and ${vehicleName} rocket`, () => {
-		const choosePlanets = falcone.find('.ChoosePlanet'),
-			  choosePlanet = choosePlanets.at(destination-1),
-			  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
-			  optionElements = selectElement.find('.ChoosePlanet__Option'),
-			  planetEvent = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
-		
+	describe(`User select ${planetName} planet and ${vehicleName} rocket in destination-${destination}`, () => {
 		let initialState;
 		
 		beforeAll(() => {
+			const choosePlanets = falcone.find('.ChoosePlanet'),
+				  choosePlanet = choosePlanets.at(destination-1),
+				  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
+				  optionElements = selectElement.find('.ChoosePlanet__Option'),
+				  planetEvent = planetChangeEvent(optionElements, planetName, choosePlanet.props().id);
+				  
 			initialState = falcone.find(Falcone).instance().state;
 			selectElement.simulate('change', planetEvent);
 			
@@ -145,6 +145,20 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 			expect(state.time.length).toBe(initialState.time.length+1);
 		});
 		
+		it('vehicles state should get updated', () => {
+			const state = falcone.find(Falcone).instance().state;
+			
+			const initialVehicle = initialState.vehicles.find(vehicle => vehicle.name === vehicleName);
+			
+			const initialStock = initialVehicle.total_no;
+			
+			const selectedVehicle = state.vehicles.find(vehicle => vehicle.name === vehicleName);
+			
+			const finalStock = selectedVehicle.total_no;
+			
+			expect(finalStock).toBe(initialStock-1);
+		});
+		
 		it(`Current destination ${vehicleName} stock should reduce by 1`, () => {
 			const state = falcone.find(Falcone).instance().state;
 			
@@ -161,21 +175,155 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 		
 		it(`Other destinations ${vehicleName} stock should reduce by 1, if AssignRocket component has not been rendered yet or user has not selected any vehicle in other destination`, () => {
 			const state = falcone.find(Falcone).instance().state;
+			let checks = true;
 			state.listOfVehicles.forEach((vehicleObj, index) => {
 				if(index !== destination-1) {
 					if(vehicleObj.previousSelected.length === 0) {
-						vehicleObj.vehicles.find((vehicle, vIndex) => {
+						vehicleObj.vehicles.forEach((vehicle, vIndex) => {
 							if(vehicle.name === vehicleName) {
 								const initialStock = initialState.listOfVehicles[index].vehicles[vIndex].total_no;
 								
 								const finalStock = vehicle.total_no;
 								
-								expect(finalStock).toBe(initialStock-1);
+								if(finalStock !== initialStock-1) {
+									checks = false;
+								}
 							}
 						});
 					}
 				}
 			});
+			expect(checks).toBeTruthy();
+		});
+	});
+}
+
+function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj) {
+	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}`, () => {
+		let initialState;
+		
+		beforeAll(() => {
+			destinations.forEach((destination, index) => {
+				const choosePlanets = falcone.find('.ChoosePlanet'),
+					  choosePlanet = choosePlanets.at(destination-1),
+					  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
+					  optionElements = selectElement.find('.ChoosePlanet__Option'),
+					  planetEvent = planetChangeEvent(optionElements, planetNames[index], choosePlanet.props().id);
+					  
+				selectElement.simulate('change', planetEvent);
+				
+				const assignRockets = falcone.find('.AssignRocket'),
+					  assignRocket = assignRockets.at(destination-1),
+					  inputElements = assignRocket.find('.AssignRocket__option');
+			
+				inputElements.forEach((inputDiv, i) => {
+					const value = inputDiv.props().children[0].props.value;
+					if(value === vehicleNames[index]) {
+						const input = inputDiv.find('input'),
+							  speed = input.props()['data-speed'],
+							  id = input.props()['data-id'];
+						  
+						const vehicleEvent = vehicleChangeEvent(vehicleNames[index], speed, id);
+						input.simulate('change', vehicleEvent);
+					}
+				});
+			});
+			
+			initialState = falcone.find(Falcone).instance().state;
+			
+			const assignRockets = falcone.find('.AssignRocket'),
+				  assignRocket = assignRockets.at(changeRocketObj.destination-1),
+				  inputElements = assignRocket.find('.AssignRocket__option');
+			
+			inputElements.forEach((inputDiv, i) => {
+				const value = inputDiv.props().children[0].props.value;
+				if(value === changeRocketObj.changeTo) {
+					const input = inputDiv.find('input'),
+						  speed = input.props()['data-speed'],
+						  id = input.props()['data-id'];
+					  
+					const vehicleEvent = vehicleChangeEvent(changeRocketObj.changeTo, speed, id);
+					input.simulate('change', vehicleEvent);
+				}
+			});
+		});
+		
+		afterAll(() => {
+			falcone.unmount();
+		});
+		
+		it(`Vehicle_names should have ${changeRocketObj.changeTo} at index ${changeRocketObj.destination-1}, instead of ${changeRocketObj.changeFrom}`, () => {
+			const state = falcone.find(Falcone).instance().state;
+			const changes = state.vehicle_names[changeRocketObj.destination-1];
+			
+			expect(changes).toBe(changeRocketObj.changeTo);
+		});
+		
+		it('vehicles state should get updated', () => {
+			const { destination, changeFrom, changeTo } = changeRocketObj,
+				  state = falcone.find(Falcone).instance().state;
+			
+			const changeFromInitialStock = initialState.vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
+			
+			const changeToInitialStock = initialState.vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+			
+			const changeFromFinalStock = state.vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
+			
+			const changeToFinalStock = state.vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+			
+			expect(changeFromFinalStock).toBe(changeFromInitialStock+1);
+			expect(changeToFinalStock).toBe(changeToInitialStock-1);
+		});
+		
+		it(`Current destination ${changeRocketObj.changeTo} stock should reduce by 1, ${changeRocketObj.changeFrom} stock should increase by 1`, () => {
+			const { destination, changeFrom, changeTo } = changeRocketObj,
+				  state = falcone.find(Falcone).instance().state;
+			
+			const changeFromInitialStock = initialState.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
+			
+			const changeToInitialStock = initialState.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+			
+			const changeFromFinalStock = state.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeFrom).total_no;
+			
+			const changeToFinalStock = state.listOfVehicles[destination-1].vehicles.find(vehicle => vehicle.name === changeTo).total_no;
+			
+			expect(changeFromFinalStock).toBe(changeFromInitialStock+1);
+			expect(changeToFinalStock).toBe(changeToInitialStock-1);
+		});
+		
+		it(`Other destinations ${changeRocketObj.changeTo} stock should reduce by 1 and ${changeRocketObj.changeFrom} stock should increase by 1, if AssignRocket component has not been rendered yet or user has not selected any vehicle in other destination`, () => {
+			const { changeFrom, changeTo, destination } = changeRocketObj;
+			const state = falcone.find(Falcone).instance().state;
+			let checks = true;
+			
+			state.listOfVehicles.forEach((vehicleObj, index) => {
+				if(index !== destination-1) {
+					if(vehicleObj.previousSelected.length === 0) {
+						vehicleObj.vehicles.forEach((vehicle, vIndex) => {
+							if(vehicle.name === changeFrom) {
+								const initialStock = initialState.listOfVehicles[index].vehicles[vIndex].total_no;
+								
+								const finalStock = vehicle.total_no;
+								
+								if(finalStock !== initialStock+1) {
+									checks = false;
+								}
+							}
+							
+							if(vehicle.name === changeTo) {
+								const initialStock = initialState.listOfVehicles[index].vehicles[vIndex].total_no;
+								
+								const finalStock = vehicle.total_no;
+								
+								if(finalStock !== initialStock-1) {
+									checks = false;
+								}
+							}
+						});
+					}
+				}
+			});
+			expect(checks).toBe(true);
 		});
 	});
 }
@@ -217,7 +365,7 @@ describe("Falcone Component", () => {
 		selectPlanet(falcone, 'Sapir', 4, 'select', 4);
 	});
 	
-	describe("User selects destination-1 planet and rocket", () => {
+	describe("User select destinations planet and rocket", () => {
 		const falcone = mount(
 			<Router>
 				<Falcone planets={planets} vehicles={vehicles} />
@@ -231,5 +379,29 @@ describe("Falcone Component", () => {
 		selectRocket(falcone, 'Donlon', 1, 'Space pod');
 		selectRocket(falcone, 'Enchai', 2, 'Space shuttle');
 		selectRocket(falcone, 'Pingasor', 3, 'Space rocket');
+		selectRocket(falcone, 'Sapir', 4, 'Space pod');
+	});
+	
+	describe("User change a particular destination rocket", () => {
+		const falcone = mount(
+			<Router>
+				<Falcone planets={planets} vehicles={vehicles} />
+			</Router>
+		);
+		
+		afterAll(() => {
+			falcone.unmount();
+		});
+		
+		const planetNames = ['Donlon', 'Enchai', 'Pingasor', 'Sapir'],
+			  vehicleNames = ['Space pod', 'Space shuttle', 'Space rocket', 'Space pod'],
+			  destinations = [1, 2, 3, 4],
+			  changeRocketObj = {
+				  destination: 1,
+				  changeTo: 'Space ship',
+				  changeFrom: 'Space pod'
+			  }
+			  
+		changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj);
 	});
 });
