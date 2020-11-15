@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Falcone from './components/Falcone';
-import './App.css';
+import Falcone from './Falcone';
+import './../styles/App.css';
 
 class App extends Component {
 	constructor(props) {

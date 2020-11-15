@@ -7,6 +7,7 @@ import { getPlanets, getVehicles } from './../helpers';
 const planets = getPlanets();
 const vehicles = getVehicles();
 
+// Getting initial and current stocks from state
 function getStocks(initialObj, finalObj, vehicleName) {
 	let initialStock, finalStock;
 	
@@ -23,7 +24,7 @@ function getStocks(initialObj, finalObj, vehicleName) {
 	}
 }
 
-// Creates synthetic event
+// Creates synthetic planet change event
 function planetChangeEvent(optionElements, value, id) {
 	const options = optionElements.map((optionElement, i) => {
 		const temp = {};
@@ -56,6 +57,7 @@ function planetChangeEvent(optionElements, value, id) {
 	}
 }
 
+// Testing choosePlanet component
 function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRendered) {
 	let description;
 	if(changeOrSelect === 'change'){
@@ -105,6 +107,7 @@ function selectPlanet(falcone, planetName, destination, changeOrSelect, soFarRen
 	});
 }
 
+// Generate synthetic vehicle change event
 function vehicleChangeEvent(value, speed, id) {
 	return {
 		target: {
@@ -117,6 +120,7 @@ function vehicleChangeEvent(value, speed, id) {
 	}
 }
 
+// Testing AssignRocket component 
 function selectRocket(falcone, planetName, destination, vehicleName) {
 	describe(`User select ${planetName} planet and ${vehicleName} rocket in destination-${destination}`, () => {
 		let initialState, finalState;
@@ -197,6 +201,7 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 	});
 }
 
+// Testing rocket change action
 function changeRocket(planetNames, vehicleNames, destinations, changeRocketObj) {
 	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}`, () => {
 		let initialState, finalState, falcone;
