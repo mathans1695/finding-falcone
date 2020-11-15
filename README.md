@@ -11,6 +11,6 @@ Geektrust front-end development project. You can find the description of the pro
 ### <App />
   * Responsible for handling API requests like getting planets and vehicles details, generating unique tokens and final reports.
     #### Initial state:
-      vehicles: ''
-      planets: ''
+      - vehicles: ''
+      - planets: ''
     #### Methods:
