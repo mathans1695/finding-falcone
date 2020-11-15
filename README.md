@@ -16,5 +16,10 @@ Geektrust front-end development project. You can find the description of the pro
     #### Renders:
       - Falcone component
     #### Methods:
-      - ComponentDidMount -> Fetch vehicles and planets data from api and set states correspondingly
-        - vehicle
+      - ComponentDidMount -> Fetch vehicles and planets data from API and set states correspondingly. Returns undefined.
+        - Set vehicles JSON object received from API GET request to vehicles state
+        - Set planets JSON object received from API GET request to planets state
+        
+      - getToken -> Returns Promise with generated token received from API request. This method will be called from Falcone Component, when user clicks Find Falcone button in Falcone component and passed as a props to Falcone component.
+      
+      - getResults -> Returns Promise with results received from API request. Accepts reqBody as arguments, reqBody JSON object contains planets and vehicles details with above generated token. This method will be called after token promise resolved in Falcone component and passed as a props to Falcone component.
