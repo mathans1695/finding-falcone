@@ -197,11 +197,17 @@ function selectRocket(falcone, planetName, destination, vehicleName) {
 	});
 }
 
-function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj) {
+function changeRocket(planetNames, vehicleNames, destinations, changeRocketObj) {
 	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}`, () => {
-		let initialState, finalState;
+		let initialState, finalState, falcone;
 		
 		beforeAll(() => {
+			falcone = mount(
+				<Router>
+					<Falcone planets={planets} vehicles={vehicles} />
+				</Router>
+			);
+			
 			destinations.forEach((destination, index) => {
 				const choosePlanets = falcone.find('.ChoosePlanet'),
 					  choosePlanet = choosePlanets.at(destination-1),
@@ -326,6 +332,73 @@ function changeRocket(falcone, planetNames, vehicleNames, destinations, changeRo
 	});
 }
 
+function rocketNotAvailable(planetNames, vehicleNames, destinations, changeRocketObj) {
+	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}, that is not in stock`, () => {
+		let initialState, finalState, falcone;
+		
+		beforeAll(() => {
+			falcone = mount(
+				<Router>
+					<Falcone planets={planets} vehicles={vehicles} />
+				</Router>
+			);
+			
+			destinations.forEach((destination, index) => {
+				const choosePlanets = falcone.find('.ChoosePlanet'),
+					  choosePlanet = choosePlanets.at(destination-1),
+					  selectElement = choosePlanet.find('.ChoosePlanet__Select'),
+					  optionElements = selectElement.find('.ChoosePlanet__Option'),
+					  planetEvent = planetChangeEvent(optionElements, planetNames[index], choosePlanet.props().id);
+					  
+				selectElement.simulate('change', planetEvent);
+				
+				const assignRockets = falcone.find('.AssignRocket'),
+					  assignRocket = assignRockets.at(destination-1),
+					  inputElements = assignRocket.find('.AssignRocket__option');
+			
+				inputElements.forEach((inputDiv, i) => {
+					const value = inputDiv.props().children[0].props.value;
+					if(value === vehicleNames[index]) {
+						const input = inputDiv.find('input'),
+							  speed = input.props()['data-speed'],
+							  id = input.props()['data-id'];
+						  
+						const vehicleEvent = vehicleChangeEvent(vehicleNames[index], speed, id);
+						input.simulate('change', vehicleEvent);
+					}
+				});
+			});
+			
+			initialState = falcone.find(Falcone).instance().state;
+			
+			const assignRockets = falcone.find('.AssignRocket'),
+				  assignRocket = assignRockets.at(changeRocketObj.destination-1),
+				  inputElements = assignRocket.find('.AssignRocket__option');
+			
+			inputElements.forEach((inputDiv, i) => {
+				const value = inputDiv.props().children[0].props.value;
+				if(value === changeRocketObj.changeTo) {
+					const input = inputDiv.find('input'),
+						  speed = input.props()['data-speed'],
+						  id = input.props()['data-id'];
+					  
+					const vehicleEvent = vehicleChangeEvent(changeRocketObj.changeTo, speed, id);
+					input.simulate('change', vehicleEvent);
+				}
+			});
+			finalState = falcone.find(Falcone).instance().state;
+		});
+		
+		afterAll(() => {
+			falcone.unmount();
+		});
+		
+		it('showMessage state should have message - "Selected rocket is not available"', () => {
+			expect(finalState.showMessage).toBe('Selected rocket is not available');
+		});
+	});
+}
+
 describe("Mount Falcone Component", () => {
 	describe("User selects destination-1 planet", () => {
 		const falcone = mount(
@@ -381,16 +454,6 @@ describe("Mount Falcone Component", () => {
 	});
 	
 	describe("User change a particular destination rocket", () => {
-		const falcone = mount(
-			<Router>
-				<Falcone planets={planets} vehicles={vehicles} />
-			</Router>
-		);
-		
-		afterAll(() => {
-			falcone.unmount();
-		});
-		
 		const planetNames = ['Donlon', 'Enchai', 'Pingasor', 'Sapir'],
 			  vehicleNames = ['Space pod', 'Space shuttle', 'Space rocket', 'Space pod'],
 			  destinations = [1, 2, 3, 4],
@@ -400,10 +463,59 @@ describe("Mount Falcone Component", () => {
 				  changeFrom: 'Space pod'
 			  }
 			  
-		changeRocket(falcone, planetNames, vehicleNames, destinations, changeRocketObj);
+		changeRocket(planetNames, vehicleNames, destinations, changeRocketObj);
+		
+		planetNames[2] = 'Lerbin';
+		vehicleNames[2] = 'Space ship';
+		
+		changeRocket(planetNames, vehicleNames, destinations, changeRocketObj);
 	});
 	
-	describe('User selects rocket that is not available', () => {
+	describe('User select rocket that is not available', () => {
+		const planetNames = ['Donlon', 'Enchai', 'Pingasor', 'Sapir'],
+			  vehicleNames = ['Space pod', 'Space shuttle', 'Space rocket', 'Space pod'],
+			  destinations = [1, 2, 3, 4],
+			  changeRocketObj = {
+				  destination: 1,
+				  changeTo: 'Space pod',
+				  changeFrom: 'Space shuttle'
+			  }
 		
+		rocketNotAvailable(planetNames, vehicleNames, destinations, changeRocketObj);
+		
+		vehicleNames[3] = 'Space shuttle';
+		changeRocketObj.destination = 3;
+		changeRocketObj.changeTo = 'Space shuttle';
+		changeRocketObj.changeFrom = 'Space rocket';
+		
+		rocketNotAvailable(planetNames, vehicleNames, destinations, changeRocketObj);
+	});
+	
+	describe('User perform reset operation', () => {
+		const falcone = mount(
+			<Router>
+				<Falcone planets={planets} vehicles={vehicles} />
+			</Router>
+		);
+
+		afterAll(() => {
+			falcone.unmount();
+		});
+		
+		it('All state should reset to its initial state', () => {
+			const initialState = falcone.find(Falcone).instance().state;
+			
+			// Manually changing the state
+			initialState.planet_names = 'Donlon';
+			initialState.vehicle_names = 'Space pod';
+			
+			const resetElem = falcone.find('.Navbar__reset');
+			resetElem.simulate('click');
+			
+			const finalState = falcone.find(Falcone).instance().state;
+			
+			expect(finalState.planet_names.length).toBe(0);
+			expect(finalState.vehicle_names.length).toBe(0);
+		});
 	});
 });
