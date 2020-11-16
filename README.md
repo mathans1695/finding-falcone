@@ -9,20 +9,20 @@ Geektrust front-end development project. You can find the description of the pro
 ![Falcone flowchart](https://github.com/mathans1695/finding-falcone/blob/master/src/Images/App%20Structure.png)
 
 ### App Component:
-  * Responsible for handling API requests like getting planets and vehicles details, generating unique tokens and final report
+  * Responsible for handling **API requests** like getting planets and vehicles details, generating unique tokens and final report
     #### Initial state:
       - *vehicles: ''*
       - *planets: ''*
     #### Renders:
       - Falcone component
     #### Methods:
-      - *ComponentDidMount* -> Fetch vehicles and planets data from API and set states accordingly.
+      - *ComponentDidMount* -> Fetch **vehicles and planets** data from API and set **states** accordingly.
         - Set vehicles JSON object received from API GET request to vehicles state.
         - Set planets JSON object received from API GET request to planets state.
         
       - *getToken*
-        - Returns Promise with generated token received from API request. 
-        - This method will be called from Falcone Component, when user clicks Find Falcone button in Falcone component.
+        - Returns **Promise** with generated token received from API request. 
+        - This method will be called from Falcone Component, when user **clicks** Find Falcone button in Falcone component.
         - Passed as a props to Falcone component.
       
       - *getResults*
@@ -142,10 +142,10 @@ Geektrust front-end development project. You can find the description of the pro
   
 ### Result Component:
   * Display the report to King Shan
-  #### Props - From Falcone component:
-    - *resultJSON: [object]*
-    - *time: [Number, Number, Number, Number]*
-    - *reset: function reset()*
+    #### Props - From Falcone component:
+      - *resultJSON: [object]*
+      - *time: [Number, Number, Number, Number]*
+      - *reset: function reset()*
     
-  #### Renders:
-  Success or Failure message
+    #### Renders:
+    Success or Failure message
