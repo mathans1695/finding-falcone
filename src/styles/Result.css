@@ -1,32 +1,42 @@
 .Result {
-	height: 544px;
-	padding: 30px 55px 80px 30px;
+	width: 100%;
 	font-size: 2.5rem;
-	margin-bottom: 53px;
 	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	margin: auto;
 }
 
 .Result__time {
-	margin-top: 50px;
+	margin-top: 30px;
+	font-size: 2rem;
+}
+
+.Result__msg {
+	text-align: center;
+	font-size: 2rem;
+}
+
+.Result__planet {
+	font-size: 2rem;
 }
 
 .Result__startAgain {
-	margin: 100px 0 0;
+	margin: 50px 0 0;
 	padding: 10px;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	border-radius: 10px;
 	border: 0;
 	box-shadow: 5px 5px 5px black;
 	transition: box-shadow 0.5s;
+	background-color: rgba(255,250,240);
 }
 
 .Result__startAgain:hover {
 	cursor: pointer;
 	box-shadow: -5px -5px 5px black;
 	transition: box-shadow 0.5;
+	background-color: rgba(255,250,240);
 }

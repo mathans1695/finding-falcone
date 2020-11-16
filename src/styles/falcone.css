@@ -2,25 +2,27 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	min-height: 100vh;
+	min-height: 100%;
 	background: rgb(255,250,240);
 }
 
 .Falcone__button {
-	margin: 20px 0;
+	margin: 10px 0 0;
 	padding: 10px;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 	border-radius: 10px;
 	border: 0;
 	box-shadow: 5px 5px 5px black;
 	transition: box-shadow 0.5s;
+	background-color: rgba(255,250,240);
 }
 
 .Falcone__button:hover {
 	cursor: pointer;
 	box-shadow: -5px -5px 5px black;
 	transition: box-shadow 0.5;
+	background-color: rgba(255,250,240);
 }
 
 .Falcone__main {
@@ -28,5 +30,13 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin: 0 20px;
+	margin: auto;
+	justify-content: center;
+	flex-basis: 80%;
+}
+
+@media screen and (max-width: 700px) {
+	.Falcone__button {
+		font-size: 16px;
+	}
 }

@@ -1,7 +1,7 @@
 .Navbar {
 	display: flex;
 	width: 100%;
-	margin-bottom: 20px;
+	flex-basis: 10%;
 }
 
 .Navbar__logo {
@@ -48,7 +48,7 @@
   } 
   
   .Navbar__logo {
-	  min-height: 70px;
+	min-height: 70px;
   }
 }
 
@@ -58,7 +58,7 @@
   } 
   
   .Navbar__logo {
-	  min-height: 60px;
+	min-height: 60px;
   }
 } 
 
@@ -68,7 +68,7 @@
   } 
   
   .Navbar__logo {
-	  min-height: 60px;
+	min-height: 60px;
   }
 } 
 
@@ -78,7 +78,7 @@
   } 
   
   .Navbar__logo {
-	  min-height: 50px;
+	min-height: 50px;
   }
 } 
 
@@ -88,16 +88,57 @@
   } 
   
   .Navbar__logo {
-	  min-height: 40px;
+	min-height: 40px;
   }
 }
 
-@media screen and (max-width: 900px) { 
-  .Navbar__title { 
-    font-size: 1.5rem;
-  } 
-  
-  .Navbar__logo {
-	  min-height: 30px;
-  }
+@media screen and (max-width: 900px) {
+	.Navbar__title {
+		font-size: 1.5rem;
+	}
+	
+	.Navbar__logo {
+		min-height: 20px;
+	}
+	
+	.Navbar__reset {
+		visibility: hidden;
+		position: relative;
+		margin-left: 10px;
+	}
+	
+	.Navbar__reset::after {
+		visibility: visible;
+		position: absolute;
+		top: 10px;
+		right: 0;
+		padding: 15px;
+		content: '';
+		background-image: url(../Images/reset.png);
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+	
+	.Navbar__geekhome {
+		visibility: hidden;
+		position: relative;
+		margin-left: 5px;
+	}
+	
+	.Navbar__geekhome::after {
+		visibility: visible;
+		position: absolute;
+		top: 10px;
+		left: 0;
+		padding: 15px;
+		content: '';
+		background-image: url(../Images/home.png);
+		background-size: cover;
+		background-position: center;
+	}
+	
+	.Navbar__menu {
+		padding-right: 0;
+	}
 }

@@ -1,12 +1,12 @@
 .MissionPlan {
 	position: relative;
 	padding: 30px 55px 80px 0;
-	min-height: 430px;
+	min-height: 400px;
 	min-width: 70%;
 	border-left: 10px solid grey;
 	border-radius: 20px;
 	background-color: white;
-	margin-bottom: 30px;
+	margin-bottom: 10px;
 }
 
 .MissionPlan__destinations {
@@ -17,7 +17,7 @@
 }
 
 .MissionPlan__destination {
-	margin-left: 50px;
+	margin-left: 20px;
 	margin-top: 20px;
 	border-radius: 5px;
 }
@@ -33,7 +33,6 @@
 .MissionPlan__title {
 	margin-bottom: 10px;
 	padding-left: 10px;
-	font-size: 20px;
 	color: black;
 	font-weight: normal;
 }
@@ -41,4 +40,18 @@
 .MissionPlan__instructions {
 	margin-left: 30px;
 	font-size: 2rem;
+}
+
+@media screen and (max-width: 700px) {
+	.MissionPlan {
+		border-left: 0px;
+	}
+	
+	.MissionPlan__instructions {
+		font-size: 18px;
+	}
+	
+	.MissionPlan__time {
+		font-size: 18px;
+	}
 }

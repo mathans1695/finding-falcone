@@ -9,8 +9,7 @@
 	width: 180px;
 	padding: 10px 5px;
 	border-radius: 5px;
-	background-image: linear-gradient(180deg, white, rgba(0, 0, 0, 0.1));
-	font-size: 16px;
+	background-image: linear-gradient(180deg, white, rgba(255,250,240));
 	border: none;
 	box-shadow: 1px 1px 5px -2px black;
 	font-style: sans-serif;
@@ -18,5 +17,5 @@
 
 .ChoosePlanet__Select:hover {
 	cursor: pointer;
-	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1), white);
+	background-image: linear-gradient(180deg, rgba(255,250,240), white);
 }
