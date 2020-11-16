@@ -45,11 +45,11 @@ Geektrust front-end development project. You can find the description of the pro
       - *vehicle_names: []* -> Will contain vehicle names selected by user for generating reqBody object.
       - *time: []* -> Will contain estimate time of travel for each destination.
       - *showMessage: ''* -> Will contain message that needs to be shown to user, when user resets the game or when user select a rocket that is not in stock.
-    #### Props:
+    #### Props - From App component:
       - *planets: [object]*
       - *vehicles: [object]*
-      - *getToken: function getToken()* -> From App component
-      - *getResult: function getResult()* -> From App component
+      - *getToken: function getToken()*
+      - *getResult: function getResult()*
     #### Renders:
       - Navbar component
       - MissionPlan component or Result component
@@ -98,3 +98,54 @@ Geektrust front-end development project. You can find the description of the pro
       - *vehicle_names: [string, string, string, string]*
       - *time: [Number, Number, Number, Number]*
       - *showMessage: [String]*
+      
+### Mission Component:
+  * Acts as an intermediary between Falcone and ChoosePlanet, Falcone and AssignRocket component.
+    #### Props - From Falcone component:
+      - *listOfPlanets: [object, object, object, object]*
+      - *listOfVehicles: [object, object, object, object]*
+      - *updateListOfPlanets: function updateListOfPlanets()*
+      - *updateListOfVehicles: function updateListOfVehicles()*
+      - *time: [Number, Number, Number, Number]*
+    #### Renders:
+      - ChoosePlanet component
+      - AssignRocket component
+    #### Methods:
+      - *updatePlanet(id, removePlanet, planetDistance)*
+        - Will be called from ChoosePlanet component, when user selects or change a planet in any destination.
+        - Will call updateListOfPlanets and updateListOfVehicles method in Falcone component.
+        
+      - *handleVehicleUpdation(id, rocket, speed, planetDistance)*
+        - Will be called from AssignRocket component, when user selects or change a rocket in any destinaion.
+        - Will call updateVehicle method in Falcone component.
+
+### ChoosePlanet Component:
+  * Render select element using planets props received from MissionPlan component.
+    #### Props - From MissionPlan component:
+      - *planets: [object]*
+      - *updatePlanet: function updatePlanet()*
+    #### Renders:
+      - Select Element
+    #### Methods:
+      - *handleChange(e)*
+        - Will call updatePlanet method in Falcone component, when user selects or change a planet
+        
+### AssignRocket Component:
+  * Render input element using vehicles props received from MissionPlan component.
+    Note: input element will be checked based on showAlways property of vehicles object received from MissionPlan component, not on the basis of user selection.
+    
+### Navbar Component:
+  * Renders title, reset button and GeekTrust link
+  
+### Footer Component:
+  * Renders GeekTrust Link
+  
+### Result Component:
+  * Display the report to King Shan
+  #### Props - From Falcone component:
+    - *resultJSON: [object]*
+    - *time: [Number, Number, Number, Number]*
+    - *reset: function reset()*
+    
+  #### Renders:
+  Success or Failure message
