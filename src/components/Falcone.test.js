@@ -269,7 +269,7 @@ function changeRocket(planetNames, vehicleNames, destinations, changeRocketObj) 
 		});
 		
 		it('vehicles state should get updated', () => {
-			const { destination, changeFrom, changeTo } = changeRocketObj,
+			const { changeFrom, changeTo } = changeRocketObj,
 			
 				  changeFromStocks = getStocks(initialState, finalState, changeFrom),
 				  changeFromInitialStock = changeFromStocks.initialStock,
@@ -339,7 +339,7 @@ function changeRocket(planetNames, vehicleNames, destinations, changeRocketObj) 
 
 function rocketNotAvailable(planetNames, vehicleNames, destinations, changeRocketObj) {
 	describe(`User change ${changeRocketObj.changeFrom} to ${changeRocketObj.changeTo} in destination-${changeRocketObj.destination}, that is not in stock`, () => {
-		let initialState, finalState, falcone;
+		let finalState, falcone;
 		
 		beforeAll(() => {
 			falcone = mount(
@@ -373,8 +373,6 @@ function rocketNotAvailable(planetNames, vehicleNames, destinations, changeRocke
 					}
 				});
 			});
-			
-			initialState = falcone.find(Falcone).instance().state;
 			
 			const assignRockets = falcone.find('.AssignRocket'),
 				  assignRocket = assignRockets.at(changeRocketObj.destination-1),
