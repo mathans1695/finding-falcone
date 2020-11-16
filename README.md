@@ -9,14 +9,14 @@ Geektrust front-end development project. You can find the description of the pro
 ![Falcone flowchart](https://github.com/mathans1695/finding-falcone/blob/master/src/Images/App%20Structure.png)
 
 ### App Component:
-  * Responsible for handling **API requests** like getting planets and vehicles details, generating unique tokens and final report
+  * Responsible for handling API requests like getting planets and vehicles details, generating unique tokens and final report
     #### Initial state:
       - *vehicles: ''*
       - *planets: ''*
     #### Renders:
       - Falcone component
     #### Methods:
-      - *ComponentDidMount* -> Fetch **vehicles and planets** data from API and set **states** accordingly.
+      - *ComponentDidMount* -> Fetch vehicles and planets data from API and set states accordingly.
         - Set vehicles JSON object received from API GET request to vehicles state.
         - Set planets JSON object received from API GET request to planets state.
         
@@ -132,7 +132,7 @@ Geektrust front-end development project. You can find the description of the pro
         
 ### AssignRocket Component:
   * Render input element using vehicles props received from MissionPlan component.
-    Note: input element will be checked based on showAlways property of vehicles object received from MissionPlan component, not on the basis of user selection.
+    **Note:** input element will be checked based on showAlways property of vehicles object received from MissionPlan component, not on the basis of user selection.
     
 ### Navbar Component:
   * Renders title, reset button and GeekTrust link
@@ -149,3 +149,11 @@ Geektrust front-end development project. You can find the description of the pro
     
     #### Renders:
     Success or Failure message
+    
+### Full Integration Tests:
+  I find it is not feasible to tests every individual component with manual data, because every component is managed by Falcone component. So, I mount Falcone component and tests the whole app. For testing, I use enzyme and jest.
+  
+  
+## Conclusion
+  I learned a lot from doing this project. Before this project, I don't know about testing and its importance. But now I know, little bit about testing. 
+  **Learn by doing simple things**
