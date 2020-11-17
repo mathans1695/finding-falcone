@@ -377,7 +377,7 @@ class Falcone extends Component {
 			resultJSON: ''
 		})
 		
-		if(target.innerText === 'Reset') {
+		if(target.innerText === 'Reset' || target.innerText === '') {
 			this.setState({showMessage: 'Reset successful'}, () => {
 				setTimeout(() => {
 					this.setState({showMessage: ''})
