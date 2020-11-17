@@ -1,4 +1,14 @@
 # GeekTrust UI Project - [Github Repo link](https://github.com/mathans1695/finding-falcone)
+## To get the code working, follow the following steps:
+   Note: This section is only for geektrust submission, if you're not from geektrust, kindly ignore this section.
+   1. Install node.js
+   2. Unzip the rar file
+   3. Open Command prompt
+   3. Navigate to the unzipped folder
+   4. Run npm install
+   5. Run npm start to launch the app
+   6. For tests, Run npm test
+   
 ## Project:
 Geektrust front-end development project. You can find the description of the problem by visiting this link -> [GeekTrust](https://www.geektrust.in/coding-problem/frontend/space)
 
