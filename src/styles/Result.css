@@ -40,3 +40,11 @@
 	transition: box-shadow 0.5;
 	background-color: rgba(255,250,240);
 }
+
+@media screen and (max-width: 900px) {
+	.Result__time,
+	.Result__planet,
+	.Result__msg {
+		font-size: 1rem;
+	}
+}

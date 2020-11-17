@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import _ from 'lodash';
 import Message from './Message';
 import { uuid } from '../helpers';
@@ -363,9 +363,11 @@ class Falcone extends Component {
 		const regExp = /result/i;
 		const match = regExp.test(window.location.href);
 		
-		if(match && target.innerText === 'Reset') {
-			window.location.replace('http://localhost:3000/');
-		}
+		if(match) {
+			if(target.innerText === 'Reset' || target.innerText === '') {
+				this.props.history.push('/');
+			}
+		} 
 		
 		this.generateLists();
 		this.setState({

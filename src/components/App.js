@@ -79,6 +79,7 @@ class App extends Component {
 						vehicles={vehicles} 
 						getToken={this.getToken}
 						getResult={this.getResult}
+						history={this.props.history}
 					/>
 				}
 			</div>
