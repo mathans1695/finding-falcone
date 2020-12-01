@@ -24,6 +24,7 @@ class Falcone extends Component {
 			showMessage: ''
 		}
 		
+		this.handleClick = this.handleClick.bind(this);
 		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
 		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
 		this.updateVehicle = this.updateVehicle.bind(this);
@@ -96,9 +97,9 @@ class Falcone extends Component {
 	// update planets in other destionations on change
 	updateListOfPlanets(id, removePlanet, planetDistance) {
 		const { planet_names } = this.state;
-		let listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
+		const listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
 		const selectedPlanets = Array.from(planet_names);
-		let previousSelected = [];
+		const previousSelected = [];
 		
 		listOfPlanets.forEach(planets => {
 			if(id === planets.id) {
@@ -169,8 +170,8 @@ class Falcone extends Component {
 					vehiclesObj.isRendered = true;
 				}
 				
-				vehiclesObj.vehicles.forEach((vehicle) => {
-					if(vehicle.max_distance >= planetDistance || vehicle.total_no > 0) {
+				vehiclesObj.vehicles.forEach((vehicle, index) => {
+					if(vehicle.max_distance >= planetDistance && this.state.vehicles[index].total_no > 0) {
 						vehicle['isPossible'] = true;
 					} else {
 						vehicle['isPossible'] = false;
@@ -416,7 +417,7 @@ class Falcone extends Component {
 							&& vehicle_names.length === 4 
 							? <Link to='/result'>
 								<button 
-									onClick={() => this.handleClick()} 
+									onClick={this.handleClick} 
 									className='Falcone__button'
 								>
 									Find Falcone

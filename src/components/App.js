@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import fetch from 'node-fetch';
 import { getResponse } from '../utils/api_requests';
 import Falcone from './Falcone';
 import './../styles/App.css';

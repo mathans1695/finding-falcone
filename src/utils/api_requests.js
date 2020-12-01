@@ -39,4 +39,4 @@ function getResult(reqBody) {
 		.catch(err => console.log(err))
 }
 
-export { getResponse, getToken, getResult };
+export { getResponse, getToken, getResult, BASE_URL };
