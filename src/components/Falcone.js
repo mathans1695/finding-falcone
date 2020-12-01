@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import _ from 'lodash';
+import { getToken, getResult } from '../utils/api_requests';
 import Message from './Message';
 import { uuid } from '../helpers';
 import '../styles/falcone.css';
@@ -23,7 +24,6 @@ class Falcone extends Component {
 			showMessage: ''
 		}
 		
-		this.handleClick = this.handleClick.bind(this);
 		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
 		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
 		this.updateVehicle = this.updateVehicle.bind(this);
@@ -72,14 +72,13 @@ class Falcone extends Component {
 	
 	// method will execute on click of find falcone button
 	handleClick() {
-		const { getToken } = this.props,
-			  { planet_names, vehicle_names } = this.state,
+		const { planet_names, vehicle_names } = this.state,
 			  reqBody = Object.create(null);	
 		
 		reqBody['planet_names'] = planet_names;
 		reqBody['vehicle_names'] = vehicle_names;
 		
-		getToken(reqBody)
+		getToken()
 			.then(json => {
 				reqBody['token'] = json.token;
 				this.result(reqBody);
@@ -89,7 +88,7 @@ class Falcone extends Component {
 	
 	// method runs after token received and set resultJSON state with result
 	result(reqBody) {
-		this.props.getResult(reqBody)
+		getResult(reqBody)
 			.then(json => this.setState({resultJSON: json}))
 			.catch(err => console.log(err))
 	}
