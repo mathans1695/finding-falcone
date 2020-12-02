@@ -1,7 +1,7 @@
 .Message {
 	position: absolute;
-	bottom: 50px;
-	left: 50px;
+	bottom: 5px;
+	left: 5px;
 	padding: 10px;
 	background-color: rgba(0, 0, 0, 1);
 	color: white;
@@ -11,8 +11,6 @@
 
 @media screen and (max-width: 900px) {
 	.Message {
-		bottom: 5px;
-		left: 5px;
 		font-size: 14px;
 	}
 }
