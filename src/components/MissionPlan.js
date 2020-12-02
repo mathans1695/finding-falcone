@@ -22,7 +22,7 @@ class MissionPlan extends Component {
 		const props = this.props;
 		
 		// invoke updateVehicle in falcone component
-		props.updateVehicle(id, rocket, speed, planetDistance);
+		props.handleRocketChange(id, rocket, speed, planetDistance);
 	}
 	
 	render() {
