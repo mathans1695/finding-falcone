@@ -19,9 +19,9 @@ class Falcone extends Component {
 			vehicles: [],
 			listOfPlanets: [],
 			listOfVehicles: [],
-			planet_names: [],
-			vehicle_names: [],
-			time: [],
+			planet_names: Array.from(4),
+			vehicle_names: Array.from(4),
+			time: Array.from(4),
 			showMessage: ''
 		}
 		
@@ -161,27 +161,60 @@ class Falcone extends Component {
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
 		const globalVehicles = _.cloneDeep(this.state.vehicles);
 		const vehicle_names = _.cloneDeep(this.state.vehicle_names);
+		const timeArr = _.cloneDeep(this.state.time);
+		
+		let notPossible, previousSelected;
 		
 		listOfVehicles.forEach((vehiclesObj, i) => {
 			if(id === vehiclesObj.id) {
 				vehiclesObj['planetDistance'] = planetDistance;
 				if(!vehiclesObj.isRendered) {
 					vehiclesObj.isRendered = true;
-				}
-				
-				vehiclesObj.vehicles.forEach((vehicle, index) => {
-					if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no > 0) {
-						vehicle['isPossible'] = true;
-					} else {
-						vehicle['isPossible'] = false;
-						if(vehicle.showAlways) {
-							vehiclesObj.previousSelected = '';
-							vehicle_names.splice(i, 1);
-							vehicle.showAlways = false;
-							vehicle.total_no += 1;
-							globalVehicles[index].total_no += 1;
+					vehiclesObj.vehicles.forEach((vehicle, index) => {
+						if(vehicle.max_distance >= planetDistance && vehicle.total_no > 0) {
+							vehicle['isPossible'] = true;
+						} else {
+							vehicle['isPossible'] = false;
 						}
+					});
+				} else {
+					previousSelected = vehiclesObj.previousSelected;
+					vehiclesObj.vehicles.forEach((vehicle, index) => {
+						if(vehicle.showAlways) {
+							if(vehicle.max_distance >= planetDistance && vehicle.total_no >= 0) {
+								
+							} else {
+								vehicle.showAlways = false;
+								vehicle.isPossible = false;
+								vehicle.total_no += 1;
+								globalVehicles[index].total_no += 1;
+								vehiclesObj.previousSelected = '';
+								timeArr.splice(i);
+								notPossible = true;
+							}
+						} else {
+							if(vehicle.max_distance >= planetDistance && vehicle.total_no > 0) {
+								vehicle['isPossible'] = true;
+							} else {
+								vehicle['isPossible'] = false;
+							}
+						}
+					});
+				}
+			}
+		});
+		
+		listOfVehicles.forEach((vehiclesObj, i) => {
+			if(notPossible && id !== vehiclesObj.id) {
+				vehiclesObj.vehicles.forEach(vehicle => {
+					if(vehicle.name === previousSelected) {
+						vehicle.total_no += 1;
 					}
+				});
+			}
+			if(notPossible && id === vehiclesObj.id) {
+				vehiclesObj.vehicles.forEach((vehicle, index) => {
+					vehicle.total_no = globalVehicles[index].total_no;
 				});
 			}
 		});
@@ -189,7 +222,8 @@ class Falcone extends Component {
 		this.setState({
 			listOfVehicles: listOfVehicles,
 			vehicles: globalVehicles,
-			vehicle_names: vehicle_names
+			vehicle_names: vehicle_names,
+			time: timeArr
 		});
 	}
 	
