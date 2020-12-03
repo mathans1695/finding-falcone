@@ -25,6 +25,7 @@ class Falcone extends Component {
 			showMessage: ''
 		}
 		
+		this.updatePlanetNames = this.updatePlanetNames.bind(this);
 		this.handleClick = this.handleClick.bind(this);
 		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
 		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
@@ -343,6 +344,10 @@ class Falcone extends Component {
 		}
 	}
 	
+	updatePlanetNames(planet_names) {
+		this.setState({planet_names: planet_names});
+	}
+	
 	render() {
 		const { listOfPlanets, 
 				planet_names, 
@@ -368,8 +373,11 @@ class Falcone extends Component {
 					<main className='Falcone__main'>
 						{listOfPlanets.length &&
 						 listOfVehicles.length &&
-							<MissionPlan 
-								listOfPlanets={listOfPlanets} 
+							<MissionPlan
+								planets={this.props.planets}
+								planet_names={this.state.planet_names}
+								updatePlanetNames={this.updatePlanetNames}
+								listOfPlanets={listOfPlanets}
 								listOfVehicles={listOfVehicles}
 								updateListOfPlanets={this.updateListOfPlanets}
 								updateListOfVehicles={this.updateListOfVehicles}

@@ -1,0 +1,12 @@
+.ListOfPlanets {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+.ListOfPlanets__destination {
+	margin-left: 20px;
+	margin-top: 20px;
+	border-radius: 5px;
+}

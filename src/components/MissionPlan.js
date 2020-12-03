@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { uuid } from '../helpers';
+import ListOfPlanets from './ListOfPlanets';
 import ChoosePlanet from './ChoosePlanet';
 import AssignRocket from './AssignRocket';
 import '../styles/MissionPlan.css';
@@ -49,6 +51,8 @@ class MissionPlan extends Component {
 			})
 		)
 		
+		const ids = [uuid(), uuid(), uuid(), uuid()];
+		
 		return (
 			<div className='MissionPlan'>
 				<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
@@ -66,7 +70,14 @@ class MissionPlan extends Component {
 							Total Time: 0
 					  </div>
 				}
-				
+				<div className='MissionPlan__destinations'>
+					<ListOfPlanets 
+						planets={this.props.planets} 
+						ids={ids} 
+						updatePlanetNames={this.props.updatePlanetNames} 
+						planet_names={this.props.planet_names} 
+					/>
+				</div>
 			</div>
 		)
 	}
