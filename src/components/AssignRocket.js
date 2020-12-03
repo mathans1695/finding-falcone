@@ -21,7 +21,6 @@ class AssignRocket extends Component {
 	
 	render() {
 		const vehicles = this.props.vehicles;
-		console.log(vehicles);
 		
 		// showing vehicles based on the availability 
 		const options = vehicles.vehicles.map((vehicle) => {

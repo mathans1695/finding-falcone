@@ -19,9 +19,9 @@ class Falcone extends Component {
 			vehicles: [],
 			listOfPlanets: [],
 			listOfVehicles: [],
-			planet_names: Array.from(4),
-			vehicle_names: Array.from(4),
-			time: Array.from(4),
+			planet_names: new Array(4),
+			vehicle_names: new Array(4),
+			time: [0, 0, 0, 0],
 			showMessage: ''
 		}
 		
@@ -99,18 +99,13 @@ class Falcone extends Component {
 		const selectedPlanets = Array.from(planet_names);
 		const previousSelected = [];
 		
-		listOfPlanets.forEach(planets => {
+		listOfPlanets.forEach((planets, index) => {
 			if(id === planets.id) {
 				planets['curPlanet'] = removePlanet;
+				selectedPlanets.splice(index, 1, removePlanet);
+				
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
-					
-					// Updating planet_names state copy
-					const removeIndex = selectedPlanets.findIndex(name => {
-						return name === planets.previousSelected[0].name;
-					});
-					
-					selectedPlanets.splice(removeIndex, 1, removePlanet);
 					
 					// Updating previousSelected property of planets having the id
 					planets.previousSelected = [];
@@ -126,9 +121,6 @@ class Falcone extends Component {
 					temp['name'] = removePlanet;
 					temp['distance'] = planetDistance;
 					planets.previousSelected.push(temp);
-					
-					// updating planet_names state with removePlanet
-					selectedPlanets.push(removePlanet);
 				}
 			}
 		});
@@ -182,7 +174,7 @@ class Falcone extends Component {
 					previousSelected = vehiclesObj.previousSelected;
 					vehiclesObj.vehicles.forEach((vehicle, index) => {
 						if(vehicle.showAlways) {
-							if(vehicle.max_distance >= planetDistance && vehicle.total_no >= 0) {
+							if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no >= 0) {
 								
 							} else {
 								vehicle.showAlways = false;
@@ -190,11 +182,11 @@ class Falcone extends Component {
 								vehicle.total_no += 1;
 								globalVehicles[index].total_no += 1;
 								vehiclesObj.previousSelected = '';
-								timeArr.splice(i);
+								timeArr.splice(i, 1, undefined);
 								notPossible = true;
 							}
 						} else {
-							if(vehicle.max_distance >= planetDistance && vehicle.total_no > 0) {
+							if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no > 0) {
 								vehicle['isPossible'] = true;
 							} else {
 								vehicle['isPossible'] = false;
@@ -207,13 +199,15 @@ class Falcone extends Component {
 		
 		listOfVehicles.forEach((vehiclesObj, i) => {
 			if(notPossible && id !== vehiclesObj.id) {
-				vehiclesObj.vehicles.forEach(vehicle => {
-					if(vehicle.name === previousSelected) {
-						vehicle.total_no += 1;
-					}
-				});
+				if(vehiclesObj.vehicles.every(vehicle => vehicle.showAlways === false)) {
+					vehiclesObj.vehicles.forEach(vehicle => {
+						if(vehicle.name === previousSelected) {
+							vehicle.total_no += 1;
+						}
+					});
+				}
 			}
-			if(notPossible && id === vehiclesObj.id) {
+			if(id === vehiclesObj.id) {
 				vehiclesObj.vehicles.forEach((vehicle, index) => {
 					vehicle.total_no = globalVehicles[index].total_no;
 				});
@@ -249,30 +243,6 @@ class Falcone extends Component {
 		}
 	}
 	
-	updateVehicleNames(selectedVehicles, rocket, previousSelected) {
-		if(previousSelected) {
-			const removeIndex = selectedVehicles.findIndex(name => {
-				return name === previousSelected;
-			});
-			
-			selectedVehicles.splice(removeIndex, 1, rocket);
-		} else {
-			selectedVehicles.push(rocket);
-		}
-	}
-	
-	updateTime(timeArr, selectedVehicles, planetDistance, speed, previousSelected) {
-		if(previousSelected) {
-			const removeIndex = selectedVehicles.findIndex(name => {
-				return name === previousSelected;
-			});
-			
-			timeArr.splice(removeIndex, 1, planetDistance/speed);
-		} else {
-			timeArr.push(planetDistance/speed);
-		}
-	}
-	
 	handleRocketChange(id, rocket, speed, planetDistance) {
 		const { vehicle_names, time } = this.state;
 		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
@@ -292,13 +262,13 @@ class Falcone extends Component {
 		});
 		
 		if(isRocketAvailable) {
-			listOfVehicles.forEach(vehicles => {
+			listOfVehicles.forEach((vehicles, index) => {
 				if(id === vehicles.id) {
 					previousSelected = vehicles.previousSelected;
 					
 					this.updateVehicles(globalVehicles, rocket, previousSelected);
-					this.updateVehicleNames(selectedVehicles, rocket, previousSelected);
-					this.updateTime(timeArr, selectedVehicles, planetDistance, speed, previousSelected);
+					selectedVehicles.splice(index, 1, rocket);
+					timeArr.splice(index, 1, planetDistance/speed);
 					this.updateVehicles(vehicles.vehicles, rocket, previousSelected, true);
 					
 					vehicles.previousSelected = rocket;
@@ -306,14 +276,8 @@ class Falcone extends Component {
 			});
 			
 			listOfVehicles.forEach(vehicles => {
-				if(id !== vehicles.id) {
-					if(!vehicles.isRendered) {
-						this.updateVehicles(vehicles.vehicles, rocket, previousSelected);
-					} else {
-						if(vehicles.vehicles.every(vehicle => !vehicle['showAlways'])) {
-							this.updateVehicles(vehicles.vehicles, rocket, previousSelected);
-						}
-					}
+				if(id !== vehicles.id && vehicles.vehicles.every(vehicle => !vehicle['showAlways'])) {
+					this.updateVehicles(vehicles.vehicles, rocket, previousSelected);
 				}
 			});
 		} else {
@@ -370,6 +334,14 @@ class Falcone extends Component {
 				resultJSON,
 				showMessage
 			  } = this.state;
+			  
+		let enableFindFalcone = false;
+		for(let i=0; i<planet_names.length; i++) {
+			if(planet_names[i] && vehicle_names[i]) {
+				enableFindFalcone = true;
+			}
+		}
+		
 		
 		return (
 			<div className='Falcone'>
@@ -388,8 +360,7 @@ class Falcone extends Component {
 							/>
 						}
 						{
-							planet_names.length === 4 
-							&& vehicle_names.length === 4 
+							enableFindFalcone
 							? <Link to='/result'>
 								<button 
 									onClick={this.handleClick} 
