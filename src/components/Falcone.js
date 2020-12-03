@@ -49,17 +49,17 @@ class Falcone extends Component {
 		for(let i=0; i<4; i++) {
 			const id = uuid();
 			listOfPlanets[i] = {};
-			listOfPlanets[i]['planets'] = _.cloneDeep(planets);
-			listOfPlanets[i]['id'] = id;
-			listOfPlanets[i]['previousSelected'] = [];
-			listOfPlanets[i]['curPlanet'] = 'Choose Planet';
+			listOfPlanets[i].planets = _.cloneDeep(planets);
+			listOfPlanets[i].id = id;
+			listOfPlanets[i].previousSelected = [];
+			listOfPlanets[i].curPlanet = 'Choose Planet';
 			
 			listOfVehicles[i] = {};
-			listOfVehicles[i]['vehicles'] = _.cloneDeep(vehicles);
-			listOfVehicles[i]['vehicles'].forEach(vehicle => {vehicle.showAlways = false});
-			listOfVehicles[i]['id'] = id;
-			listOfVehicles[i]['isRendered'] = false;
-			listOfVehicles[i]['previousSelected'] = '';
+			listOfVehicles[i].vehicles = _.cloneDeep(vehicles);
+			listOfVehicles[i].vehicles.forEach(vehicle => {vehicle.showAlways = false});
+			listOfVehicles[i].id = id;
+			listOfVehicles[i].isRendered = false;
+			listOfVehicles[i].previousSelected = '';
 		}
 		
 		this.setState({
@@ -160,14 +160,14 @@ class Falcone extends Component {
 		
 		listOfVehicles.forEach((vehiclesObj, i) => {
 			if(id === vehiclesObj.id) {
-				vehiclesObj['planetDistance'] = planetDistance;
+				vehiclesObj.planetDistance = planetDistance;
 				if(!vehiclesObj.isRendered) {
 					vehiclesObj.isRendered = true;
 					vehiclesObj.vehicles.forEach((vehicle, index) => {
 						if(vehicle.max_distance >= planetDistance && vehicle.total_no > 0) {
-							vehicle['isPossible'] = true;
+							vehicle.isPossible = true;
 						} else {
-							vehicle['isPossible'] = false;
+							vehicle.isPossible = false;
 						}
 					});
 				} else {
@@ -179,7 +179,6 @@ class Falcone extends Component {
 							} else {
 								vehicle.showAlways = false;
 								vehicle.isPossible = false;
-								vehicle.total_no += 1;
 								globalVehicles[index].total_no += 1;
 								vehiclesObj.previousSelected = '';
 								timeArr.splice(i, 1, undefined);
@@ -187,9 +186,9 @@ class Falcone extends Component {
 							}
 						} else {
 							if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no > 0) {
-								vehicle['isPossible'] = true;
+								vehicle.isPossible = true;
 							} else {
-								vehicle['isPossible'] = false;
+								vehicle.isPossible = false;
 							}
 						}
 					});
@@ -200,9 +199,9 @@ class Falcone extends Component {
 		listOfVehicles.forEach((vehiclesObj, i) => {
 			if(notPossible && id !== vehiclesObj.id) {
 				if(vehiclesObj.vehicles.every(vehicle => vehicle.showAlways === false)) {
-					vehiclesObj.vehicles.forEach(vehicle => {
+					vehiclesObj.vehicles.forEach((vehicle, index) => {
 						if(vehicle.name === previousSelected) {
-							vehicle.total_no += 1;
+							vehicle.total_no = globalVehicles[index].total_no;
 						}
 					});
 				}
