@@ -222,21 +222,39 @@ class Falcone extends Component {
 		});
 	}
 	
-	updateVehicles(vehicles, rocket, previousSelected, updateShowAlways = false) {
+	updateGlobalVehicles(vehicles, rocket, previousSelected) {
 		if(previousSelected) {
 			vehicles.forEach(vehicle => {
 				if(previousSelected === vehicle.name) {
 					vehicle.total_no += 1;
-					updateShowAlways && (vehicle.showAlways = false);
 				} else if(vehicle.name === rocket) {
 					vehicle.total_no -= 1;
-					updateShowAlways && (vehicle.showAlways = true);
 				}
 			});
 		} else {
 			vehicles.forEach(vehicle => {
 				if(vehicle.name === rocket) {
 					vehicle.total_no -= 1;
+				}
+			});
+		}
+	}
+	
+	updateIndivVehicles(globalVehicles, indivVehicles, rocket, previousSelected, updateShowAlways=false) {
+		if(previousSelected) {
+			indivVehicles.forEach((vehicle, index) => {
+				if(previousSelected === vehicle.name) {
+					vehicle.total_no = globalVehicles[index].total_no;
+					updateShowAlways && (vehicle.showAlways = false);
+				} else if(vehicle.name === rocket) {
+					vehicle.total_no = globalVehicles[index].total_no;
+					updateShowAlways && (vehicle.showAlways = true);
+				}
+			});
+		} else {
+			indivVehicles.forEach((vehicle, index) => {
+				if(vehicle.name === rocket) {
+					vehicle.total_no = globalVehicles[index].total_no;
 					updateShowAlways && (vehicle.showAlways = true);
 				}
 			});
@@ -266,10 +284,11 @@ class Falcone extends Component {
 				if(id === vehicles.id) {
 					previousSelected = vehicles.previousSelected;
 					
-					this.updateVehicles(globalVehicles, rocket, previousSelected);
+					this.updateGlobalVehicles(globalVehicles, rocket, previousSelected);
 					selectedVehicles.splice(index, 1, rocket);
 					timeArr.splice(index, 1, planetDistance/speed);
-					this.updateVehicles(vehicles.vehicles, rocket, previousSelected, true);
+					
+					this.updateIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
 					
 					vehicles.previousSelected = rocket;
 				}
@@ -277,7 +296,7 @@ class Falcone extends Component {
 			
 			listOfVehicles.forEach(vehicles => {
 				if(id !== vehicles.id && vehicles.vehicles.every(vehicle => !vehicle['showAlways'])) {
-					this.updateVehicles(vehicles.vehicles, rocket, previousSelected);
+					this.updateIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected);
 				}
 			});
 		} else {
