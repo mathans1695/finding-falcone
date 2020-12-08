@@ -8,7 +8,6 @@ import Result from './Result';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-
 function Falcone(props) {
 	const [resultJSON, setResultJSON] = useState('');
 	const [selectedPlanets, setSelectedPlanets] = useState(new Array(4));
@@ -35,6 +34,10 @@ function Falcone(props) {
 				result(reqBody);
 			})
 			.catch(err => console.log(err))
+	}
+	
+	function updateMessage(msg) {
+		setMessage(msg);
 	}
 	
 	// method runs after token received and set resultJSON state with result
@@ -107,6 +110,7 @@ function Falcone(props) {
 						updateSelectedPlanets={updateSelectedPlanets}
 						updateSelectedVehicles={updateSelectedVehicles}
 						updateTime={updateTime}
+						updateMessage={updateMessage}
 						time={time}
 					/>
 					{
