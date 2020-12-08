@@ -14,7 +14,8 @@ function ChoosePlanet(props) {
 		}
 		
 		// invokes updatePlanet in MissionPlan component
-		props.updatePlanet(id, value, distance);
+		props.updateListOfPlanets(id, value, distance);
+		props.updateListOfVehicles(id, distance);
 	}
 	
 	const { planets, id } = props.planets;

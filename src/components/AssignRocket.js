@@ -37,7 +37,7 @@ function AssignRocket(props) {
 					<label htmlFor={key}>{name} ({total_no})</label>
 				</div>
 			)
-		} else if(vehicle.isPossible && vehicle.total_no > 0) {
+		} else if(vehicle.isPossible || vehicle.total_no > 0) {
 			display = (
 				<div className='AssignRocket__option' key={key} >
 					<input 
