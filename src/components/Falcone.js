@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Link } from 'react-router-dom';
 import _ from 'lodash';
 import { getToken, getResult } from '../utils/api_requests';
@@ -11,97 +11,88 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 
 
-class Falcone extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			resultJSON: '',
-			vehicles: [],
-			listOfPlanets: [],
-			listOfVehicles: [],
-			planet_names: new Array(4),
-			vehicle_names: new Array(4),
-			time: [0, 0, 0, 0],
-			showMessage: ''
-		}
-		
-		this.handleClick = this.handleClick.bind(this);
-		this.updateListOfPlanets = this.updateListOfPlanets.bind(this);
-		this.updateListOfVehicles = this.updateListOfVehicles.bind(this);
-		this.handleRocketChange = this.handleRocketChange.bind(this);
-		this.generateLists = this.generateLists.bind(this);
-		this.reset = this.reset.bind(this);
-	}
+function Falcone(props) {
+	const [resultJSON, setResultJSON] = useState('');
+	const [vehicles, setVehicles] = useState([]);
+	const [listOfPlanets, setListOfPlanets] = useState([]);
+	const [listOfVehicles, setListOfVehicles] = useState([]);
+	const [planetNames, setPlanetNames] = useState(new Array(4));
+	const [vehicleNames, setVehicleNames] = useState(new Array(4));
+	const [time, setTime] = useState([0, 0, 0, 0]);
+	const [message, setMessage] = useState('');
 	
-	componentDidMount() {
-		this.generateLists();
-	}
+	useEffect(() => {
+		generateLists();
+	}, []);
+	
+	useEffect(() => {
+		setTimeout(() => {
+			setMessage('');
+		}, 2000)
+	}, [message]);
 	
 	// Creates initial list of planets and vehicles and deep copy vehicles
 	// props to vehicles state
-	generateLists() {
-		const listOfPlanets = [];
-		const listOfVehicles = [];
-		const { planets, vehicles } = this.props;
+	function generateLists() {
+		const tempListOfPlanets = [];
+		const tempListOfVehicles = [];
+		const { planets, vehicles } = props;
 		
 		const vehiclesCopy = _.cloneDeep(vehicles);
 		
 		for(let i=0; i<4; i++) {
 			const id = uuid();
-			listOfPlanets[i] = {};
-			listOfPlanets[i]['planets'] = _.cloneDeep(planets);
-			listOfPlanets[i]['id'] = id;
-			listOfPlanets[i]['previousSelected'] = [];
-			listOfPlanets[i]['curPlanet'] = 'Choose Planet';
+			tempListOfPlanets[i] = {};
+			tempListOfPlanets[i].planets = _.cloneDeep(planets);
+			tempListOfPlanets[i].id = id;
+			tempListOfPlanets[i].previousSelected = [];
+			tempListOfPlanets[i].curPlanet = 'Choose Planet';
 			
-			listOfVehicles[i] = {};
-			listOfVehicles[i]['vehicles'] = _.cloneDeep(vehicles);
-			listOfVehicles[i]['vehicles'].forEach(vehicle => {vehicle.showAlways = false});
-			listOfVehicles[i]['id'] = id;
-			listOfVehicles[i]['isRendered'] = false;
-			listOfVehicles[i]['previousSelected'] = '';
+			tempListOfVehicles[i] = {};
+			tempListOfVehicles[i].vehicles = _.cloneDeep(vehicles);
+			tempListOfVehicles[i].vehicles.forEach(vehicle => {vehicle.showAlways = false});
+			tempListOfVehicles[i].id = id;
+			tempListOfVehicles[i].isRendered = false;
+			tempListOfVehicles[i].previousSelected = '';
 		}
 		
-		this.setState({
-			listOfPlanets: listOfPlanets,
-			listOfVehicles: listOfVehicles,
-			vehicles: vehiclesCopy
-		});
+		setListOfPlanets(tempListOfPlanets);
+		setListOfVehicles(tempListOfVehicles);
+		setVehicles(vehiclesCopy);
 	}
 	
 	// method will execute on click of find falcone button
-	handleClick() {
-		const { planet_names, vehicle_names } = this.state,
-			  reqBody = Object.create(null);	
+	function handleClick() {
+		const reqBody = Object.create(null);	
 		
-		reqBody['planet_names'] = planet_names;
-		reqBody['vehicle_names'] = vehicle_names;
+		reqBody.planet_Names = planetNames;
+		reqBody.vehicle_Names = vehicleNames;
 		
 		getToken()
 			.then(json => {
-				reqBody['token'] = json.token;
-				this.result(reqBody);
+				reqBody.token = json.token;
+				result(reqBody);
 			})
 			.catch(err => console.log(err))
 	}
 	
 	// method runs after token received and set resultJSON state with result
-	result(reqBody) {
+	function result(reqBody) {
 		getResult(reqBody)
-			.then(json => this.setState({resultJSON: json}))
+			.then(json => setResultJSON(json))
 			.catch(err => console.log(err))
 	}
 	
 	// update planets in other destionations on change
-	updateListOfPlanets(id, removePlanet, planetDistance) {
-		const listOfPlanets = _.cloneDeep(this.state.listOfPlanets);
+	function updateListOfPlanets(id, removePlanet, planetDistance) {
+		const listOfPlanetsCopy = _.cloneDeep(listOfPlanets);
 		const previousSelected = [];
 		
-		listOfPlanets.forEach((planets, index) => {
+		listOfPlanetsCopy.forEach((planets, index) => {
 			if(id === planets.id) {
-				planets['curPlanet'] = removePlanet;
+				planets.curPlanet = removePlanet;
 				
-				this.updatePlanetNames(index, removePlanet);
+				updatePlanetNames(index, removePlanet);
 				
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
@@ -110,15 +101,15 @@ class Falcone extends Component {
 					planets.previousSelected = [];
 					
 					const temp = {};
-					temp['name'] = removePlanet;
-					temp['distance'] = planetDistance;
+					temp.name = removePlanet;
+					temp.distance = planetDistance;
 					planets.previousSelected.push(temp);
 				} else {
 					
 					// Setting the previousSelected property of planets having this id
 					const temp = {};
-					temp['name'] = removePlanet;
-					temp['distance'] = planetDistance;
+					temp.name = removePlanet;
+					temp.distance = planetDistance;
 					planets.previousSelected.push(temp);
 				}
 			}
@@ -126,7 +117,7 @@ class Falcone extends Component {
 		
 		
 		// Updating other destinations planets
-		listOfPlanets.forEach(planets => {
+		listOfPlanetsCopy.forEach(planets => {
 			if(id !== planets.id) {
 				if(previousSelected.length > 0) {
 					planets.planets.push(previousSelected[0]);
@@ -141,52 +132,50 @@ class Falcone extends Component {
 			}
 		})
 		
-		this.setState({
-			listOfPlanets: listOfPlanets
-		});
+		setListOfPlanets(listOfPlanetsCopy);
 	}
 	
 	// method executes, when there's change in planet selection on
 	// each destionations
-	updateListOfVehicles(id, planetDistance) {
-		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
-		const globalVehicles = _.cloneDeep(this.state.vehicles);
+	function updateListOfVehicles(id, planetDistance) {
+		const listOfVehiclesCopy = _.cloneDeep(listOfVehicles);
+		const globalVehicles = _.cloneDeep(vehicles);
 		
 		let notPossible, previousSelected;
 		
-		listOfVehicles.forEach((vehiclesObj, i) => {
-			if(id === vehiclesObj.id) {
-				vehiclesObj['planetDistance'] = planetDistance;
-				if(!vehiclesObj.isRendered) {
-					vehiclesObj.isRendered = true;
-					vehiclesObj.vehicles.forEach((vehicle, index) => {
+		listOfVehiclesCopy.forEach((vehicles, i) => {
+			if(id === vehicles.id) {
+				vehicles.planetDistance = planetDistance;
+				if(!vehicles.isRendered) {
+					vehicles.isRendered = true;
+					vehicles.vehicles.forEach((vehicle, index) => {
 						if(vehicle.max_distance >= planetDistance && vehicle.total_no > 0) {
-							vehicle['isPossible'] = true;
+							vehicle.isPossible = true;
 						} else {
-							vehicle['isPossible'] = false;
+							vehicle.isPossible = false;
 						}
 					});
 				} else {
-					previousSelected = vehiclesObj.previousSelected;
-					vehiclesObj.vehicles.forEach((vehicle, index) => {
+					previousSelected = vehicles.previousSelected;
+					vehicles.vehicles.forEach((vehicle, index) => {
 						if(vehicle.showAlways) {
 							if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no >= 0) {
 							} else {
 								vehicle.showAlways = false;
 								vehicle.isPossible = false;
 								globalVehicles[index].total_no += 1;
-								vehiclesObj.previousSelected = '';
+								vehicles.previousSelected = '';
 								
-								this.updateVehicleNames(i, undefined);
-								this.updateTime(i, 0);
+								updateVehicleNames(i, undefined);
+								updateTime(i, 0);
 								
 								notPossible = true;
 							}
 						} else {
 							if(globalVehicles[index].max_distance >= planetDistance && globalVehicles[index].total_no > 0) {
-								vehicle['isPossible'] = true;
+								vehicle.isPossible = true;
 							} else {
-								vehicle['isPossible'] = false;
+								vehicle.isPossible = false;
 							}
 						}
 					});
@@ -194,30 +183,28 @@ class Falcone extends Component {
 			}
 		});
 		
-		listOfVehicles.forEach((vehiclesObj, i) => {
-			if(notPossible && id !== vehiclesObj.id) {
-				if(vehiclesObj.vehicles.every(vehicle => vehicle.showAlways === false)) {
-					vehiclesObj.vehicles.forEach(vehicle => {
+		listOfVehiclesCopy.forEach((vehicles, i) => {
+			if(notPossible && id !== vehicles.id) {
+				if(vehicles.vehicles.every(vehicle => vehicle.showAlways === false)) {
+					vehicles.vehicles.forEach((vehicle, index) => {
 						if(vehicle.name === previousSelected) {
-							vehicle.total_no += 1;
+							vehicle.total_no = globalVehicles[index].total_no;
 						}
 					});
 				}
 			}
-			if(id === vehiclesObj.id) {
-				vehiclesObj.vehicles.forEach((vehicle, index) => {
+			if(id === vehicles.id) {
+				vehicles.vehicles.forEach((vehicle, index) => {
 					vehicle.total_no = globalVehicles[index].total_no;
 				});
 			}
 		});
 		
-		this.setState({
-			listOfVehicles: listOfVehicles,
-			vehicles: globalVehicles
-		});
+		setListOfVehicles(listOfVehiclesCopy);
+		setVehicles(globalVehicles);
 	}
 	
-	changeGlobalVehicles(vehicles, rocket, previousSelected) {
+	function changeGlobalVehicles(vehicles, rocket, previousSelected) {
 		if(previousSelected) {
 			vehicles.forEach(vehicle => {
 				if(previousSelected === vehicle.name) {
@@ -235,7 +222,7 @@ class Falcone extends Component {
 		}
 	}
 	
-	changeIndivVehicles(globalVehicles, indivVehicles, rocket, previousSelected, updateShowAlways=false) {
+	function changeIndivVehicles(globalVehicles, indivVehicles, rocket, previousSelected, updateShowAlways=false) {
 		if(previousSelected) {
 			indivVehicles.forEach((vehicle, index) => {
 				if(previousSelected === vehicle.name) {
@@ -256,30 +243,30 @@ class Falcone extends Component {
 		}
 	}
 	
-	updatePlanetNames(index, value) {
-		const planet_names = Array.from(this.state.planet_names);
-		planet_names.splice(index, 1, value);
+	function updatePlanetNames(index, value) {
+		const planetNamesCopy = Array.from(planetNames);
+		planetNamesCopy.splice(index, 1, value);
 		
-		this.setState({planet_names: planet_names});
+		setPlanetNames(planetNamesCopy);
 	}
 	
-	updateVehicleNames(index, value) {
-		const vehicle_names = Array.from(this.state.vehicle_names);
-		vehicle_names.splice(index, 1, value);
+	function updateVehicleNames(index, value) {
+		const vehicleNamesCopy = Array.from(vehicleNames);
+		vehicleNamesCopy.splice(index, 1, value);
 		
-		this.setState({vehicle_names: vehicle_names});
+		setVehicleNames(vehicleNamesCopy);
 	}
 	
-	updateTime(index, value) {
-		const timeArr = Array.from(this.state.time);
-		timeArr.splice(index, 1, value);
+	function updateTime(index, value) {
+		const timeCopy = Array.from(time);
+		timeCopy.splice(index, 1, value);
 		
-		this.setState({time: timeArr});
+		setTime(timeCopy);
 	}
 	
-	handleRocketChange(id, rocket, speed, planetDistance) {
-		const listOfVehicles = _.cloneDeep(this.state.listOfVehicles);
-		const globalVehicles = _.cloneDeep(this.state.vehicles);
+	function handleRocketChange(id, rocket, speed, planetDistance) {
+		const listOfVehiclesCopy = _.cloneDeep(listOfVehicles);
+		const globalVehicles = _.cloneDeep(vehicles);
 		
 		let previousSelected;
 		let isRocketAvailable = true;
@@ -293,143 +280,121 @@ class Falcone extends Component {
 		});
 		
 		if(isRocketAvailable) {
-			listOfVehicles.forEach((vehicles, index) => {
+			listOfVehiclesCopy.forEach((vehicles, index) => {
 				if(id === vehicles.id) {
 					previousSelected = vehicles.previousSelected;
 					
-					this.changeGlobalVehicles(globalVehicles, rocket, previousSelected);
-					this.updateVehicleNames(index, rocket);
-					this.updateTime(index, planetDistance/speed);
-					this.changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
+					changeGlobalVehicles(globalVehicles, rocket, previousSelected);
+					updateVehicleNames(index, rocket);
+					updateTime(index, planetDistance/speed);
+					changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
 					
 					vehicles.previousSelected = rocket;
 				}
 			});
 			
-			listOfVehicles.forEach(vehicles => {
-				if(id !== vehicles.id && vehicles.vehicles.every(vehicle => !vehicle['showAlways'])) {
-					this.changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected);
+			listOfVehiclesCopy.forEach(vehicles => {
+				if(id !== vehicles.id && vehicles.vehicles.every(vehicle => !vehicle.showAlways)) {
+					changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected);
 				}
 			});
 		} else {
-			this.setState({showMessage: 'Selected rocket is not available'}, () => {
-				setTimeout(() => {
-					this.setState({showMessage: ''})
-				}, 2000);
-			});
+			setMessage('Selected rocket is not available');
 		}
 		
-		this.setState({
-			vehicles: globalVehicles,
-			listOfVehicles: listOfVehicles
-		});
+		setListOfVehicles(listOfVehiclesCopy);
+		setVehicles(globalVehicles);
 	}
 	
 	// reset everything back to initial condition
-	reset(e) {
+	function reset(e) {
 		const target = e.target;
 		const regExp = /result/i;
 		const match = regExp.test(window.location.href);
 		
 		if(match) {
 			if(target.innerText === 'Reset' || target.innerText === '') {
-				this.props.history.push('/');
+				props.history.push('/');
 			}
 		} 
 		
-		this.generateLists();
-		this.setState({
-			planet_names: [],
-			vehicle_names: [],
-			time: [],
-			resultJSON: ''
-		})
+		generateLists();
+		setPlanetNames([]);
+		setVehicleNames([]);
+		setTime([]);
+		setResultJSON('');
 		
 		if(target.innerText === 'Reset' || target.innerText === '') {
-			this.setState({showMessage: 'Reset successful'}, () => {
-				setTimeout(() => {
-					this.setState({showMessage: ''})
-				}, 2000);
-			});
+			setMessage('Reset successful')
 		}
 	}
 	
-	render() {
-		const { listOfPlanets, 
-				vehicle_names, 
-				listOfVehicles, 
-				time,
-				resultJSON,
-				showMessage
-			  } = this.state;
-		
-		let count = 0;
-		let enableFindFalcone = false;
+	let count = 0;
+	let enableFindFalcone = false;
 			  
-		for (let i=0; i<vehicle_names.length; i++) {
-			if(vehicle_names[i]) {
-				count += 1;
-			}
+	for (let i=0; i<vehicleNames.length; i++) {
+		if(vehicleNames[i]) {
+			count += 1;
 		}
+	}
 		
-		if(count === 4) {
-			enableFindFalcone = true;
-		}
+	if(count === 4) {
+		enableFindFalcone = true;
+	}
 		
-		return (
-			<div className='Falcone'>
-				<Navbar reset={this.reset}/>
-				<Route exact path='/'>
-					<main className='Falcone__main'>
-						{listOfPlanets.length &&
-						 listOfVehicles.length &&
-							<MissionPlan 
-								listOfPlanets={listOfPlanets} 
-								listOfVehicles={listOfVehicles}
-								updateListOfPlanets={this.updateListOfPlanets}
-								updateListOfVehicles={this.updateListOfVehicles}
-								handleRocketChange={this.handleRocketChange}
-								time={time}
-							/>
-						}
-						{
-							enableFindFalcone
-							? <Link to='/result'>
-								<button 
-									onClick={this.handleClick} 
-									className='Falcone__button'
-								>
-									Find Falcone
-								</button>
-							  </Link>
-							: <button 
-								disabled={true} 
+	return (
+		<div className='Falcone'>
+			<Navbar reset={reset}/>
+			<Route exact path='/'>
+				<main className='Falcone__main'>
+					{listOfPlanets.length &&
+					 listOfVehicles.length &&
+						<MissionPlan 
+							listOfPlanets={listOfPlanets} 
+							listOfVehicles={listOfVehicles}
+							updateListOfPlanets={updateListOfPlanets}
+							updateListOfVehicles={updateListOfVehicles}
+							handleRocketChange={handleRocketChange}
+							time={time}
+						/>
+					}
+					{
+						enableFindFalcone
+						? <Link to='/result'>
+							<button 
+								onClick={handleClick} 
 								className='Falcone__button'
 							>
 								Find Falcone
 							</button>
-						}
-					</main>
-				</Route>
-				<Route 
-					exact 
-					path='/result' 
-					render={() => {
-						return (
-							<main className='Falcone__main'>
-								<Result resultJSON={resultJSON} time={time} reset={this.reset} />
-							</main>
-						)
-					}}
-				/>
-				<Footer />
-				{
-					showMessage &&
-					<Message msg={showMessage} />
-				}
-			</div>
-		)
-	}
+						  </Link>
+						: <button 
+							disabled={true} 
+							className='Falcone__button'
+						>
+							Find Falcone
+						</button>
+					}
+				</main>
+			</Route>
+			<Route 
+				exact 
+				path='/result' 
+				render={() => {
+					return (
+						<main className='Falcone__main'>
+							<Result resultJSON={resultJSON} time={time} reset={reset} />
+						</main>
+					)
+				}}
+			/>
+			<Footer />
+			{
+				message &&
+				<Message msg={message} />
+			}
+		</div>
+	)
 }
 
 export default Falcone;

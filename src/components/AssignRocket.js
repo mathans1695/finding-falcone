@@ -22,7 +22,7 @@ function AssignRocket(props) {
 		let display = '';
 		let key = uuid();
 		
-		if(vehicle.isPossible) {
+		if(vehicle.showAlways) {
 			display = (
 				<div className='AssignRocket__option' key={key} >
 					<input 
@@ -37,7 +37,22 @@ function AssignRocket(props) {
 					<label htmlFor={key}>{name} ({total_no})</label>
 				</div>
 			)
-		} 
+		} else if(vehicle.isPossible && vehicle.total_no > 0) {
+			display = (
+				<div className='AssignRocket__option' key={key} >
+					<input 
+						type='radio' 
+						value={name} 
+						id={key} 
+						checked={vehicle.showAlways}
+						onChange={handleOnValueChange}
+						data-speed={speed}
+						data-id={vehicles.id}
+					/>
+					<label htmlFor={key}>{name} ({total_no})</label>
+				</div>
+			)
+		}
 		
 		else {
 			display = (
