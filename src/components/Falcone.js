@@ -16,8 +16,8 @@ function Falcone(props) {
 	const [vehicles, setVehicles] = useState([]);
 	const [listOfPlanets, setListOfPlanets] = useState([]);
 	const [listOfVehicles, setListOfVehicles] = useState([]);
-	const [planetNames, setPlanetNames] = useState(new Array(4));
-	const [vehicleNames, setVehicleNames] = useState(new Array(4));
+	const [selectedPlanets, setSelectedPlanets] = useState(new Array(4));
+	const [selectedVehicles, setSelectedVehicles] = useState(new Array(4));
 	const [time, setTime] = useState([0, 0, 0, 0]);
 	const [message, setMessage] = useState('');
 	
@@ -65,8 +65,8 @@ function Falcone(props) {
 	function handleClick() {
 		const reqBody = Object.create(null);	
 		
-		reqBody.planet_Names = planetNames;
-		reqBody.vehicle_Names = vehicleNames;
+		reqBody.planet_Names = selectedPlanets;
+		reqBody.vehicle_Names = selectedVehicles;
 		
 		getToken()
 			.then(json => {
@@ -92,7 +92,7 @@ function Falcone(props) {
 			if(id === planets.id) {
 				planets.curPlanet = removePlanet;
 				
-				updatePlanetNames(index, removePlanet);
+				updateselectedPlanets(index, removePlanet);
 				
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
@@ -166,7 +166,7 @@ function Falcone(props) {
 								globalVehicles[index].total_no += 1;
 								vehicles.previousSelected = '';
 								
-								updateVehicleNames(i, undefined);
+								updateselectedVehicles(i, undefined);
 								updateTime(i, 0);
 								
 								notPossible = true;
@@ -243,18 +243,18 @@ function Falcone(props) {
 		}
 	}
 	
-	function updatePlanetNames(index, value) {
-		const planetNamesCopy = Array.from(planetNames);
-		planetNamesCopy.splice(index, 1, value);
+	function updateselectedPlanets(index, value) {
+		const selectedPlanetsCopy = Array.from(selectedPlanets);
+		selectedPlanetsCopy.splice(index, 1, value);
 		
-		setPlanetNames(planetNamesCopy);
+		setSelectedPlanets(selectedPlanetsCopy);
 	}
 	
-	function updateVehicleNames(index, value) {
-		const vehicleNamesCopy = Array.from(vehicleNames);
-		vehicleNamesCopy.splice(index, 1, value);
+	function updateselectedVehicles(index, value) {
+		const selectedVehiclesCopy = Array.from(selectedVehicles);
+		selectedVehiclesCopy.splice(index, 1, value);
 		
-		setVehicleNames(vehicleNamesCopy);
+		setSelectedVehicles(selectedVehiclesCopy);
 	}
 	
 	function updateTime(index, value) {
@@ -285,7 +285,7 @@ function Falcone(props) {
 					previousSelected = vehicles.previousSelected;
 					
 					changeGlobalVehicles(globalVehicles, rocket, previousSelected);
-					updateVehicleNames(index, rocket);
+					updateselectedVehicles(index, rocket);
 					updateTime(index, planetDistance/speed);
 					changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
 					
@@ -319,8 +319,8 @@ function Falcone(props) {
 		} 
 		
 		generateLists();
-		setPlanetNames([]);
-		setVehicleNames([]);
+		setSelectedPlanets([]);
+		setSelectedVehicles([]);
 		setTime([]);
 		setResultJSON('');
 		
@@ -332,8 +332,8 @@ function Falcone(props) {
 	let count = 0;
 	let enableFindFalcone = false;
 			  
-	for (let i=0; i<vehicleNames.length; i++) {
-		if(vehicleNames[i]) {
+	for (let i=0; i<selectedVehicles.length; i++) {
+		if(selectedVehicles[i]) {
 			count += 1;
 		}
 	}
