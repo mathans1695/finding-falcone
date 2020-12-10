@@ -60,7 +60,9 @@ function Falcone(props) {
 			}
 		} 
 		
-		setTime([]);
+		setSelectedPlanets(new Array(4));
+		setSelectedVehicles(new Array(4));
+		setTime([0,0,0,0])
 		props.resetResultJSON();
 		
 		if(target.innerText === 'Reset' || target.innerText === '') {
@@ -78,6 +80,10 @@ function Falcone(props) {
 	}
 		
 	count === 4 && (enableFindFalcone = true);
+	
+	console.log(selectedPlanets);
+	console.log(selectedVehicles);
+	console.log(time);
 		
 	return (
 		<div className='Falcone'>

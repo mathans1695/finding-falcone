@@ -27,8 +27,7 @@ function App(props) {
 			.catch(err => console.log(err))
 	}, []);
 	
-	function handleResult(selectedPlanets, selectedVehicles) {
-		
+	const handleResult = (selectedPlanets, selectedVehicles) => {
 		const reqBody = Object.create(null);	
 		
 		reqBody.planet_Names = selectedPlanets;
@@ -42,13 +41,13 @@ function App(props) {
 			.catch(err => console.log(err))
 	}
 	
-	function result(reqBody) {
+	const result = (reqBody) => {
 		getResult(reqBody)
 			.then(json => setResultJSON(json))
 			.catch(err => console.log(err))
 	}
 	
-	function resetResultJSON() {
+	const resetResultJSON = () => {
 		setResultJSON('');
 	}
 		
