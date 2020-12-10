@@ -3,18 +3,17 @@ import { uuid } from '../../utils/helpers';
 import './AssignRocket.css';
 
 function AssignRocket(props) {
-	function handleOnValueChange(e) {
-		const target = e.target,
-			  rocket = target.value,
-			  speed = target.getAttribute('data-speed'),
-			  planetDistance = props.vehicles.planetDistance,
-			  id = target.getAttribute('data-id');
+	const vehicles = props.vehicles;
+	const handleOnValueChange = (e) => {
+		const target = e.target;
+		const rocket = target.value;
+		const id = target.getAttribute('data-id');
+		const speed = target.getAttribute('data-speed');
+		const planetDistance = vehicles.planetDistance;
 		
 		// invokes handleVehicleUpdation method in MissionPlan component
 		props.handleVehicleUpdation(id, rocket, speed, planetDistance);
 	}
-	
-	const vehicles = props.vehicles;
 		
 	// showing vehicles based on the availability 
 	const options = vehicles.vehicles.map((vehicle) => {

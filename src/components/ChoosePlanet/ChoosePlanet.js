@@ -2,7 +2,7 @@ import React from 'react';
 import './ChoosePlanet.css';
 
 function ChoosePlanet(props) {
-	function handleChange(e) {
+	const handleChange = (e) => {
 		const id = e.target.parentElement.id;
 		const value = e.target.value;
 		let distance;
