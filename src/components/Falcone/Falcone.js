@@ -19,29 +19,29 @@ function Falcone(props) {
 		}, 2000)
 	}, [message]);
 	
-	function handleClick() {
+	const handleClick = () => {
 		props.handleResult(selectedPlanets, selectedVehicles)
 	}
 	
-	function updateMessage(msg) {
+	const updateMessage = (msg) => {
 		setMessage(msg);
 	}
 	
-	function updateSelectedPlanets(index, value) {
+	const updateSelectedPlanets = (index, value) => {
 		const selectedPlanetsCopy = Array.from(selectedPlanets);
 		selectedPlanetsCopy.splice(index, 1, value);
 		
 		setSelectedPlanets(selectedPlanetsCopy);
 	}
 	
-	function updateSelectedVehicles(index, value) {
+	const updateSelectedVehicles = (index, value) => {
 		const selectedVehiclesCopy = Array.from(selectedVehicles);
 		selectedVehiclesCopy.splice(index, 1, value);
 		
 		setSelectedVehicles(selectedVehiclesCopy);
 	}
 	
-	function updateTime(index, value) {
+	const updateTime = (index, value) => {
 		const timeCopy = Array.from(time);
 		timeCopy.splice(index, 1, value);
 		
@@ -49,7 +49,7 @@ function Falcone(props) {
 	}
 	
 	// reset everything back to initial condition
-	function reset(e) {
+	const reset = (e) => {
 		const target = e.target;
 		const regExp = /result/i;
 		const match = regExp.test(window.location.href);
@@ -58,7 +58,9 @@ function Falcone(props) {
 			if(target.innerText === 'Reset' || target.innerText === '') {
 				props.history.push('/');
 			}
-		} 
+		} else {
+			missionPlanRef.current.generateLists();
+		}
 		
 		setSelectedPlanets(new Array(4));
 		setSelectedVehicles(new Array(4));
@@ -81,9 +83,7 @@ function Falcone(props) {
 		
 	count === 4 && (enableFindFalcone = true);
 	
-	console.log(selectedPlanets);
-	console.log(selectedVehicles);
-	console.log(time);
+	const missionPlanRef = React.createRef();
 		
 	return (
 		<div className='Falcone'>
@@ -91,6 +91,7 @@ function Falcone(props) {
 			<Route exact path='/'>
 				<main className='Falcone__main'>
 					<MissionPlan 
+						ref={missionPlanRef}
 						planets={props.planets} 
 						vehicles={props.vehicles}
 						updateSelectedPlanets={updateSelectedPlanets}

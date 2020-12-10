@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import { uuid } from '../../utils/helpers';
 import ChoosePlanet from '../ChoosePlanet/ChoosePlanet';
 import AssignRocket from '../AssignRocket/AssignRocket';
 import './MissionPlan.css';
 
-function MissionPlan(props) {
-	const [vehicles, setVehicles] = useState([]);
-	const [listOfPlanets, setListOfPlanets] = useState([]);
-	const [listOfVehicles, setListOfVehicles] = useState([]);
+class MissionPlan extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			vehicles: [],
+			listOfPlanets: [],
+			listOfVehicles: []
+		}
+	}
 	
-	useEffect(() => {
-		generateLists();
-	}, []);
+	componentDidMount() {
+		this.generateLists();
+	}
 	
-	function generateLists() {
-		const { planets, vehicles } = props;
+	generateLists = () => {
+		const { planets, vehicles } = this.props;
 		const tempListOfPlanets = [];
 		const tempListOfVehicles = [];
-		const vehiclesCopy = _.cloneDeep(vehicles);
+		const vehiclesCopy = _.cloneDeep(this.props.vehicles);
 		
 		for(let i=0; i<4; i++) {
 			const id = uuid();
@@ -36,20 +41,22 @@ function MissionPlan(props) {
 			tempListOfVehicles[i].previousSelected = '';
 		}
 		
-		setListOfPlanets(tempListOfPlanets);
-		setListOfVehicles(tempListOfVehicles);
-		setVehicles(vehiclesCopy);
+		this.setState({
+			listOfPlanets: tempListOfPlanets,
+			listOfVehicles: tempListOfVehicles,
+			vehicles: vehiclesCopy
+		});
 	}
 	
-	function updateListOfPlanets(id, removePlanet, planetDistance) {
-		const listOfPlanetsCopy = _.cloneDeep(listOfPlanets);
+	updateListOfPlanets = (id, removePlanet, planetDistance) => {
+		const listOfPlanetsCopy = _.cloneDeep(this.state.listOfPlanets);
 		const previousSelected = [];
 		
 		listOfPlanetsCopy.forEach((planets, index) => {
 			if(id === planets.id) {
 				planets.curPlanet = removePlanet;
 				
-				props.updateSelectedPlanets(index, removePlanet);
+				this.props.updateSelectedPlanets(index, removePlanet);
 				
 				if(planets.previousSelected.length > 0) {
 					previousSelected.push(planets.previousSelected[0]);
@@ -89,15 +96,16 @@ function MissionPlan(props) {
 			}
 		})
 		
-		setListOfPlanets(listOfPlanetsCopy);
+		this.setState({
+			listOfPlanets: listOfPlanetsCopy
+		});
 	}
 	
 	// method executes, when there's change in planet selection on
 	// each destionations
-	function updateListOfVehicles(id, planetDistance) {
-		const listOfVehiclesCopy = _.cloneDeep(listOfVehicles);
-		const globalVehicles = _.cloneDeep(vehicles);
-		
+	updateListOfVehicles = (id, planetDistance) => {
+		const listOfVehiclesCopy = _.cloneDeep(this.state.listOfVehicles);
+		const globalVehicles = _.cloneDeep(this.state.vehicles);
 		let notPossible, previousSelected;
 		
 		listOfVehiclesCopy.forEach((vehicles, i) => {
@@ -123,8 +131,8 @@ function MissionPlan(props) {
 								globalVehicles[index].total_no += 1;
 								vehicles.previousSelected = '';
 								
-								props.updateSelectedVehicles(i, undefined);
-								props.updateTime(i, 0);
+								this.props.updateSelectedVehicles(i, undefined);
+								this.props.updateTime(i, 0);
 								
 								notPossible = true;
 							}
@@ -157,11 +165,13 @@ function MissionPlan(props) {
 			}
 		});
 		
-		setListOfVehicles(listOfVehiclesCopy);
-		setVehicles(globalVehicles);
+		this.setState({
+			vehicles: globalVehicles,
+			listOfVehicles: listOfVehiclesCopy
+		});
 	}
 	
-	function changeGlobalVehicles(vehicles, rocket, previousSelected) {
+	changeGlobalVehicles = (vehicles, rocket, previousSelected) => {
 		if(previousSelected) {
 			vehicles.forEach(vehicle => {
 				if(previousSelected === vehicle.name) {
@@ -179,7 +189,7 @@ function MissionPlan(props) {
 		}
 	}
 	
-	function changeIndivVehicles(globalVehicles, indivVehicles, rocket, previousSelected, updateShowAlways=false) {
+	changeIndivVehicles = (globalVehicles, indivVehicles, rocket, previousSelected, updateShowAlways=false) => {
 		if(previousSelected) {
 			indivVehicles.forEach((vehicle, index) => {
 				if(previousSelected === vehicle.name) {
@@ -200,9 +210,9 @@ function MissionPlan(props) {
 		}
 	}
 	
-	function handleRocketChange(id, rocket, speed, planetDistance) {
-		const listOfVehiclesCopy = _.cloneDeep(listOfVehicles);
-		const globalVehicles = _.cloneDeep(vehicles);
+	handleRocketChange = (id, rocket, speed, planetDistance) => {
+		const listOfVehiclesCopy = _.cloneDeep(this.state.listOfVehicles);
+		const globalVehicles = _.cloneDeep(this.state.vehicles);
 		
 		let previousSelected;
 		let isRocketAvailable = true;
@@ -220,10 +230,10 @@ function MissionPlan(props) {
 				if(id === vehicles.id) {
 					previousSelected = vehicles.previousSelected;
 					
-					changeGlobalVehicles(globalVehicles, rocket, previousSelected);
-					props.updateSelectedVehicles(index, rocket);
-					props.updateTime(index, planetDistance/speed);
-					changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
+					this.changeGlobalVehicles(globalVehicles, rocket, previousSelected);
+					this.props.updateSelectedVehicles(index, rocket);
+					this.props.updateTime(index, planetDistance/speed);
+					this.changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected, true);
 					
 					vehicles.previousSelected = rocket;
 				}
@@ -231,58 +241,63 @@ function MissionPlan(props) {
 			
 			listOfVehiclesCopy.forEach(vehicles => {
 				if(id !== vehicles.id && vehicles.vehicles.every(vehicle => !vehicle.showAlways)) {
-					changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected);
+					this.changeIndivVehicles(globalVehicles, vehicles.vehicles, rocket, previousSelected);
 				}
 			});
 		} else {
-			props.updateMessage('Selected rocket is not available');
+			this.props.updateMessage('Selected rocket is not available');
 		}
 		
-		setListOfVehicles(listOfVehiclesCopy);
-		setVehicles(globalVehicles);
+		this.setState({
+			vehicles: globalVehicles,
+			listOfVehicles: listOfVehiclesCopy
+		});
 	}
 	
-	const chooseDestinations = (
-		listOfVehicles.map((vehiclesObj, index) => {
-			return (
-				<div className='MissionPlan__destination' key={index}>
-					<h3 className='MissionPlan__title'>Destination-{index+1}</h3>
-					<ChoosePlanet 
-						planets={listOfPlanets[index]} 
-						updateListOfPlanets={updateListOfPlanets}
-						updateListOfVehicles={updateListOfVehicles}
-					/>
-					{
-						listOfVehicles[index].isRendered &&
-						<AssignRocket 
-							vehicles={listOfVehicles[index]}
-							handleVehicleUpdation={handleRocketChange}
+	render() {
+		const { listOfPlanets, listOfVehicles } = this.state;
+		const chooseDestinations = (
+			listOfVehicles.map((vehicles, index) => {
+				return (
+					<div className='MissionPlan__destination' key={index}>
+						<h3 className='MissionPlan__title'>Destination-{index+1}</h3>
+						<ChoosePlanet 
+							planets={listOfPlanets[index]} 
+							updateListOfPlanets={this.updateListOfPlanets}
+							updateListOfVehicles={this.updateListOfVehicles}
 						/>
-					}
-				</div>
-			)
-		})
-	)
+						{
+							listOfVehicles[index].isRendered &&
+							<AssignRocket 
+								vehicles={listOfVehicles[index]}
+								handleVehicleUpdation={this.handleRocketChange}
+							/>
+						}
+					</div>
+				)
+			})
+		)
 	
-	return (
-		<div className='MissionPlan'>
-			<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
-			<div className='MissionPlan__destinations'>
-				{chooseDestinations}
-			</div>
-			{
-				props.time.length 
-				? <div className='MissionPlan__time'>
-						Total Time: {
-							props.time.reduce((accumulator, curValue) => accumulator + curValue, 0)
-					}
-				  </div>
-				: <div className='MissionPlan__time'>
+		return (
+			<div className='MissionPlan'>
+				<p className='MissionPlan__instructions'>Select planets you want to search in:</p>
+				<div className='MissionPlan__destinations'>
+					{chooseDestinations}
+				</div>
+				{
+					this.props.time.length 
+					? <div className='MissionPlan__time'>
+							Total Time: {
+								this.props.time.reduce((accumulator, curValue) => accumulator + curValue, 0)
+						}
+					</div>
+					: <div className='MissionPlan__time'>
 							Total Time: 0
-				  </div>
-			}
-		</div>
-	)
+					</div>
+				}
+			</div>
+		)
+	}
 }
 
 export default MissionPlan;

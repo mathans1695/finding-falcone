@@ -1,7 +1,7 @@
 import React from 'react';
 import './Message.css';
 
-function Message(props) {
+const Message = (props) => {
 	return (
 		<div className='Message'>
 			<span className='Message__msg'>

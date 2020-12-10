@@ -3,7 +3,7 @@ import loading from '../../images/loading.gif';
 import { Link } from 'react-router-dom';
 import './Result.css';
 
-function Result(props) {
+const Result = (props) => {
 	const {resultJSON, time, reset} = props;
 	return (
 		<div className='Result'>
