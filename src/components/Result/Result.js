@@ -1,7 +1,7 @@
 import React from 'react';
-import loading from '../Images/loading.gif';
+import loading from '../../images/loading.gif';
 import { Link } from 'react-router-dom';
-import '../styles/Result.css';
+import './Result.css';
 
 function Result(props) {
 	const {resultJSON, time, reset} = props;

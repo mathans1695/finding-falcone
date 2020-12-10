@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Link } from 'react-router-dom';
-import { getToken, getResult } from '../utils/api_requests';
-import Message from './Message';
-import '../styles/falcone.css';
-import MissionPlan from './MissionPlan';
-import Result from './Result';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Message from '../Message/Message';
+import MissionPlan from '../MissionPlan/MissionPlan';
+import Result from '../Result/Result';
+import Navbar from '../Navbar/Navbar';
+import Footer from '../Footer/Footer';
+import './Falcone.css';
 
 function Falcone(props) {
-	const [resultJSON, setResultJSON] = useState('');
 	const [selectedPlanets, setSelectedPlanets] = useState(new Array(4));
 	const [selectedVehicles, setSelectedVehicles] = useState(new Array(4));
 	const [time, setTime] = useState([0, 0, 0, 0]);
@@ -21,30 +19,12 @@ function Falcone(props) {
 		}, 2000)
 	}, [message]);
 	
-	// method will execute on click of find falcone button
 	function handleClick() {
-		const reqBody = Object.create(null);	
-		
-		reqBody.planet_Names = selectedPlanets;
-		reqBody.vehicle_Names = selectedVehicles;
-		
-		getToken()
-			.then(json => {
-				reqBody.token = json.token;
-				result(reqBody);
-			})
-			.catch(err => console.log(err))
+		props.handleResult(selectedPlanets, selectedVehicles)
 	}
 	
 	function updateMessage(msg) {
 		setMessage(msg);
-	}
-	
-	// method runs after token received and set resultJSON state with result
-	function result(reqBody) {
-		getResult(reqBody)
-			.then(json => setResultJSON(json))
-			.catch(err => console.log(err))
 	}
 	
 	function updateSelectedPlanets(index, value) {
@@ -81,7 +61,7 @@ function Falcone(props) {
 		} 
 		
 		setTime([]);
-		setResultJSON('');
+		props.resetResultJSON();
 		
 		if(target.innerText === 'Reset' || target.innerText === '') {
 			setMessage('Reset successful')
@@ -138,7 +118,7 @@ function Falcone(props) {
 				render={() => {
 					return (
 						<main className='Falcone__main'>
-							<Result resultJSON={resultJSON} time={time} reset={reset} />
+							<Result resultJSON={props.resultJSON} time={time} reset={reset} />
 						</main>
 					)
 				}}

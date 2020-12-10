@@ -115,7 +115,7 @@
 		width: 30px;
 		height: 30px;
 		content: '';
-		background-image: url(../Images/reset.png);
+		background-image: url(../../images/reset.png);
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
@@ -134,7 +134,7 @@
 		left: 0;
 		padding: 15px;
 		content: '';
-		background-image: url(../Images/home.png);
+		background-image: url(../../images/home.png);
 		background-size: cover;
 		background-position: center;
 	}

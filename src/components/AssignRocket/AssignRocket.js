@@ -1,6 +1,6 @@
 import React from 'react';
-import { uuid } from '../helpers';
-import '../styles/AssignRocket.css';
+import { uuid } from '../../utils/helpers';
+import './AssignRocket.css';
 
 function AssignRocket(props) {
 	function handleOnValueChange(e) {

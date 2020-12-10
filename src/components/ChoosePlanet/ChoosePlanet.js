@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ChoosePlanet.css';
+import './ChoosePlanet.css';
 
 function ChoosePlanet(props) {
 	function handleChange(e) {

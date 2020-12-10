@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
-import { uuid } from '../helpers';
-import ChoosePlanet from './ChoosePlanet';
-import AssignRocket from './AssignRocket';
-import '../styles/MissionPlan.css';
+import { uuid } from '../../utils/helpers';
+import ChoosePlanet from '../ChoosePlanet/ChoosePlanet';
+import AssignRocket from '../AssignRocket/AssignRocket';
+import './MissionPlan.css';
 
 function MissionPlan(props) {
 	const [vehicles, setVehicles] = useState([]);
