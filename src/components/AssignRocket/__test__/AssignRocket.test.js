@@ -1,6 +1,5 @@
 import React from 'react';
-import toJson from 'enzyme-to-json';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import AssignRocket from '../AssignRocket';
 import { initialVehicles, 
 		 selectVehicles,
