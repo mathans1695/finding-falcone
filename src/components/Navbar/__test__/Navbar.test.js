@@ -14,5 +14,6 @@ it('Reset should call reset function passed as prop', () => {
 	const wrapper = shallow(<Navbar reset={ mockReset }/>);
 	wrapper.find('.Navbar__reset').simulate('click');
 	
+	// The mock function called once
 	expect(mockReset.mock.calls.length).toEqual(1);
 })
