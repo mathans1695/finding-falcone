@@ -25,7 +25,7 @@ function AssignRocket(props) {
 		// will be shown no matter what
 		// options will be checked based on showAlways property 
 		// of vehicle
-		if(vehicle.showAlways) {
+		if(vehicle.showAlways || (vehicle.total_no > 0 && vehicle.isPossible)) {
 			display = (
 				<div className='AssignRocket__option' key={key} >
 					<input 
@@ -43,7 +43,7 @@ function AssignRocket(props) {
 		} 
 		// disable the vehicle, if not possible to send the rocket
 		// disable vehicle not in stock
-		else if (!vehicle.total_no > 0 || !vehicle.isPossible) {
+		else {
 			display = (
 				<div  
 					className='AssignRocket__option AssignRocket__option--disable'
@@ -54,30 +54,11 @@ function AssignRocket(props) {
 						value={name} 
 						id={key} 
 						disabled={true}
-						checked={vehicle.showAlways}
-						onChange={handleOnValueChange}
-						data-speed={speed}
-						data-id={vehicles.id}
 					/>
 					<label htmlFor={key}>{name} ({total_no})</label>
 				</div>
 			)
 		}
-		else
-			display = (
-				<div className='AssignRocket__option' key={key} >
-					<input 
-						type='radio' 
-						value={name} 
-						id={key} 
-						checked={vehicle.showAlways}
-						onChange={handleOnValueChange}
-						data-speed={speed}
-						data-id={vehicles.id}
-					/>
-					<label htmlFor={key}>{name} ({total_no})</label>
-				</div>
-			)
 		return display;
 	});
 		
