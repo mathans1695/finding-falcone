@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders failure result page correctly 1`] = `
+<div
+  className="Result"
+>
+  <p
+    className="Result__msg"
+  >
+    Mission Failed!. King Shan is mad at you.
+  </p>
+  <p
+    className="Result__time"
+  >
+    Time taken: 
+    210
+  </p>
+  <Link
+    to="/"
+  >
+    <button
+      className="Result__startAgain"
+    >
+      Start Again
+    </button>
+  </Link>
+</div>
+`;
+
+exports[`Renders success result page correctly 1`] = `
+<div
+  className="Result"
+>
+  <p
+    className="Result__msg"
+  >
+    Success! Congratulations on Finding Falcone. King Shan is mighty pleased.
+  </p>
+  <p
+    className="Result__time"
+  >
+    Time taken: 
+    210
+  </p>
+  <p
+    className="Result__planet"
+  >
+    Planet found: 
+    Donlon
+  </p>
+  <Link
+    to="/"
+  >
+    <button
+      className="Result__startAgain"
+    >
+      Start Again
+    </button>
+  </Link>
+</div>
+`;
