@@ -18,7 +18,7 @@ it('Select value equals curPlanet property of planets prop', () => {
 	const value = wrapper.find('.ChoosePlanet__Select').props.value;
 	const curPlanet = wrapper.prop('planets').planets.curPlanet;
 	
-	// curPlanet property value was equal to select value
+	// curPlanet property value is equal to select value
 	expect(curPlanet).toEqual(value);
 })
 
@@ -36,16 +36,16 @@ it('onchange event calls the corresponding methods passed as props with respecti
 	expect(mockUpdateListOfPlanets.mock.calls.length).toBe(1);
 	expect(mockUpdateListOfVehicles.mock.calls.length).toBe(1);
 	
-	// The first argument to mockUpdateListOfPlanets was '111111'
+	// The first argument to mockUpdateListOfPlanets is '111111'
 	expect(mockUpdateListOfPlanets.mock.calls[0][0]).toBe('111111');
-	// The second argument to mockUpdateListOfPlanets was 'Enchai'
+	// The second argument to mockUpdateListOfPlanets is 'Enchai'
 	expect(mockUpdateListOfPlanets.mock.calls[0][1]).toBe('Enchai');	
-	// The third argument to mockUpdateListOfPlanets was 200
+	// The third argument to mockUpdateListOfPlanets is 200
 	expect(mockUpdateListOfPlanets.mock.calls[0][2]).toBe(200);
 	
 	
-	// The first argument to mockUpdateListOfVehicles was '111111'
+	// The first argument to mockUpdateListOfVehicles is '111111'
 	expect(mockUpdateListOfVehicles.mock.calls[0][0]).toBe('111111');
-	// The second argument to mockUpdateListOfVehicles was 200
+	// The second argument to mockUpdateListOfVehicles is 200
 	expect(mockUpdateListOfVehicles.mock.calls[0][1]).toBe(200);
 })
