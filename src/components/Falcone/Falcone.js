@@ -54,35 +54,33 @@ function Falcone(props) {
 		const regExp = /result/i;
 		const match = regExp.test(window.location.href);
 		
-		if(match) {
-			if(target.innerText === 'Reset' || target.innerText === '') {
-				props.history.push('/');
-			}
-		} else {
-			missionPlanRef.current.generateLists();
+		if(match && (target.innerText === 'Reset' || target.innerText === '')) {
+			props.history.push('/');
+			setMessage('Reset successful');
 		}
 		
+		// resetting selectedVehicles, selectedPlanets and time
 		setSelectedPlanets(new Array(4));
 		setSelectedVehicles(new Array(4));
 		setTime([0,0,0,0])
+		
+		// reset resultJSON in App
 		props.resetResultJSON();
 		
-		if(target.innerText === 'Reset' || target.innerText === '') {
-			setMessage('Reset successful')
-		}
+		// resetting listOfVehicles and listOfPlanets in MissionPlan
+		missionPlanRef.current.generateLists();
 	}
 	
 	let count = 0;
 	let enableFindFalcone = false;
-			  
+	
 	for (let i=0; i<selectedVehicles.length; i++) {
 		if(selectedVehicles[i]) {
 			count += 1;
 		}
 	}
-		
-	count === 4 && (enableFindFalcone = true);
 	
+	count === 4 && (enableFindFalcone = true);
 	const missionPlanRef = React.createRef();
 		
 	return (
