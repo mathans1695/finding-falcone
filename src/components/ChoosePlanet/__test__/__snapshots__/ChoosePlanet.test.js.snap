@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders correctly onChange 1`] = `
+<div
+  className="ChoosePlanet"
+  id="111111"
+>
+  <select
+    className="ChoosePlanet__Select"
+    onChange={[Function]}
+    value="Donlon"
+  >
+    <option
+      className="ChoosePlanet__Option"
+      hidden={true}
+      value="Choose Planet"
+    >
+      Choose Planet
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={100}
+      key="Donlon"
+      value="Donlon"
+    >
+      Donlon
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={200}
+      key="Enchai"
+      value="Enchai"
+    >
+      Enchai
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={300}
+      key="Jebing"
+      value="Jebing"
+    >
+      Jebing
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={400}
+      key="Sapir"
+      value="Sapir"
+    >
+      Sapir
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={500}
+      key="Lerbin"
+      value="Lerbin"
+    >
+      Lerbin
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={600}
+      key="Pingasor"
+      value="Pingasor"
+    >
+      Pingasor
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Renders initial rendering correctly 1`] = `
+<div
+  className="ChoosePlanet"
+  id="111111"
+>
+  <select
+    className="ChoosePlanet__Select"
+    onChange={[Function]}
+    value="Choose Planet"
+  >
+    <option
+      className="ChoosePlanet__Option"
+      hidden={true}
+      value="Choose Planet"
+    >
+      Choose Planet
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={100}
+      key="Donlon"
+      value="Donlon"
+    >
+      Donlon
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={200}
+      key="Enchai"
+      value="Enchai"
+    >
+      Enchai
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={300}
+      key="Jebing"
+      value="Jebing"
+    >
+      Jebing
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={400}
+      key="Sapir"
+      value="Sapir"
+    >
+      Sapir
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={500}
+      key="Lerbin"
+      value="Lerbin"
+    >
+      Lerbin
+    </option>
+    <option
+      className="ChoosePlanet__Option"
+      data-distance={600}
+      key="Pingasor"
+      value="Pingasor"
+    >
+      Pingasor
+    </option>
+  </select>
+</div>
+`;

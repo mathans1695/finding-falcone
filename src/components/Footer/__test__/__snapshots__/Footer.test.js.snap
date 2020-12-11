@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders correctly 1`] = `
+<div
+  className="Footer"
+>
+  Coding problem - 
+  <a
+    href="http://www.geektrust.in/finding-falcone"
+    rel="noreferrer"
+    target="_blank"
+  >
+    www.geektrust.in/finding-falcone
+  </a>
+</div>
+`;
