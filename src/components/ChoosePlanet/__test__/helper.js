@@ -22,5 +22,21 @@ export const changePlanets = {
 	previousSelected: [{name: "Donlon", distance: 100}]
 }
 
-export const mockUpdateListOfPlanets = jest.fn();
-export const mockUpdateListOfVehicles = jest.fn();
+export const mockUpdateListOfPlanets = jest.fn((id, value, distance) => undefined);
+export const mockUpdateListOfVehicles = jest.fn((id, distance) => undefined);
+
+export const event = {
+	target: {
+		parentElement: { id },
+		options: [
+			{ selected: false },
+			{ selected: false },
+			{ selected: true, getAttribute: () => 200 },
+			{ selected: false },
+			{ selected: false },
+			{ selected: false },
+			{ selected: false }
+		],
+		value: 'Enchai'
+	}
+}
