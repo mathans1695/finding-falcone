@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders not availble message correctly 1`] = `
+<div
+  className="Message"
+>
+  <span
+    className="Message__msg"
+  >
+    Selected rocket is not available
+  </span>
+</div>
+`;
+
+exports[`Renders reset message correctly 1`] = `
+<div
+  className="Message"
+>
+  <span
+    className="Message__msg"
+  >
+    Reset successful
+  </span>
+</div>
+`;
