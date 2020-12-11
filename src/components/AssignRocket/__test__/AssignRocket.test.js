@@ -62,6 +62,6 @@ it('onchange event call the method passed as props with respective arguments', (
 	expect(mockHandleVehicleUpdation.mock.calls[0][1]).toEqual('Space rocket');
 	// The third argument to mock function is 4
 	expect(mockHandleVehicleUpdation.mock.calls[0][2]).toEqual(4);
-	// The fourth argument to mock function is 400
-	expect(mockHandleVehicleUpdation.mock.calls[0][3]).toEqual(400);
+	// The fourth argument to mock function is 200
+	expect(mockHandleVehicleUpdation.mock.calls[0][3]).toEqual(200);
 })
