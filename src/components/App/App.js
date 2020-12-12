@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getToken, getResult, getResponse } from '../../utils/api_requests';
 import Falcone from '../Falcone/Falcone';
 import './App.css';
@@ -8,7 +8,7 @@ function App(props) {
 	const [vehicles, setVehicles] = useState('');
 	const [resultJSON, setResultJSON] = useState('');
 	
-	useEffect(() => {
+	React.useEffect(() => {
 		const planetsRes = getResponse('planets'),
 			  vehiclesRes = getResponse('vehicles');
 			  
