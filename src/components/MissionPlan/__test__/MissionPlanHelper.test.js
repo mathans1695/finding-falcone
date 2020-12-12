@@ -1,8 +1,7 @@
-import React from 'react';
 import { changeGlobalVehicles, changeIndivVehicles } from '../MissionPlanHelper';
 import { globalVehicles, 
 		 indivVehicles,
-		 getIndex } from './helper';
+		 getIndex } from './helper1';
 
 // changeGlobalVehicles helper function tests
 it('change the global vehicles object in place with the parameters passed to the function', () => {
