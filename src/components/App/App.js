@@ -50,7 +50,7 @@ function App(props) {
 	const resetResultJSON = () => {
 		setResultJSON('');
 	}
-		
+	
 	return (
 		<div className="App">
 			{ planets 
