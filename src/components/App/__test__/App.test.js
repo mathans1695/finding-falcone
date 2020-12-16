@@ -2,7 +2,7 @@ import React from 'react';
 import {render, cleanup, fireEvent, screen} from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { act, Simulate } from 'react-dom/test-utils';
+import { act } from 'react-dom/test-utils';
 import { selectedPlanets } from './helper';
 import App from '../App';
 
