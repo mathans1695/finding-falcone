@@ -1,8 +1,7 @@
 import React from 'react';
-import {render, cleanup, fireEvent, screen} from '@testing-library/react';
+import {render, fireEvent, screen} from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { act } from 'react-dom/test-utils';
 import Falcone from '../Falcone';
 import { planets, vehicles, selectedPlanets } from './helper';
 		 
