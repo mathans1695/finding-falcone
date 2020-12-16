@@ -23,7 +23,7 @@ Geektrust front-end development project. You can find the description of the pro
     #### Initial state:
       - *vehicles: ''*
       - *planets: ''*
-      - *resultJSON: *
+      - *resultJSON: [Object]*
     #### Renders:
       - Falcone component
     #### Methods:
@@ -39,6 +39,7 @@ Geektrust front-end development project. You can find the description of the pro
     #### Final state:
       - vehicles: [object]
       - planets: [object]
+      - resultJSON: [object]
       
 ### Falcone component:
   * Responsible for managing the selectedVehicles, selectedPlanets, time and message.
