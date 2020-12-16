@@ -17,7 +17,6 @@ it('renders correctly', async () => {
 			</Router>
 		);
 	});
-	expect(screen).toMatchSnapshot();
 })
 
 it('select four planets and four vehicles to click the button Falcone and check whether success page gets rendered correctly', async () => {

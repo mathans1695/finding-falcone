@@ -13,7 +13,6 @@ it("renders correctly", () => {
 			<Falcone planets={planets} vehicles={vehicles} />
 		</Router>
 	);
-	expect(screen).toMatchSnapshot();
 })
 
 it("select four planets and four vehicles to enable Find Falcone button", async () => {
