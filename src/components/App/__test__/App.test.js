@@ -1,15 +1,9 @@
 import React from 'react';
-import _ from 'lodash';
-import ReactDOM, { scryRenderedDOMComponentsWithClass } from 'react-dom';
-import toJson from 'enzyme-to-json';
-import {render, cleanup, fireEvent} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { screen } from '@testing-library/react';
+import {render, cleanup, fireEvent, screen} from '@testing-library/react';
 import { Router } from 'react-router-dom';
-import { shallow, mount } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import { act, Simulate } from 'react-dom/test-utils';
-import { generatePlanetEvents, selectedPlanets } from './helper';
+import { selectedPlanets } from './helper';
 import App from '../App';
 
 jest.mock('../../../utils/api_requests');
